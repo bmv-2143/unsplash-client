@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Unsplash Attestation Project</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="fragment_onboarding_create">Create</string>
+    <string name="fragment_onboarding_share">Share</string>
+    <string name="fragment_onboarding_upload">Upload</string>
 </resources>
