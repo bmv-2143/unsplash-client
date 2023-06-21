@@ -1,4 +1,4 @@
-package com.example.unsplashattestationproject.presentation
+package com.example.unsplashattestationproject.presentation.onboarding
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
