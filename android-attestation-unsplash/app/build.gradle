@@ -20,7 +20,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL", "\"https://unsplash.com/oauth/authorize"")
+        buildConfigField("String", "BASE_URL", "\"https://unsplash.com\"")
 
     }
 

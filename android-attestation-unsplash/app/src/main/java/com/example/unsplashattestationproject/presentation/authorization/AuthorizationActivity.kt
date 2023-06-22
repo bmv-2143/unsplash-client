@@ -85,7 +85,7 @@ class AuthorizationActivity : AppCompatActivity() {
                 ?: return
 
 
-            Log.d(TAG, "handleDeepLink: $authCode")
+            Log.e(TAG, "handleDeepLink: $authCode")
 
             //TODO: сохранить/передать authCode для дальнейшего запроса access_token
             viewModel.authCode = authCode

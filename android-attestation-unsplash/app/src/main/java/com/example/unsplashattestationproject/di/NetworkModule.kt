@@ -27,7 +27,7 @@ class NetworkModule {
     fun provideRetrofitService(moshi: Moshi): Retrofit {
 
         val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BASIC
+            level = HttpLoggingInterceptor.Level.BODY
         }
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
