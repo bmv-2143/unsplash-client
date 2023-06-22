@@ -13,13 +13,20 @@
         android:theme="@style/Theme.UnsplashAttestationProject"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.onboarding.OnboardingActivity"
+            android:name=".presentation.authorization.AuthorizationActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+
+    <activity
+            android:name=".presentation.onboarding.OnboardingActivity"
+            android:exported="false">
         </activity>
     </application>
 

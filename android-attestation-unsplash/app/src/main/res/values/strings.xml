@@ -6,4 +6,5 @@
     <string name="fragment_onboarding_upload">Закгружайте любимые снимки и отслеживайте статистику</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="activity_authorization_button_log_in_via_unsplash">Log in via Unsplash</string>
 </resources>

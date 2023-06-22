@@ -28,7 +28,6 @@ class OnboardingActivity : AppCompatActivity() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.leftArrow.isVisible = position != 0
-                binding.rightArrow.isVisible = position != OnboardingAdapter.NUMBER_OF_FRAGMENTS - 1
             }
         })
     }
@@ -57,6 +56,8 @@ class OnboardingActivity : AppCompatActivity() {
             val currentItem = binding.viewPager.currentItem
             if (currentItem < onboardingAdapter.itemCount - 1) {
                 binding.viewPager.currentItem = currentItem + 1
+            } else {
+                finish()
             }
         }
     }
