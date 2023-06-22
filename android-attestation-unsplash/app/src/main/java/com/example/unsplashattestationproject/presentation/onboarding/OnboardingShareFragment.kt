@@ -17,7 +17,7 @@ class OnboardingShareFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentOnboardingShareBinding.inflate(inflater, container, false)
         return binding.root
     }

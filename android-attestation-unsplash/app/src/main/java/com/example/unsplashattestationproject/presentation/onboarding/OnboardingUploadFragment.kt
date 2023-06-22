@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.unsplashattestationproject.databinding.FragmentOnboardingUploadBinding
 
+
 class OnboardingUploadFragment : Fragment() {
+
     private var _binding: FragmentOnboardingUploadBinding? = null
     private val binding get() = _binding!!
 
@@ -15,7 +17,7 @@ class OnboardingUploadFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentOnboardingUploadBinding.inflate(inflater, container, false)
         return binding.root
     }
