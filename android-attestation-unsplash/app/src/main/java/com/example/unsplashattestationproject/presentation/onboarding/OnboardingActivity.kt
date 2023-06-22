@@ -2,6 +2,8 @@ package com.example.unsplashattestationproject.presentation.onboarding
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.viewpager2.widget.ViewPager2
 import com.example.unsplashattestationproject.databinding.ActivityOnboardingBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -19,6 +21,16 @@ class OnboardingActivity : AppCompatActivity() {
         linkTabLayoutWithViewPager2()
         setLeftArrowButtonListener()
         setRightArrowButtonListener()
+        registerFragmentSwitchButtonsVisibilityUpdates()
+    }
+
+    private fun registerFragmentSwitchButtonsVisibilityUpdates() {
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.leftArrow.isVisible = position != 0
+                binding.rightArrow.isVisible = position != OnboardingAdapter.NUMBER_OF_FRAGMENTS - 1
+            }
+        })
     }
 
     private fun setupViewPagerAndAdapter() {
