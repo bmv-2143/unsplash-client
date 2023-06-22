@@ -4,6 +4,7 @@ plugins {
 
     // Hilt [1]
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -18,6 +19,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BASE_URL", "\"https://unsplash.com/oauth/authorize"")
+
     }
 
     buildTypes {
@@ -27,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         viewBinding true
@@ -48,8 +52,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    implementation 'androidx.activity:activity-ktx:1.7.2'
+
     // View Pager 2
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
+
+    // OkHttp Logging Interceptor
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 
     // Retrofit & Moshi
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -57,4 +66,7 @@ dependencies {
     implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.14.0'
 
+    // Hilt [2]
+    implementation "com.google.dagger:hilt-android:2.44.2"
+    kapt "com.google.dagger:hilt-compiler:2.44.2"
 }
