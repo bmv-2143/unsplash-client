@@ -31,7 +31,9 @@
         android:id="@+id/leftArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_arrow_circle_left_48"
+        android:src="@drawable/arrow_circle_left_48px"
+        app:tint="@color/light_blue_900"
+        android:backgroundTint="@android:color/white"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +42,9 @@
         android:id="@+id/rightArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_arrow_circle_right_48"
+        app:tint="@color/light_blue_900"
+        android:backgroundTint="@android:color/white"
+        android:src="@drawable/arrow_circle_right_48px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
