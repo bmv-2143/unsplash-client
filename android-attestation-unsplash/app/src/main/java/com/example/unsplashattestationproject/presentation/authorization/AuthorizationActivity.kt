@@ -1,7 +1,6 @@
 package com.example.unsplashattestationproject.presentation.authorization
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -54,19 +53,10 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun openBrowserForAuthentication() {
-        val intent = Intent(Intent.ACTION_VIEW, composeUrl())
+        val intent = Intent(Intent.ACTION_VIEW, viewModel.composeBrowserAuthUrl())
         startActivity(intent)
     }
-    private fun composeUrl(): Uri =
-        Uri.parse(AuthConst.AUTH_URL)
-            .buildUpon()
-            .appendQueryParameter("client_id",
-                AuthConst.CLIENT_ID_ACCESS_KEY)
-            .appendQueryParameter("redirect_uri",
-                AuthConst.REDIRECT_URL)
-            .appendQueryParameter("response_type", "code")
-            .appendQueryParameter("scope", "public")
-            .build()
+
 
     private fun handleAuthDeepLink(intent: Intent) {
         if (intent.action != Intent.ACTION_VIEW) return

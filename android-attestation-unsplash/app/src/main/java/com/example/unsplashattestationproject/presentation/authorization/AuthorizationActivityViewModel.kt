@@ -1,5 +1,6 @@
 package com.example.unsplashattestationproject.presentation.authorization
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,4 +34,14 @@ class AuthorizationActivityViewModel @Inject constructor(
         localRepository.saveOnboardingShowedStatus()
     }
 
+    fun composeBrowserAuthUrl(): Uri =
+        Uri.parse(AuthConst.AUTH_URL)
+            .buildUpon()
+            .appendQueryParameter("client_id",
+                AuthConst.CLIENT_ID_ACCESS_KEY)
+            .appendQueryParameter("redirect_uri",
+                AuthConst.REDIRECT_URL)
+            .appendQueryParameter("response_type", "code")
+            .appendQueryParameter("scope", "public")
+            .build()
 }
