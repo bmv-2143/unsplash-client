@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        app:tabBackground="@drawable/dots_indicator_tab_selector"
+        app:tabBackground="@drawable/onboarding_dots_indicator_tab_selector"
         app:tabGravity="center"
         android:background="@android:color/holo_green_light"
         app:tabIndicatorHeight="0dp"
@@ -32,7 +32,7 @@
         android:id="@+id/leftArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/arrow_circle_left_48px"
+        android:src="@drawable/onboarding_arrow_circle_left_48px"
         app:tint="@color/light_blue_900"
         android:backgroundTint="@android:color/white"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         app:tint="@color/light_blue_900"
         android:backgroundTint="@android:color/white"
-        android:src="@drawable/arrow_circle_right_48px"
+        android:src="@drawable/onboarding_arrow_circle_right_48px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
