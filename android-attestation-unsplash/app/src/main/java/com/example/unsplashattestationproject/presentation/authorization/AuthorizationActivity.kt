@@ -37,8 +37,7 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun openOnboardingActivity() {
-        intent = Intent(this, OnboardingActivity::class.java)
-        startActivity(intent)
+        startActivity(OnboardingActivity.createIntent(this))
         viewModel.saveOnboardingShowedStatus()
     }
 
@@ -47,6 +46,7 @@ class AuthorizationActivity : AppCompatActivity() {
             openBrowserForAuthentication()
         }
 
+        // TODO: remove test button
         binding.activityAuthorizationTestButton.setOnClickListener {
             startActivity(Intent(this, BottomNavigationActivity::class.java))
         }

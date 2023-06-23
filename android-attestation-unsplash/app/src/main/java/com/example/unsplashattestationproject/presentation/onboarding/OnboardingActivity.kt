@@ -1,5 +1,7 @@
 package com.example.unsplashattestationproject.presentation.onboarding
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -59,6 +61,12 @@ class OnboardingActivity : AppCompatActivity() {
             } else {
                 finish()
             }
+        }
+    }
+
+    companion object {
+        fun createIntent(context: Context): Intent {
+            return Intent(context, OnboardingActivity::class.java)
         }
     }
 }
