@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import com.example.unsplashattestationproject.databinding.ActivityAuthorizationBinding
 import com.example.unsplashattestationproject.log.TAG
+import com.example.unsplashattestationproject.presentation.BottomNavigationActivity
 import com.example.unsplashattestationproject.presentation.onboarding.OnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,6 +55,10 @@ class AuthorizationActivity : AppCompatActivity() {
     private fun setAuthButtonListener() {
         binding.activityAuthorizationButtonLogInViaUnsplash.setOnClickListener {
             openBrowserForAuthentication()
+        }
+
+        binding.activityAuthorizationTestButton.setOnClickListener {
+            startActivity(Intent(this, BottomNavigationActivity::class.java))
         }
     }
 

@@ -18,4 +18,17 @@
         android:paddingHorizontal="16dp"
         android:text="@string/activity_authorization_button_log_in_via_unsplash"/>
 
+
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/activity_authorization_test_button"
+        android:background="@color/black"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:text="TEST_BUTTON"/>
+
+
 </androidx.appcompat.widget.LinearLayoutCompat>
