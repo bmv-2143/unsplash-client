@@ -2,10 +2,10 @@ package com.example.unsplashattestationproject.presentation.authorization
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.unsplashattestationproject.databinding.ActivityAuthorizationBinding
 import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivity
@@ -20,13 +20,11 @@ class AuthorizationActivity : AppCompatActivity() {
     }
     private val viewModel : AuthorizationActivityViewModel by viewModels()
 
-    // TODO: add view model, move logic into it
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        if (!isOnboardingShowed()) {
+        if (!viewModel.isOnboardingShowed()) {
             openOnboardingActivity()
         }
 
@@ -42,14 +40,7 @@ class AuthorizationActivity : AppCompatActivity() {
     private fun openOnboardingActivity() {
         intent = Intent(this, OnboardingActivity::class.java)
         startActivity(intent)
-        saveOnboardingShowedStatus()
-    }
-
-    private fun saveOnboardingShowedStatus() {
-        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean(IS_ONBOARDING_SHOWED, true)
-        editor.apply()
+        viewModel.saveOnboardingShowedStatus()
     }
 
     private fun setAuthButtonListener() {
@@ -60,11 +51,6 @@ class AuthorizationActivity : AppCompatActivity() {
         binding.activityAuthorizationTestButton.setOnClickListener {
             startActivity(Intent(this, BottomNavigationActivity::class.java))
         }
-    }
-
-    private fun isOnboardingShowed(): Boolean {
-        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
-        return sharedPreferences.getBoolean(IS_ONBOARDING_SHOWED, false)
     }
 
     private fun openBrowserForAuthentication() {
@@ -94,19 +80,15 @@ class AuthorizationActivity : AppCompatActivity() {
 
             //TODO: сохранить/передать authCode для дальнейшего запроса access_token
             viewModel.authCode = authCode
-
             continueAuthorization()
         }
-
     }
 
     private fun continueAuthorization() {
         viewModel.getAccessToken(viewModel.authCode)
     }
 
-
     companion object {
         const val IS_ONBOARDING_SHOWED = "isOnboardingShowed"
-        const val SHARED_PREFERENCES = "sharedPreferences"
     }
 }
