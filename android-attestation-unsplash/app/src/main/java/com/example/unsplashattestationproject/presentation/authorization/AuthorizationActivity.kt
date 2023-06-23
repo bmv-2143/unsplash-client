@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unsplashattestationproject.databinding.ActivityAuthorizationBinding
 import com.example.unsplashattestationproject.log.TAG
+import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_CODE
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivity
 import com.example.unsplashattestationproject.presentation.onboarding.OnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,14 +58,13 @@ class AuthorizationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
+    // todo: should I move it to a view model?
     private fun handleAuthDeepLink(intent: Intent) {
         if (intent.action != Intent.ACTION_VIEW) return
         val deepLinkUrl = intent.data ?: return
-        if (deepLinkUrl.queryParameterNames.contains("code")) {
-            val authCode = deepLinkUrl.getQueryParameter("code")
+        if (deepLinkUrl.queryParameterNames.contains(PARAM_CODE)) {
+            val authCode = deepLinkUrl.getQueryParameter(PARAM_CODE)
                 ?: return
-
 
             Log.e(TAG, "handleDeepLink: $authCode")
 
