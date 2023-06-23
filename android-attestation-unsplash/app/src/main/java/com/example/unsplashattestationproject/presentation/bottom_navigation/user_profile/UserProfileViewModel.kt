@@ -3,7 +3,9 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.us
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+@HiltViewModel
 class UserProfileViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {

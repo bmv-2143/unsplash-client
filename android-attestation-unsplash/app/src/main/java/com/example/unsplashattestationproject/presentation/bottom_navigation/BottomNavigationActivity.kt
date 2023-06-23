@@ -12,7 +12,9 @@ import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.databinding.ActivityUnsplashBottomNavigationsBinding
 import com.example.unsplashattestationproject.presentation.onboarding.OnboardingActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BottomNavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUnsplashBottomNavigationsBinding
