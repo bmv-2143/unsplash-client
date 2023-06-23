@@ -2,18 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/activity_bottom_nav_title_photos" />
+        android:id="@+id/bottom_nav_navigation_photos"
+        android:icon="@drawable/bottom_nav_home_48px"
+        android:title="@string/activity_bottom_nav_title_photos"
+        />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/activity_bottom_nav_title_collections" />
+        android:id="@+id/bottom_nav_navigation_collections"
+        android:icon="@drawable/bottom_nav_star_48px"
+        android:title="@string/activity_bottom_nav_title_collections"
+        />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/activity_bottom_nav_title_user_profile" />
+        android:id="@+id/bottom_nav_navigation_user_profile"
+        android:icon="@drawable/bottom_nav_person_48px"
+        android:title="@string/activity_bottom_nav_title_user_profile"
+        />
 
 </menu>

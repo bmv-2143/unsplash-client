@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/bottom_nav_navigation_photos">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/bottom_nav_navigation_photos"
         android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListFragment"
         android:label="@string/activity_bottom_nav_title_photos"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/bottom_nav_navigation_collections"
         android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.collections_list.CollectionsFragment"
         android:label="@string/activity_bottom_nav_title_collections"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/bottom_nav_navigation_user_profile"
         android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.user_profile.UserProfileFragment"
         android:label="@string/activity_bottom_nav_title_user_profile"
         tools:layout="@layout/fragment_notifications" />
