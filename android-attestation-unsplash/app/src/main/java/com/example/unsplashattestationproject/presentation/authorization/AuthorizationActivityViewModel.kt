@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.unsplashattestationproject.data.LocalRepository
 import com.example.unsplashattestationproject.data.UnsplashRepository
 import com.example.unsplashattestationproject.data.network.AuthQuery
-import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_CLIENT_ID
-import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_PUBLIC
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_REDIRECT_URI
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_RESPONSE_TYPE
-import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_RESPONSE_TYPE_CODE
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_SCOPE
+import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_PUBLIC
+import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_RESPONSE_TYPE_CODE
+import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,14 +24,22 @@ class AuthorizationActivityViewModel @Inject constructor(
     private val localRepository: LocalRepository
 ) : ViewModel() {
 
+    //TODO: сохранить/передать authCode для дальнейшего запроса access_token
     var authCode: String = ""
+        set(value) {
+            field = value
+            Log.d(TAG, "authCode: $value")
+        }
 
     var accessToken: String = ""
+        set(value) {
+            field = value
+            Log.d(TAG, "accessToken: $value")
+        }
 
-    fun getAccessToken(code: String) {
+    fun getAccessToken() {
         viewModelScope.launch {
-            accessToken = repository.getAccessToken(code)
-            Log.e(TAG, "getAccessToken: $accessToken")
+            accessToken = repository.getAccessToken(authCode)
         }
     }
 
