@@ -23,5 +23,7 @@ class AuthQuery {
         const val VAL_PUBLIC: String = "public"
 
         const val PARAM_CODE: String = "code"
+
+        const val VAL_AUTH_CODE =  "authorization_code"
     }
 }

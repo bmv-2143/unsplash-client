@@ -1,4 +1,4 @@
-package com.example.unsplashattestationproject.data.dto
+package com.example.unsplashattestationproject.data.dto.auth
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

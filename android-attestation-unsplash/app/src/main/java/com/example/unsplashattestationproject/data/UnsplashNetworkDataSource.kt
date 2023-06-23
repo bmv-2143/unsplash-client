@@ -1,7 +1,7 @@
 package com.example.unsplashattestationproject.data
 
-import com.example.unsplashattestationproject.data.dto.AuthInfo
-import com.example.unsplashattestationproject.data.dto.TokenBody
+import com.example.unsplashattestationproject.data.dto.auth.AuthInfo
+import com.example.unsplashattestationproject.data.dto.auth.TokenBody
 import com.example.unsplashattestationproject.data.network.UnsplashService
 import javax.inject.Inject
 
