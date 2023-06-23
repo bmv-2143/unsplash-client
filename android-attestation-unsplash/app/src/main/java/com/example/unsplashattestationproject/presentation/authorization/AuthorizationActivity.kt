@@ -2,13 +2,20 @@ package com.example.unsplashattestationproject.presentation.authorization
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_CODE
 import com.example.unsplashattestationproject.databinding.ActivityAuthorizationBinding
+import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivity
 import com.example.unsplashattestationproject.presentation.onboarding.OnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AuthorizationActivity : AppCompatActivity() {
@@ -16,7 +23,7 @@ class AuthorizationActivity : AppCompatActivity() {
     private val binding: ActivityAuthorizationBinding by lazy {
         ActivityAuthorizationBinding.inflate(layoutInflater)
     }
-    private val viewModel : AuthorizationActivityViewModel by viewModels()
+    private val viewModel: AuthorizationActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +33,7 @@ class AuthorizationActivity : AppCompatActivity() {
             openOnboardingActivity()
         }
 
+        observeAuthorizationState()
         setAuthButtonListener()
         handleAuthDeepLink(intent)
     }
@@ -65,7 +73,43 @@ class AuthorizationActivity : AppCompatActivity() {
             viewModel.authCode = deepLinkUrl.getQueryParameter(PARAM_CODE)
                 ?: return
 
-            viewModel.getAccessToken()
+            viewModel.authorizeUser()
+        }
+    }
+
+    private fun observeAuthorizationState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.authorizationState
+                    .collect { isAuthorizationSuccess ->
+                        handleAuthorizationState(isAuthorizationSuccess)
+                    }
+            }
+        }
+    }
+
+    private fun handleAuthorizationState(isAuthorizationSuccess: Boolean) {
+        logAndNotifyUser(isAuthorizationSuccess)
+
+        if (isAuthorizationSuccess) {
+            startActivity(
+                BottomNavigationActivity
+                    .createIntent(this@AuthorizationActivity)
+            )
+            finish()
+        }
+    }
+
+    private fun logAndNotifyUser(isAuthorizationSuccess: Boolean) {
+        with(isAuthorizationSuccess) {
+            val authResult = if (this) "success" else "failed. Try again later."
+
+            Log.d(TAG, "Authorization $authResult")
+            Toast.makeText(
+                this@AuthorizationActivity,
+                "Authorization $authResult",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
