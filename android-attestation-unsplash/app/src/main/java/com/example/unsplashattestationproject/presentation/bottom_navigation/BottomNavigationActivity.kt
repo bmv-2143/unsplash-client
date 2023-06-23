@@ -1,4 +1,4 @@
-package com.example.unsplashattestationproject.presentation
+package com.example.unsplashattestationproject.presentation.bottom_navigation
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView

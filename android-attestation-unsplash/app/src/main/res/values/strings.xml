@@ -1,15 +1,19 @@
 <resources>
+
     <string name="app_name">Unsplash Attestation Project</string>
-    <string name="dummy_button">Dummy Button</string>
+
+    <!-- Onboarding -->
     <string name="fragment_onboarding_create">Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</string>
     <string name="fragment_onboarding_share">Делитесь с друзьями, собирайте коллекции</string>
     <string name="fragment_onboarding_upload">Закгружайте любимые снимки и отслеживайте статистику</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Bottom Navigation -->
     <string name="activity_authorization_button_log_in_via_unsplash">Log in via Unsplash</string>
-    <string name="title_activity_unsplash_bottom_navigations">UnsplashBottomNavigationsActivity
-    </string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+    <!-- Bottom Navigation -->
+    <string name="activity_bottom_nav_title">Unsplash Bottom Navigation</string>
+    <string name="activity_bottom_nav_title_photos">Photos</string>
+    <string name="activity_bottom_nav_title_collections">Collections</string>
+    <string name="activity_bottom_nav_title_user_profile">User Profile</string>
+
 </resources>

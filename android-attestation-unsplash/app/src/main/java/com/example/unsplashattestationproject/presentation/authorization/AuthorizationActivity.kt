@@ -8,7 +8,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import com.example.unsplashattestationproject.databinding.ActivityAuthorizationBinding
 import com.example.unsplashattestationproject.log.TAG
-import com.example.unsplashattestationproject.presentation.BottomNavigationActivity
+import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivity
 import com.example.unsplashattestationproject.presentation.onboarding.OnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 

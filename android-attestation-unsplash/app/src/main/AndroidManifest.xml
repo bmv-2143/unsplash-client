@@ -16,9 +16,9 @@
         android:theme="@style/Theme.UnsplashAttestationProject"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.BottomNavigationActivity"
+            android:name=".presentation.bottom_navigation.BottomNavigationActivity"
             android:exported="false"
-            android:label="@string/title_activity_unsplash_bottom_navigations"
+            android:label="@string/activity_bottom_nav_title"
             android:theme="@style/Theme.UnsplashAndroidAttestation"/>
         <activity
             android:name=".presentation.authorization.AuthorizationActivity"
