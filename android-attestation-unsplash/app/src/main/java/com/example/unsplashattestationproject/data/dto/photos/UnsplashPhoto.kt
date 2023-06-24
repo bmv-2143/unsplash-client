@@ -16,7 +16,6 @@ data class UnsplashPhoto(
     @Json(name = "alt_description") val altDescription: String?,
     @Json(name = "urls") val urls: UnsplashPhotoUrls,
     @Json(name = "links") val links: UnsplashPhotoLinks,
-    @Json(name = "categories") val categories: List<String>,
     @Json(name = "likes") val likes: Int,
     @Json(name = "liked_by_user") val likedByUser: Boolean,
     @Json(name = "current_user_collections") val currentUserCollections: List<UnsplashCollection>,
