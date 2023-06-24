@@ -7,6 +7,9 @@ import com.example.unsplashattestationproject.log.TAG
 import javax.inject.Inject
 import javax.inject.Singleton
 
+//// TODO: should it be here?
+//var unsplashAccessTokenGlobal: String = ""
+
 @Singleton
 class UnsplashRepository @Inject constructor(
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
@@ -21,6 +24,9 @@ class UnsplashRepository @Inject constructor(
             onSuccess = { authInfo ->
                 Log.e(TAG, "Authorization success, access token: ${authInfo.accessToken}")
                 saveAccessToken(authInfo.accessToken)
+
+
+
                 return authInfo.accessToken
             },
             onFailure = { throwable ->
@@ -31,9 +37,17 @@ class UnsplashRepository @Inject constructor(
     }
 
     private fun saveAccessToken(accessToken: String) {
+
+        // TODO: should it be here?
+        cacheToken(accessToken)
+
         val editor = sharedPreferences.edit()
         editor.putString("access_token", accessToken)
         editor.apply()
+    }
+
+    private fun cacheToken(accessToken: String) {
+        unsplashAccessToken = accessToken
     }
 
     suspend fun getPhotos() : Result<List<UnsplashPhoto>> {
@@ -43,6 +57,13 @@ class UnsplashRepository @Inject constructor(
             Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
             Result.failure(e)
         }
+    }
+
+    companion object {
+
+        // TODO: should it be here?
+        var unsplashAccessToken: String = ""
+            private set
     }
 
 }

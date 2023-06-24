@@ -1,6 +1,7 @@
 package com.example.unsplashattestationproject.di
 
 import com.example.unsplashattestationproject.BuildConfig
+import com.example.unsplashattestationproject.data.UnsplashRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -9,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -27,11 +29,10 @@ class NetworkModule {
 
     @Named("auth")
     @Provides
-    fun provideRetrofitAuthService(moshi: Moshi): Retrofit {
+    fun provideRetrofitService(moshi: Moshi): Retrofit {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(makeLoggingInterceptor())
-            .addInterceptor(makeAuthInterceptor())
             .build()
 
         return Retrofit.Builder().baseUrl(BuildConfig.AUTH_URL)
@@ -40,19 +41,17 @@ class NetworkModule {
             .build()
     }
 
-    private fun makeAuthInterceptor() = { chain: Interceptor.Chain ->
-        val request = chain.request().newBuilder()
-            .addHeader("Authorization", "Client-ID YOUR_ACCESS_TOKEN")
-            .build()
-        chain.proceed(request)
-    }
-
     @Named("api")
     @Provides
-    fun provideRetrofitService(moshi: Moshi): Retrofit {
+    fun provideRetrofitAuthService(
+        moshi: Moshi,
+        authInterceptor: AuthInterceptor
+    ): Retrofit {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(makeLoggingInterceptor())
+//            .addInterceptor(makeAuthInterceptor())
+            .addInterceptor(authInterceptor) // ???
             .build()
 
         return Retrofit.Builder().baseUrl(BuildConfig.API_URL)
@@ -61,8 +60,38 @@ class NetworkModule {
             .build()
     }
 
+    @Provides
+    fun provideAuthInterceptor(tokenProvider: TokenProvider): AuthInterceptor {
+        return AuthInterceptor(tokenProvider)
+    }
+
+    @Provides
+    fun provideTokenProvider(): TokenProvider {
+        return object : TokenProvider {
+            override fun getToken(): String {
+
+                // todo: add check for empty string, use shared prefs?
+                return UnsplashRepository.unsplashAccessToken
+            }
+        }
+    }
+
+    // todo: add Provides
     private fun makeLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
+}
+
+interface TokenProvider {
+    fun getToken(): String
+}
+
+class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request().newBuilder()
+            .addHeader("Authorization", "Bearer ${tokenProvider.getToken()}")
+            .build()
+        return chain.proceed(request)
+    }
 }
