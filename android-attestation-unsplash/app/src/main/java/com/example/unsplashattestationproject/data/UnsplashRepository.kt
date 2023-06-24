@@ -4,7 +4,9 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.example.unsplashattestationproject.log.TAG
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UnsplashRepository @Inject constructor(
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
     private val sharedPreferences: SharedPreferences
