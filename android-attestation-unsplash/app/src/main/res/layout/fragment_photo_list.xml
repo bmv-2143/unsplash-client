@@ -8,11 +8,11 @@
     tools:context=".presentation.bottom_navigation.photo_list.PhotoListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_rick_and_morty_characters_recycler_view"
+        android:id="@+id/fragment_photo_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.example.practice_work_23_6.presentation.RickAndMortyCharacterFragment"
-        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+
         tools:context=".presentation.character_list.CharactersFragment"
         android:background="@android:color/darker_gray"
         tools:listitem="@layout/photo_list_item" />

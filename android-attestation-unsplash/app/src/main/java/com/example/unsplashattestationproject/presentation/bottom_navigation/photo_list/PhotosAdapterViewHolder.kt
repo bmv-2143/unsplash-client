@@ -31,7 +31,7 @@ class PhotosAdapterViewHolder(
     fun bind(photoItem: UnsplashPhoto) {
         currentItem = photoItem
         setPhotoTexts(photoItem)
-        loadCharacterImage(photoItem.urls.small)
+        loadCharacterImage(photoItem.urls.full)
     }
 
     private fun setPhotoTexts(photoItem: UnsplashPhoto) {

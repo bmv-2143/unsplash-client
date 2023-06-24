@@ -5,18 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class PhotoListFragment : Fragment() {
@@ -34,23 +35,26 @@ class PhotoListFragment : Fragment() {
     ): View {
         _binding = FragmentPhotoListBinding.inflate(inflater, container, false)
 
-//        updateDummyTextOnFragmentChange(photoListViewModel)
+        setupRecyclerViewLayoutManager()
         initRecyclerViewAdapter()
 
         return binding.root
     }
 
-    private fun initRecyclerViewAdapter() {
-        binding.fragmentRickAndMortyCharactersRecyclerView.adapter =
-            photoListAdapter
+    private fun setupRecyclerViewLayoutManager() {
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(
+            2,
+            StaggeredGridLayoutManager.VERTICAL
+        )
+        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        binding.fragmentPhotoRecyclerView.layoutManager = staggeredGridLayoutManager
+
     }
 
-//    private fun updateDummyTextOnFragmentChange(photoListViewModel: PhotoListViewModel) {
-//        val textView: TextView = binding.textHome
-//        photoListViewModel.dummyText.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-//    }
+    private fun initRecyclerViewAdapter() {
+        binding.fragmentPhotoRecyclerView.adapter =
+            photoListAdapter
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
