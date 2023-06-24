@@ -13,6 +13,10 @@ class UnsplashRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences
     ) {
 
+    init {
+        unsplashAccessToken = sharedPreferences.getString(PREFS_KEY_ACCESS_TOKEN, "") ?: ""
+    }
+
     suspend fun getAccessToken(authCode: String) : String {
         kotlin.runCatching {
             val authInfo = unsplashNetworkDataSource.getAccessToken(authCode)
@@ -34,7 +38,7 @@ class UnsplashRepository @Inject constructor(
         cacheToken(accessToken)
 
         val editor = sharedPreferences.edit()
-        editor.putString("access_token", accessToken)
+        editor.putString(PREFS_KEY_ACCESS_TOKEN, accessToken)
         editor.apply()
     }
 
@@ -52,6 +56,9 @@ class UnsplashRepository @Inject constructor(
     }
 
     companion object {
+
+        const val PREFS_KEY_ACCESS_TOKEN = "access_token"
+
         var unsplashAccessToken: String = ""
             private set
     }
