@@ -1,23 +1,22 @@
 package com.example.unsplashattestationproject.domain
 
-import com.example.unsplashattestationproject.data.UnsplashRepository
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.example.unsplashattestationproject.data.PhotosPagingSource
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetPhotosUseCase @Inject constructor(
-    private val repository: UnsplashRepository // todo: should inject pagingdatasource instead
+    private val photosPagingSource: PhotosPagingSource
 ) {
 
-    suspend operator fun invoke(): Result<List<UnsplashPhoto>> {
-        return repository.getPhotos()
+    operator fun invoke(): Flow<PagingData<UnsplashPhoto>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = { photosPagingSource }
+        ).flow
+
     }
-
-
-//    suspend operator fun invoke(
-//        page: Int,
-//        perPage: Int,
-//        orderBy: String
-//    ): Result<List<UnsplashPhoto>> {
-//        return repository.getPhotos(page, perPage, orderBy)
-//    }
 }

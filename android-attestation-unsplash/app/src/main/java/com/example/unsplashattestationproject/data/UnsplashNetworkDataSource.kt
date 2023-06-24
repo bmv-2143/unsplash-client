@@ -19,10 +19,10 @@ class UnsplashNetworkDataSource @Inject constructor(
             TokenBody(code = code)
         )
 
-    suspend fun getPhotos() : List<UnsplashPhoto> {
+    suspend fun getPhotos(page : Int) : List<UnsplashPhoto> {
         return try {
             unsplashService.unsplashApi.getPhotos(
-                page = 1, // TODO: verify number of the starting page
+                page,
                 perPage = 10,
                 orderBy = "latest"
             )

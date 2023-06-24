@@ -5,14 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.domain.GetPhotosUseCase
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class PhotoListViewModel @Inject constructor(private val getPhotosUseCase: GetPhotosUseCase) :
+class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase) :
     ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
@@ -20,13 +23,13 @@ class PhotoListViewModel @Inject constructor(private val getPhotosUseCase: GetPh
     }
     val text: LiveData<String> = _text
 
+    private val pagedPhotosFlow =
+        getPhotosUseCase().cachedIn(viewModelScope)
 
-    fun getPhotos() {
-        viewModelScope.launch {
-            val result = getPhotosUseCase()
-            Log.e(TAG, "getPhotos: $result")
-            Log.e(TAG, "getPhotos: ${result.getOrNull()}")
-        }
+    fun getPhotosPagedFlow(): Flow<PagingData<UnsplashPhoto>> {
+
+        Log.e(TAG, "getPhotosPagedFlow...")
+
+        return pagedPhotosFlow
     }
-
 }

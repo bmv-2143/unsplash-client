@@ -46,13 +46,8 @@ class UnsplashRepository @Inject constructor(
         unsplashAccessToken = accessToken
     }
 
-    suspend fun getPhotos() : Result<List<UnsplashPhoto>> {
-        return try {
-            Result.success(unsplashNetworkDataSource.getPhotos())
-        } catch (e: Exception) {
-            Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
-            Result.failure(e)
-        }
+    suspend fun getPhotos(page : Int) : List<UnsplashPhoto> {
+        return unsplashNetworkDataSource.getPhotos(page)
     }
 
     companion object {
