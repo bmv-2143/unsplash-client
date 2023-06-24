@@ -13,6 +13,7 @@ import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.P
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_PUBLIC
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_RESPONSE_TYPE_CODE
 import com.example.unsplashattestationproject.domain.AuthorizeUserUseCase
+import com.example.unsplashattestationproject.domain.GetPhotosUseCase
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

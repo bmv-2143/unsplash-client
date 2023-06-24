@@ -2,9 +2,11 @@ package com.example.unsplashattestationproject.data.network
 
 import retrofit2.Retrofit
 import javax.inject.Inject
+import javax.inject.Named
 
-class UnsplashService @Inject constructor(retrofitService: Retrofit) {
+class UnsplashService @Inject constructor(@Named("api") retrofitUnsplashService: Retrofit) {
 
-    val unsplashApi: UnsplashApi = retrofitService.create(UnsplashApi::class.java)
+    val unsplashApi: UnsplashApi =
+        retrofitUnsplashService.create(UnsplashApi::class.java)
 
 }

@@ -7,10 +7,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Named
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -23,19 +25,44 @@ class NetworkModule {
             .build()
     }
 
+    @Named("auth")
     @Provides
-    fun provideRetrofitService(moshi: Moshi): Retrofit {
+    fun provideRetrofitAuthService(moshi: Moshi): Retrofit {
 
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
         val client = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
+            .addInterceptor(makeLoggingInterceptor())
+            .addInterceptor(makeAuthInterceptor())
             .build()
 
-        return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
-            .client(client) // this is only for logging
+        return Retrofit.Builder().baseUrl(BuildConfig.AUTH_URL)
+            .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
+
+    private fun makeAuthInterceptor() = { chain: Interceptor.Chain ->
+        val request = chain.request().newBuilder()
+            .addHeader("Authorization", "Client-ID YOUR_ACCESS_TOKEN")
+            .build()
+        chain.proceed(request)
+    }
+
+    @Named("api")
+    @Provides
+    fun provideRetrofitService(moshi: Moshi): Retrofit {
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(makeLoggingInterceptor())
+            .build()
+
+        return Retrofit.Builder().baseUrl(BuildConfig.API_URL)
+            .client(client)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+    }
+
+    private fun makeLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 }

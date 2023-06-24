@@ -2,6 +2,7 @@ package com.example.unsplashattestationproject.data
 
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.log.TAG
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,6 +34,15 @@ class UnsplashRepository @Inject constructor(
         val editor = sharedPreferences.edit()
         editor.putString("access_token", accessToken)
         editor.apply()
+    }
+
+    suspend fun getPhotos() : Result<List<UnsplashPhoto>> {
+        return try {
+            Result.success(unsplashNetworkDataSource.getPhotos())
+        } catch (e: Exception) {
+            Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
+            Result.failure(e)
+        }
     }
 
 }
