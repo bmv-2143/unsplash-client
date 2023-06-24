@@ -16,6 +16,17 @@
         app:srcCompat="@drawable/photo_list_item_image_placeholder"
         tools:src="@tools:sample/avatars" />
 
+    <ProgressBar
+        android:id="@+id/photo_list_item_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/photo_list_item_image"
+        app:layout_constraintEnd_toEndOf="@+id/photo_list_item_image"
+        app:layout_constraintStart_toStartOf="@+id/photo_list_item_image"
+        app:layout_constraintTop_toTopOf="@+id/photo_list_item_image" />
+
     <View
         android:id="@+id/photo_list_item_text_background"
         android:layout_width="0dp"
