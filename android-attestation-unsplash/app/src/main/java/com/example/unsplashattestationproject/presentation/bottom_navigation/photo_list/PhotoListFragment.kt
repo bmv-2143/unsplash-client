@@ -12,7 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
-import com.example.unsplashattestationproject.databinding.FragmentHomeBinding
+import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PhotoListFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentPhotoListBinding? = null
     private val binding get() = _binding!!
 
     private val photoListViewModel: PhotoListViewModel by viewModels()
@@ -32,9 +32,9 @@ class PhotoListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentPhotoListBinding.inflate(inflater, container, false)
 
-        updateDummyTextOnFragmentChange(photoListViewModel)
+//        updateDummyTextOnFragmentChange(photoListViewModel)
         initRecyclerViewAdapter()
 
         return binding.root
@@ -45,12 +45,12 @@ class PhotoListFragment : Fragment() {
             photoListAdapter
     }
 
-    private fun updateDummyTextOnFragmentChange(photoListViewModel: PhotoListViewModel) {
-        val textView: TextView = binding.textHome
-        photoListViewModel.dummyText.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-    }
+//    private fun updateDummyTextOnFragmentChange(photoListViewModel: PhotoListViewModel) {
+//        val textView: TextView = binding.textHome
+//        photoListViewModel.dummyText.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

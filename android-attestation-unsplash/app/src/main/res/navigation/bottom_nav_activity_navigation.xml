@@ -9,7 +9,7 @@
         android:id="@+id/bottom_nav_navigation_photos"
         android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListFragment"
         android:label="@string/activity_bottom_nav_title_photos"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_photo_list" />
 
     <fragment
         android:id="@+id/bottom_nav_navigation_collections"
