@@ -21,7 +21,7 @@ class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase)
     private val _text = MutableLiveData<String>().apply {
         value = "PHOTO LIST"
     }
-    val text: LiveData<String> = _text
+    val dummyText: LiveData<String> = _text
 
     private val pagedPhotosFlow =
         getPhotosUseCase().cachedIn(viewModelScope)
