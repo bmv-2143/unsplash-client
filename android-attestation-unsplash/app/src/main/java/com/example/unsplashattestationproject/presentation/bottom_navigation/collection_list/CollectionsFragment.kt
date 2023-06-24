@@ -1,4 +1,4 @@
-package com.example.unsplashattestationproject.presentation.bottom_navigation.collections_list
+package com.example.unsplashattestationproject.presentation.bottom_navigation.collection_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
