@@ -1,16 +1,16 @@
 package com.example.unsplashattestationproject.di
 
+import android.util.Log
 import com.example.unsplashattestationproject.BuildConfig
 import com.example.unsplashattestationproject.data.UnsplashRepository
+import com.example.unsplashattestationproject.log.TAG
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -29,10 +29,9 @@ class NetworkModule {
 
     @Named("auth")
     @Provides
-    fun provideRetrofitService(moshi: Moshi): Retrofit {
-
+    fun provideRetrofitService(moshi: Moshi, loggingInterceptor: HttpLoggingInterceptor): Retrofit {
         val client = OkHttpClient.Builder()
-            .addInterceptor(makeLoggingInterceptor())
+            .addInterceptor(loggingInterceptor)
             .build()
 
         return Retrofit.Builder().baseUrl(BuildConfig.AUTH_URL)
@@ -45,13 +44,13 @@ class NetworkModule {
     @Provides
     fun provideRetrofitAuthService(
         moshi: Moshi,
-        authInterceptor: AuthInterceptor
+        authInterceptor: AuthInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor
     ): Retrofit {
 
         val client = OkHttpClient.Builder()
-            .addInterceptor(makeLoggingInterceptor())
-//            .addInterceptor(makeAuthInterceptor())
-            .addInterceptor(authInterceptor) // ???
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
 
         return Retrofit.Builder().baseUrl(BuildConfig.API_URL)
@@ -69,29 +68,17 @@ class NetworkModule {
     fun provideTokenProvider(): TokenProvider {
         return object : TokenProvider {
             override fun getToken(): String {
-
-                // todo: add check for empty string, use shared prefs?
+                if (UnsplashRepository.unsplashAccessToken.isEmpty()) {
+                    Log.e(TAG, "getToken: ${UnsplashRepository.unsplashAccessToken}")
+                }
                 return UnsplashRepository.unsplashAccessToken
             }
         }
     }
 
-    // todo: add Provides
-    private fun makeLoggingInterceptor(): HttpLoggingInterceptor =
+    @Provides
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-}
-
-interface TokenProvider {
-    fun getToken(): String
-}
-
-class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request().newBuilder()
-            .addHeader("Authorization", "Bearer ${tokenProvider.getToken()}")
-            .build()
-        return chain.proceed(request)
-    }
 }
