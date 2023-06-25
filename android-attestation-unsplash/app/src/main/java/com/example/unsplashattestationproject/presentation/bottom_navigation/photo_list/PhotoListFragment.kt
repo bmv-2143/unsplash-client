@@ -59,6 +59,8 @@ class PhotoListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observerPhotosPagedFlow()
+        observerPagingAdapterUpdates()
+        observerFragmentStateChange()
     }
 
     private fun observerPhotosPagedFlow() {
@@ -73,8 +75,26 @@ class PhotoListFragment : Fragment() {
         }
     }
 
+    private fun observerPagingAdapterUpdates() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            photoListAdapter.loadStateFlow.collectLatest { loadStates ->
+                photoListViewModel.handleAdapterUpdates(loadStates)
+            }
+        }
+    }
+
+    private fun observerFragmentStateChange() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                photoListViewModel.uiStatesFlow.collect { state ->
+                    state.activate(binding)
+                }
+            }
+        }
+    }
+
     private fun onPhotoItemClick(photo: UnsplashPhoto) {
-        Log.e(TAG, "CLICKED: $photo")
+        Log.e(TAG, "CLICKED: ${photo.id}}")
     }
 
     override fun onDestroyView() {
