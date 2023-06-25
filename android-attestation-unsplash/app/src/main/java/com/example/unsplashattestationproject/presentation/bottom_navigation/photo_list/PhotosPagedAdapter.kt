@@ -3,12 +3,11 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.ph
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.databinding.PhotoListItemBinding
 
 class PhotosPagedAdapter(
-    private val onItemClicked: (UnsplashPhoto) -> Unit
-) : PagingDataAdapter<UnsplashPhoto, PhotosAdapterViewHolder>(PhotoDiffUtilCallback()) {
+    private val onItemClicked: (PhotoListItemUiModel) -> Unit
+) : PagingDataAdapter<PhotoListItemUiModel, PhotosAdapterViewHolder>(PhotoDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotosAdapterViewHolder {
         val binding = PhotoListItemBinding

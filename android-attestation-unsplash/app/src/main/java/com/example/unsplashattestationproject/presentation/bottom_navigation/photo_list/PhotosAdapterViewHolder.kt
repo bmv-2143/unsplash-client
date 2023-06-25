@@ -9,16 +9,15 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.unsplashattestationproject.R
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.databinding.PhotoListItemBinding
 import com.example.unsplashattestationproject.log.TAG
 
 class PhotosAdapterViewHolder(
     private val binding: PhotoListItemBinding,
-    val onClick: (UnsplashPhoto) -> Unit
+    val onClick: (PhotoListItemUiModel) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private var currentItem: UnsplashPhoto? = null
+    private var currentItem: PhotoListItemUiModel? = null
 
     init {
         binding.root.setOnClickListener {
@@ -28,20 +27,20 @@ class PhotosAdapterViewHolder(
         }
     }
 
-    fun bind(photoItem: UnsplashPhoto) {
+    fun bind(photoItem: PhotoListItemUiModel) {
         currentItem = photoItem
         setPhotoTexts(photoItem)
         updateLikeButtonState(photoItem)
-        loadCharacterImage(photoItem.urls.full)
+        loadCharacterImage(photoItem.imageUrl)
     }
 
-    private fun setPhotoTexts(photoItem: UnsplashPhoto) {
-        binding.photoListItemAuthorName.text = photoItem.user?.name
-        binding.photoListItemAuthorNickname.text = photoItem.user?.username
+    private fun setPhotoTexts(photoItem: PhotoListItemUiModel) {
+        binding.photoListItemAuthorName.text = photoItem.authorUsername
+        binding.photoListItemAuthorNickname.text = photoItem.authorName
         binding.photoListItemLikeCount.text = photoItem.likes.toString()
     }
 
-    private fun updateLikeButtonState(photoItem: UnsplashPhoto) {
+    private fun updateLikeButtonState(photoItem: PhotoListItemUiModel) {
         binding.photoListItemLikeButton.setImageResource(
             if (photoItem.likedByUser) {
                 R.drawable.photo_list_item_favorite_filled

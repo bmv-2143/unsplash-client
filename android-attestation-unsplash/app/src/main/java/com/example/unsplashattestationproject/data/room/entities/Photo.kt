@@ -7,24 +7,17 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "photos")
 data class Photo(
 
-//    @PrimaryKey
-//    @ColumnInfo(name = "uri")
-//    val uri: String,
-
-//    @ColumnInfo(name = "timestamp")
-//    val timestamp: Long,
-
     @PrimaryKey
-    @ColumnInfo(name = "uri")
+    @ColumnInfo(name = "id")
     val id: String,
     val createdAt: String,
-//    val updatedAt: String,
-//    val width: Int,
-//    val height: Int,
-//    val color: String,
-//    val blurHash: String?,
-//    val description: String?,
-//    val altDescription: String?,
+    val updatedAt: String,
+    val width: Int,
+    val height: Int,
+    val color: String,
+    val blurHash: String?,
+    val description: String?,
+    val altDescription: String?,
     val urlsRaw: String,
     val urlsFull: String,
     val urlsRegular: String,
@@ -36,11 +29,8 @@ data class Photo(
     val linksDownloadLocation: String,
     val likes: Int,
     val likedByUser: Boolean,
-
-    //val currentUserCollections: List<UnsplashCollection>,
-    //val sponsorship: UnsplashSponsorship?,
-    val userId: String?,
-    val userName: String?,
-    val userNickname: String?,
+    val userId: String,
+    val userName: String,
+    val userNickname: String,
 
 )

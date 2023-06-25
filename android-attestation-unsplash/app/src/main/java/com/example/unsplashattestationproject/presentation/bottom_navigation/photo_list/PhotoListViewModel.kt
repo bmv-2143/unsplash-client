@@ -9,7 +9,8 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
+import androidx.paging.map
+import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.domain.GetPhotosUseCase
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,9 +33,25 @@ class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase)
 
     // region Paged Photos FLow
     private val pagedPhotosFlow =
-        getPhotosUseCase().cachedIn(viewModelScope)
+        getPhotosUseCase().map { pagingData: PagingData<Photo> ->
+            pagingData.map { photo: Photo ->
+                photo.toPhotoListItemUiModel()
+            }
+        }.cachedIn(viewModelScope)
 
-    fun getPhotosPagedFlow(): Flow<PagingData<UnsplashPhoto>> {
+    private fun Photo.toPhotoListItemUiModel(): PhotoListItemUiModel {
+        return PhotoListItemUiModel(
+            id = id,
+            authorName = userName,
+            authorUsername = userNickname,
+            likes = likes,
+            likedByUser = likedByUser,
+            imageUrl = urlsRegular
+        )
+    }
+
+
+    fun getPhotosPagedFlow(): Flow<PagingData<PhotoListItemUiModel>> {
         Log.e(TAG, "getPhotosPagedFlow...")
         return pagedPhotosFlow
     }

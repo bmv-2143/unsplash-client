@@ -72,13 +72,13 @@ class UnsplashRepository @Inject constructor(
         return Photo(
             id = id,
             createdAt = createdAt,
-//            updatedAt = updatedAt,
-//            width = width,
-//            height = height,
-//            color = color,
-//            blurHash = blurHash,
-//            description = description,
-//            altDescription = altDescription,
+            updatedAt = updatedAt,
+            width = width,
+            height = height,
+            color = color,
+            blurHash = blurHash,
+            description = description,
+            altDescription = altDescription,
             urlsRaw = urls.raw,
             urlsFull = urls.full,
             urlsRegular = urls.regular,
@@ -90,9 +90,9 @@ class UnsplashRepository @Inject constructor(
             linksDownloadLocation = links.downloadLocation,
             likes = likes,
             likedByUser = likedByUser,
-            userId = user?.id,
-            userName = user?.name,
-            userNickname = user?.username,
+            userId = user.id,
+            userName = user.name,
+            userNickname = user.username,
         )
     }
 

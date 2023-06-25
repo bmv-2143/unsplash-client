@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,7 +92,7 @@ class PhotoListFragment : Fragment() {
         }
     }
 
-    private fun onPhotoItemClick(photo: UnsplashPhoto) {
+    private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
         Log.e(TAG, "CLICKED: ${photo.id}}")
     }
 
