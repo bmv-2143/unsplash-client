@@ -31,6 +31,7 @@ class PhotosAdapterViewHolder(
     fun bind(photoItem: UnsplashPhoto) {
         currentItem = photoItem
         setPhotoTexts(photoItem)
+        updateLikeButtonState(photoItem)
         loadCharacterImage(photoItem.urls.full)
     }
 
@@ -38,6 +39,16 @@ class PhotosAdapterViewHolder(
         binding.photoListItemAuthorName.text = photoItem.user.name
         binding.photoListItemAuthorNickname.text = photoItem.user.username
         binding.photoListItemLikeCount.text = photoItem.likes.toString()
+    }
+
+    private fun updateLikeButtonState(photoItem: UnsplashPhoto) {
+        binding.photoListItemLikeButton.setImageResource(
+            if (photoItem.likedByUser) {
+                R.drawable.photo_list_item_favorite_filled
+            } else {
+                R.drawable.photo_list_item_favorite_empty
+            }
+        )
     }
 
     private fun loadCharacterImage(imageUrl: String) {
