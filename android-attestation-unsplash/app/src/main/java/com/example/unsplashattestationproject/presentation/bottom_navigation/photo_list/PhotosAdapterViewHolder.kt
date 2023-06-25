@@ -41,7 +41,6 @@ class PhotosAdapterViewHolder(
     }
 
     private fun loadCharacterImage(imageUrl: String) {
-        binding.photoListItemImage.clipToOutline = true // TODO: UPDATE PHOTO CLIPPING
 
         progressBarSetVisible(binding, true)
 
