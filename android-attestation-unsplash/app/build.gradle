@@ -22,6 +22,8 @@ android {
 
         buildConfigField("String", "AUTH_URL", "\"https://unsplash.com\"")
         buildConfigField("String", "API_URL", "\"https://api.unsplash.com\"")
+        buildConfigField("String", "SECRET_KEY", "\"YOUR_UNSPLASH_SECRET_KEY\"")
+        buildConfigField("String", "ACCESS_KEY", "\"YOUR_UNSPLASH_ACCESS_KEY\"")
 
     }
 

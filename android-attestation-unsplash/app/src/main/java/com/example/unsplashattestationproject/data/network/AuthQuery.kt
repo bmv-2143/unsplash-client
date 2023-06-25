@@ -1,5 +1,7 @@
 package com.example.unsplashattestationproject.data.network
 
+import com.example.unsplashattestationproject.BuildConfig
+
 class AuthQuery {
 
     /* sample auth url:
@@ -8,10 +10,10 @@ class AuthQuery {
 
     companion object {
         const val AUTH_URL = "https://unsplash.com/oauth/authorize"
-        const val CLIENT_ID_SECRET_KEY = "YOUR_UNSPLASH_SECRET_KEY"
+        const val CLIENT_ID_SECRET_KEY = BuildConfig.SECRET_KEY
 
         const val PARAM_CLIENT_ID: String = "client_id"
-        const val VAL_ACCESS_KEY = "YOUR_UNSPLASH_ACCESS_KEY"
+        const val VAL_ACCESS_KEY = BuildConfig.ACCESS_KEY
 
         const val PARAM_REDIRECT_URI: String = "redirect_uri"
         const val VAL_REDIRECT_URL = "com.example.unsplashattestationproject://auth"
