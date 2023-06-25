@@ -36,8 +36,8 @@ class PhotosAdapterViewHolder(
     }
 
     private fun setPhotoTexts(photoItem: UnsplashPhoto) {
-        binding.photoListItemAuthorName.text = photoItem.user.name
-        binding.photoListItemAuthorNickname.text = photoItem.user.username
+        binding.photoListItemAuthorName.text = photoItem.user?.name
+        binding.photoListItemAuthorNickname.text = photoItem.user?.username
         binding.photoListItemLikeCount.text = photoItem.likes.toString()
     }
 

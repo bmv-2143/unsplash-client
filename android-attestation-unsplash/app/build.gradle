@@ -24,6 +24,7 @@ android {
         buildConfigField("String", "API_URL", "\"https://api.unsplash.com\"")
         buildConfigField("String", "SECRET_KEY", "\"YOUR_UNSPLASH_SECRET_KEY\"")
         buildConfigField("String", "ACCESS_KEY", "\"YOUR_UNSPLASH_ACCESS_KEY\"")
+        buildConfigField("String", "DATABASE_NAME", "\"photo_database\"")
 
     }
 
@@ -95,5 +96,6 @@ dependencies {
     def room_version = "2.5.2"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 }
