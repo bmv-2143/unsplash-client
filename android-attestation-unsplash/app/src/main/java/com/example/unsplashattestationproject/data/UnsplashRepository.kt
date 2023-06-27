@@ -60,6 +60,7 @@ class UnsplashRepository @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     fun getPhotosFlow(): Flow<PagingData<Photo>> {
         return if (FEATURE_FLAG_REMOTE_MEDIATOR) {
+            // todo: inject pager with DI
             Pager(
                 config = PagingConfig(pageSize = 10, prefetchDistance = 5, initialLoadSize = 10),
                 remoteMediator = photoRemoteMediator,
