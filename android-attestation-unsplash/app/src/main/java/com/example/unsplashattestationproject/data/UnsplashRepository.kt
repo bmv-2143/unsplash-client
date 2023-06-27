@@ -6,6 +6,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.unsplashattestationproject.FEATURE_FLAG_REMOTE_MEDIATOR
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.room.PhotoDatabase
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
@@ -19,7 +21,7 @@ class UnsplashRepository @Inject constructor(
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
     private val photoDatabase: PhotoDatabase,
     private val photoRemoteMediator: PhotoRemoteMediator
-    ) {
+) {
 
     init {
         unsplashAccessToken = sharedPreferences.getString(PREFS_KEY_ACCESS_TOKEN, "") ?: ""
@@ -33,7 +35,7 @@ class UnsplashRepository @Inject constructor(
         editor.apply()
     }
 
-    suspend fun getAccessToken(authCode: String) : String {
+    suspend fun getAccessToken(authCode: String): String {
         kotlin.runCatching {
             val authInfo = unsplashNetworkDataSource.getAccessToken(authCode)
             authInfo
@@ -54,13 +56,25 @@ class UnsplashRepository @Inject constructor(
         unsplashAccessToken = accessToken
     }
 
+
     @OptIn(ExperimentalPagingApi::class)
     fun getPhotosFlow(): Flow<PagingData<Photo>> {
-        return Pager(
-            config = PagingConfig(pageSize = 10),
-            remoteMediator = photoRemoteMediator,
-            pagingSourceFactory = { photoDatabase.photoDao().getPhotos() }
-        ).flow
+        return if (FEATURE_FLAG_REMOTE_MEDIATOR) {
+            Pager(
+                config = PagingConfig(pageSize = 10, prefetchDistance = 5, initialLoadSize = 10),
+                remoteMediator = photoRemoteMediator,
+                pagingSourceFactory = { photoDatabase.photoDao().getPhotos() }
+            ).flow
+        } else {
+            Pager(
+                config = PagingConfig(pageSize = 10, prefetchDistance = 5, initialLoadSize = 10),
+                pagingSourceFactory = { PhotosPagingSource(unsplashRepository = this) }
+            ).flow
+        }
+    }
+
+    suspend fun getPhotos(page: Int): List<UnsplashPhoto> {
+        return unsplashNetworkDataSource.getPhotos(page)
     }
 
     companion object {
