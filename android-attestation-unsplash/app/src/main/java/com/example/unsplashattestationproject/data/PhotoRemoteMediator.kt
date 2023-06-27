@@ -4,39 +4,69 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.room.withTransaction
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
+import com.example.unsplashattestationproject.data.room.PhotoDatabase
 import com.example.unsplashattestationproject.data.room.entities.Photo
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 class PhotoRemoteMediator @Inject constructor(
-    private val unsplashRepository: UnsplashRepository
+    private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
+    private val photoDatabase: PhotoDatabase
+
 ) : RemoteMediator<Int, Photo>() {
+
+    private var nextPage: Int? = null
 
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Photo>
     ): MediatorResult {
-        return try {
-            val page = when (loadType) {
-                LoadType.REFRESH -> 1
-                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                LoadType.APPEND -> {
-                    val lastItem = state.lastItemOrNull()
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
-                    state.pages.indexOfLast { it.data.contains(lastItem) } + 2
-                }
+        // Get the page key for the current load
+        val pageKey = when (loadType) {
+            LoadType.REFRESH -> {
+                nextPage = null
+                null
             }
+            LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+            LoadType.APPEND -> nextPage
+        }
 
-            val photos = unsplashRepository.getPhotos(page)
-            unsplashRepository.savePhotosToDb(photos)
-            MediatorResult.Success(endOfPaginationReached = photos.isEmpty())
+        // Fetch data from the Unsplash API
+        val response = try {
+            unsplashNetworkDataSource.getPhotos(
+                page = pageKey ?: 1,
+                perPage = state.config.pageSize
+            )
+        } catch (e: Exception) {
+            return MediatorResult.Error(e)
+        }
 
-        } catch (e: IOException) {
-            MediatorResult.Error(e)
-        } catch (e: HttpException) {
-            MediatorResult.Error(e)
+        // Store the data in the Room database
+        cacheResponseInDb(loadType, pageKey, response)
+
+        // Return success with endOfPaginationReached set to true if no more data is available
+        return MediatorResult.Success(endOfPaginationReached = response.isEmpty())
+    }
+
+    private suspend fun cacheResponseInDb(
+        loadType: LoadType,
+        pageKey: Int?,
+        response: List<UnsplashPhoto>
+    ) {
+        photoDatabase.withTransaction {
+            if (loadType == LoadType.REFRESH) {
+                clearDatabase()
+            }
+            nextPage = pageKey?.plus(1)
+            savePhotosToDb(response)
         }
     }
+
+    private suspend fun clearDatabase() = photoDatabase.photoDao().clearPhotos()
+
+    private suspend fun savePhotosToDb(unsplashPhotos: List<UnsplashPhoto>) =
+        photoDatabase.photoDao().insertPhotos(unsplashPhotos.map { it.toPhoto() })
+
 }

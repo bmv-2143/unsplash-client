@@ -2,23 +2,35 @@ package com.example.unsplashattestationproject.data
 
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.paging.PagingSource
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.unsplashattestationproject.data.room.PhotoDatabase
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UnsplashRepository @Inject constructor(
-    private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
     private val sharedPreferences: SharedPreferences,
-    private val photoDatabase: PhotoDatabase
+    private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
+    private val photoDatabase: PhotoDatabase,
+    private val photoRemoteMediator: PhotoRemoteMediator
     ) {
 
     init {
         unsplashAccessToken = sharedPreferences.getString(PREFS_KEY_ACCESS_TOKEN, "") ?: ""
+    }
+
+    private fun saveAccessToken(accessToken: String) {
+        cacheToken(accessToken)
+
+        val editor = sharedPreferences.edit()
+        editor.putString(PREFS_KEY_ACCESS_TOKEN, accessToken)
+        editor.apply()
     }
 
     suspend fun getAccessToken(authCode: String) : String {
@@ -38,62 +50,17 @@ class UnsplashRepository @Inject constructor(
         )
     }
 
-    private fun saveAccessToken(accessToken: String) {
-        cacheToken(accessToken)
-
-        val editor = sharedPreferences.edit()
-        editor.putString(PREFS_KEY_ACCESS_TOKEN, accessToken)
-        editor.apply()
-    }
-
     private fun cacheToken(accessToken: String) {
         unsplashAccessToken = accessToken
     }
 
-    suspend fun getPhotos(page : Int) : List<UnsplashPhoto> {
-        return unsplashNetworkDataSource.getPhotos(page)
-    }
-
-    // ----------
-
-    fun getPhotosFromDb(): PagingSource<Int, Photo> {
-        return photoDatabase.photoDao().getPhotos()
-    }
-
-    suspend fun savePhotosToDb(photos: List<UnsplashPhoto>) {
-        photoDatabase.photoDao().insertPhotos(photos.map { it.toPhoto() })
-    }
-
-    suspend fun clearPhotosFromDb() {
-        photoDatabase.photoDao().clearPhotos()
-    }
-
-    private fun UnsplashPhoto.toPhoto(): Photo {
-        return Photo(
-            id = id,
-            createdAt = createdAt,
-            updatedAt = updatedAt,
-            width = width,
-            height = height,
-            color = color,
-            blurHash = blurHash,
-            description = description,
-            altDescription = altDescription,
-            urlsRaw = urls.raw,
-            urlsFull = urls.full,
-            urlsRegular = urls.regular,
-            urlsSmall = urls.small,
-            urlsThumb = urls.thumb,
-            linksSelf = links.self,
-            linksHtml = links.html,
-            linksDownload = links.download,
-            linksDownloadLocation = links.downloadLocation,
-            likes = likes,
-            likedByUser = likedByUser,
-            userId = user.id,
-            userName = user.name,
-            userNickname = user.username,
-        )
+    @OptIn(ExperimentalPagingApi::class)
+    fun getPhotosFlow(): Flow<PagingData<Photo>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            remoteMediator = photoRemoteMediator,
+            pagingSourceFactory = { photoDatabase.photoDao().getPhotos() }
+        ).flow
     }
 
     companion object {

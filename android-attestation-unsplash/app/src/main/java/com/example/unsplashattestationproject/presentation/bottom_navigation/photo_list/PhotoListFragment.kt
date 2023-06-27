@@ -65,7 +65,7 @@ class PhotoListFragment : Fragment() {
     private fun observerPhotosPagedFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                photoListViewModel.getPhotosPagedFlow().collectLatest {
+                photoListViewModel.getPhotosPagedFlow().collect {
                     it.let { photosPage ->
                         photoListAdapter.submitData(photosPage)
                     }

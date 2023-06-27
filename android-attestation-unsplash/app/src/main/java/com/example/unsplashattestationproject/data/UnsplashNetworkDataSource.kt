@@ -19,12 +19,12 @@ class UnsplashNetworkDataSource @Inject constructor(
             TokenBody(code = code)
         )
 
-    suspend fun getPhotos(page : Int) : List<UnsplashPhoto> {
+    suspend fun getPhotos(page : Int, perPage : Int = 10) : List<UnsplashPhoto> {
         return try {
             unsplashService.unsplashApi.getPhotos(
                 page,
-                perPage = 10,
-                orderBy = "latest"
+                perPage = perPage,
+//                orderBy = "latest"
             )
         } catch (e: Exception) {
             Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
