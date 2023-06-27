@@ -8,7 +8,9 @@ import com.example.unsplashattestationproject.data.network.UnsplashAuthorization
 import com.example.unsplashattestationproject.data.network.UnsplashService
 import com.example.unsplashattestationproject.log.TAG
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UnsplashNetworkDataSource @Inject constructor(
     private val unsplashAuthorizationService: UnsplashAuthorizationService,
     private val unsplashService: UnsplashService
