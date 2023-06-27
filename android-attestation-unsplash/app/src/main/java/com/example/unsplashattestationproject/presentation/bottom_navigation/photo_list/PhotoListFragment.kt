@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
 import com.example.unsplashattestationproject.log.TAG
@@ -26,6 +27,7 @@ class PhotoListFragment : Fragment() {
 
     private val photoListViewModel: PhotoListViewModel by viewModels()
     private val photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
+    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager;
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,12 +38,12 @@ class PhotoListFragment : Fragment() {
 
         setupRecyclerViewLayoutManager()
         initRecyclerViewAdapter()
-
+        setRecyclerViewScrollListener()
         return binding.root
     }
 
     private fun setupRecyclerViewLayoutManager() {
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(
+        staggeredGridLayoutManager = StaggeredGridLayoutManager(
             2,
             StaggeredGridLayoutManager.VERTICAL
         )
@@ -90,6 +92,23 @@ class PhotoListFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setRecyclerViewScrollListener() {
+        binding.fragmentPhotoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val visibleItemCount = staggeredGridLayoutManager.childCount
+                val totalItemCount = staggeredGridLayoutManager.itemCount
+
+                val firstVisibleItemPositions = staggeredGridLayoutManager.findFirstVisibleItemPositions(null)
+                if (visibleItemCount + firstVisibleItemPositions[0] >= totalItemCount) {
+                    Log.e(TAG, "onScrolled: RETRY")
+                    photoListAdapter.retry()
+                }
+            }
+        })
     }
 
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
