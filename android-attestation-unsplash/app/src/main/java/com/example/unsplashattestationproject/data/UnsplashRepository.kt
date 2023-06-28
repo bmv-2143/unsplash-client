@@ -8,6 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.unsplashattestationproject.FEATURE_FLAG_REMOTE_MEDIATOR
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.room.PhotoDatabase
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
@@ -88,6 +89,9 @@ class UnsplashRepository @Inject constructor(
     suspend fun getPhotos(page: Int): List<UnsplashPhoto> {
         return unsplashNetworkDataSource.getPhotos(page, PAGE_SIZE)
     }
+
+    suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails =
+        unsplashNetworkDataSource.getPhotoDetails(photoId)
 
     companion object {
 

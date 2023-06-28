@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.unsplashattestationproject.data.dto.auth.AuthInfo
 import com.example.unsplashattestationproject.data.dto.auth.TokenBody
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.network.UnsplashAuthorizationService
 import com.example.unsplashattestationproject.data.network.UnsplashService
 import com.example.unsplashattestationproject.log.TAG
@@ -35,7 +36,15 @@ class UnsplashNetworkDataSource @Inject constructor(
             Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
             throw Exception(e)
         }
+    }
 
+    suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails {
+        return try {
+            unsplashService.unsplashApi.getPhotoDetails(photoId)
+        } catch (e: Exception) {
+            Log.e(TAG, "${::getPhotoDetails.name} error: ${e.message}")
+            throw Exception(e)
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.ph
 
 data class PhotoListItemUiModel(
     val id: Long,
+    val remoteId: String,
     val authorName: String,
     val authorUsername: String,
     val authorAvatar: String,

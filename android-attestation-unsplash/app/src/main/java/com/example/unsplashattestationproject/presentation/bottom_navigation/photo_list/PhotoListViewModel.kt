@@ -42,6 +42,7 @@ class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase)
     private fun Photo.toPhotoListItemUiModel(): PhotoListItemUiModel {
         return PhotoListItemUiModel(
             id = id,
+            remoteId = remoteId,
             authorName = userName,
             authorUsername = userNickname,
             authorAvatar = userAvatar,
