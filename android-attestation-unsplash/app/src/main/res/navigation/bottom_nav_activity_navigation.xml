@@ -22,4 +22,14 @@
         android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.user_profile.UserProfileFragment"
         android:label="@string/activity_bottom_nav_title_user_profile"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/photoDetailsFragment"
+        android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.photo_details.PhotoDetailsFragment"
+        android:label="PhotoDetailsFragment">
+        <argument
+            android:name="myArgument"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
