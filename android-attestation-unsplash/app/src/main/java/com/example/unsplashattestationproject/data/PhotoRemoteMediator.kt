@@ -11,6 +11,7 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.room.PhotoDatabase
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.data.room.entities.RemoteKeys
+import com.example.unsplashattestationproject.utils.NetworkStateChecker
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -20,12 +21,17 @@ private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 @OptIn(ExperimentalPagingApi::class)
 class PhotoRemoteMediator @Inject constructor(
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
-    private val photoDatabase: PhotoDatabase
-
+    private val photoDatabase: PhotoDatabase,
+    private val networkStateChecker: NetworkStateChecker
 ) : RemoteMediator<Int, Photo>() {
+
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Photo>): MediatorResult {
 
         Log.e(TAG, "load: loadType = $loadType, state = $state")
+
+        if (!networkStateChecker.isNetworkAvailable()) {
+            return MediatorResult.Success(endOfPaginationReached = true)
+        }
 
         val page = when (loadType) {
             LoadType.REFRESH -> {

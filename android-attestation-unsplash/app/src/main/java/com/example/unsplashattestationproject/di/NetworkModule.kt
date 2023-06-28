@@ -1,20 +1,24 @@
 package com.example.unsplashattestationproject.di
 
+import android.content.Context
 import android.util.Log
 import com.example.unsplashattestationproject.BuildConfig
 import com.example.unsplashattestationproject.data.UnsplashRepository
 import com.example.unsplashattestationproject.log.TAG
+import com.example.unsplashattestationproject.utils.NetworkStateChecker
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -82,4 +86,10 @@ class NetworkModule {
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
+
+
+    @Singleton
+    @Provides
+    fun provideNetworkStateChecker(@ApplicationContext context: Context) : NetworkStateChecker =
+        NetworkStateChecker(context)
 }
