@@ -33,6 +33,7 @@ class PhotoRemoteMediator @Inject constructor(
                 val closestRemoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                 closestRemoteKeys?.nextKey?.minus(1) ?: UNSPLASH_STARTING_PAGE_INDEX
             }
+
             LoadType.PREPEND -> {
                 val firstItemRemoteKeys = getRemoteKeyForFirstItem(state)
 
@@ -47,6 +48,7 @@ class PhotoRemoteMediator @Inject constructor(
                 }
                 prevKey
             }
+
             LoadType.APPEND -> {
                 val lastItemRemoteKeys = getRemoteKeyForLastItem(state)
 
@@ -76,9 +78,9 @@ class PhotoRemoteMediator @Inject constructor(
 
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {
-                    photoDatabase.remoteKeysDao().clearRemoteKeys()
-                    photoDatabase.photoDao().clearPhotos()
+                    clearDatabase()
                 }
+
                 val prevKey = if (page == UNSPLASH_STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
 
@@ -99,10 +101,12 @@ class PhotoRemoteMediator @Inject constructor(
     }
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Photo>): RemoteKeys? {
+
         // Get the last page that was retrieved, that contained items.
         // From that last page, get the last item
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { photo ->
+
                 // Get the remote keys of the last item retrieved
                 photoDatabase.remoteKeysDao().remoteKeysPhotoId(photo.id)
             }
@@ -133,7 +137,10 @@ class PhotoRemoteMediator @Inject constructor(
         }
     }
 
-    private suspend fun clearDatabase() = photoDatabase.photoDao().clearPhotos()
+    private suspend fun clearDatabase() {
+        photoDatabase.remoteKeysDao().clearRemoteKeys()
+        photoDatabase.photoDao().clearPhotos()
+    }
 
     private suspend fun savePhotosToDb(unsplashPhotos: List<UnsplashPhoto>) =
         photoDatabase.photoDao().insertPhotos(unsplashPhotos.map { it.toPhoto() })
