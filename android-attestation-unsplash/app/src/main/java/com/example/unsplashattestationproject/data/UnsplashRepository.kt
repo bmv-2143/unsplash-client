@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
+const val PAGE_SIZE = 10
+
 @Singleton
 class UnsplashRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences,
@@ -62,20 +65,28 @@ class UnsplashRepository @Inject constructor(
         return if (FEATURE_FLAG_REMOTE_MEDIATOR) {
             // todo: inject pager with DI
             Pager(
-                config = PagingConfig(pageSize = 10, prefetchDistance = 5, initialLoadSize = 10),
+                config = PagingConfig(
+                    pageSize = PAGE_SIZE,
+                    prefetchDistance = PAGE_SIZE / 2,
+                    initialLoadSize = PAGE_SIZE
+                ),
                 remoteMediator = photoRemoteMediator,
                 pagingSourceFactory = { photoDatabase.photoDao().getPhotos() }
             ).flow
         } else {
             Pager(
-                config = PagingConfig(pageSize = 10, prefetchDistance = 5, initialLoadSize = 10),
+                config = PagingConfig(
+                    pageSize = PAGE_SIZE,
+                    prefetchDistance = PAGE_SIZE / 2,
+                    initialLoadSize = PAGE_SIZE
+                ),
                 pagingSourceFactory = { PhotosPagingSource(unsplashRepository = this) }
             ).flow
         }
     }
 
     suspend fun getPhotos(page: Int): List<UnsplashPhoto> {
-        return unsplashNetworkDataSource.getPhotos(page)
+        return unsplashNetworkDataSource.getPhotos(page, PAGE_SIZE)
     }
 
     companion object {

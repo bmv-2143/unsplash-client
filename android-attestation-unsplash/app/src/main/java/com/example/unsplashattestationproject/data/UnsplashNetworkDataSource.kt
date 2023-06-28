@@ -21,7 +21,7 @@ class UnsplashNetworkDataSource @Inject constructor(
             TokenBody(code = code)
         )
 
-    suspend fun getPhotos(page : Int, perPage : Int = 10) : List<UnsplashPhoto> {
+    suspend fun getPhotos(page : Int, perPage : Int) : List<UnsplashPhoto> {
         return try {
             unsplashService.unsplashApi.getPhotos(
                 page,
