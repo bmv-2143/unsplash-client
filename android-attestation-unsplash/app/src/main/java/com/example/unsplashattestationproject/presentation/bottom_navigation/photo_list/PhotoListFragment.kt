@@ -12,11 +12,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
 import com.example.unsplashattestationproject.log.TAG
+import com.example.unsplashattestationproject.utils.NetworkStateChecker
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -28,6 +32,9 @@ class PhotoListFragment : Fragment() {
     private val photoListViewModel: PhotoListViewModel by viewModels()
     private val photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
+
+    @Inject
+    lateinit var networkStateChecker: NetworkStateChecker
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,6 +97,27 @@ class PhotoListFragment : Fragment() {
                     state.activate(binding)
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showNoConnectionSnackbar()
+    }
+
+    private fun showNoConnectionSnackbar() {
+        if (!networkStateChecker.isNetworkAvailable()) {
+            with(
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.fragment_photo_list_no_internet_msg),
+                    Snackbar.LENGTH_INDEFINITE
+                )
+            ) {
+                setAction(
+                    getString(R.string.fragment_photo_list_not_internet_msg_close)
+                ) { this.dismiss() }
+            }.show()
         }
     }
 
