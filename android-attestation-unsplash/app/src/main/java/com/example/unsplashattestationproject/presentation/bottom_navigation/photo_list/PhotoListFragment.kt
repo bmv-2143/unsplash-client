@@ -54,7 +54,8 @@ class PhotoListFragment : Fragment() {
             2,
             StaggeredGridLayoutManager.VERTICAL
         )
-        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        staggeredGridLayoutManager.gapStrategy =
+            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
         binding.fragmentPhotoRecyclerView.layoutManager = staggeredGridLayoutManager
 
     }
@@ -75,8 +76,8 @@ class PhotoListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoListViewModel.getPhotosPagedFlow().collectLatest { photosPage ->
-                        photoListAdapter.submitData(photosPage)
-                        convertToList(photosPage) // TODO: remove me
+                    photoListAdapter.submitData(photosPage)
+                    convertToList(photosPage) // TODO: remove me
                 }
             }
         }
@@ -122,14 +123,16 @@ class PhotoListFragment : Fragment() {
     }
 
     private fun setRecyclerViewScrollListener() {
-        binding.fragmentPhotoRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.fragmentPhotoRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val visibleItemCount = staggeredGridLayoutManager.childCount
                 val totalItemCount = staggeredGridLayoutManager.itemCount
 
-                val firstVisibleItemPositions = staggeredGridLayoutManager.findFirstVisibleItemPositions(null)
+                val firstVisibleItemPositions =
+                    staggeredGridLayoutManager.findFirstVisibleItemPositions(null)
                 if (visibleItemCount + firstVisibleItemPositions[0] >= totalItemCount) {
                     Log.e(TAG, "onScrolled: RETRY")
                     photoListAdapter.retry()
