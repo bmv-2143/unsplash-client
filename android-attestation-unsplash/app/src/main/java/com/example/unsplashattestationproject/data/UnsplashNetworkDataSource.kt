@@ -7,6 +7,7 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.network.UnsplashAuthorizationService
 import com.example.unsplashattestationproject.data.network.UnsplashService
 import com.example.unsplashattestationproject.log.TAG
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +24,8 @@ class UnsplashNetworkDataSource @Inject constructor(
 
     suspend fun getPhotos(page : Int, perPage : Int) : List<UnsplashPhoto> {
         return try {
+            Log.e(TAG, "\n*********** getPhotos: page = $page, perPage = $perPage ***********")
+            delay(2000)
             unsplashService.unsplashApi.getPhotos(
                 page,
                 perPage = perPage,

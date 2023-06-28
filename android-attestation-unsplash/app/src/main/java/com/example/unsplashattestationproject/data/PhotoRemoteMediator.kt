@@ -30,32 +30,34 @@ class PhotoRemoteMediator @Inject constructor(
 
         val page = when (loadType) {
             LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: UNSPLASH_STARTING_PAGE_INDEX
+                val closestRemoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                closestRemoteKeys?.nextKey?.minus(1) ?: UNSPLASH_STARTING_PAGE_INDEX
             }
             LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
+                val firstItemRemoteKeys = getRemoteKeyForFirstItem(state)
+
                 // If remoteKeys is null, that means the refresh result is not in the database yet.
                 // We can return Success with `endOfPaginationReached = false` because Paging
                 // will call this method again if RemoteKeys becomes non-null.
                 // If remoteKeys is NOT NULL but its prevKey is null, that means we've reached
                 // the end of pagination for prepend.
-                val prevKey = remoteKeys?.prevKey
+                val prevKey = firstItemRemoteKeys?.prevKey
                 if (prevKey == null) {
-                    return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                    return MediatorResult.Success(endOfPaginationReached = firstItemRemoteKeys != null)
                 }
                 prevKey
             }
             LoadType.APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
+                val lastItemRemoteKeys = getRemoteKeyForLastItem(state)
+
                 // If remoteKeys is null, that means the refresh result is not in the database yet.
                 // We can return Success with `endOfPaginationReached = false` because Paging
                 // will call this method again if RemoteKeys becomes non-null.
                 // If remoteKeys is NOT NULL but its nextKey is null, that means we've reached
                 // the end of pagination for append.
-                val nextKey = remoteKeys?.nextKey
+                val nextKey = lastItemRemoteKeys?.nextKey
                 if (nextKey == null) {
-                    return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                    return MediatorResult.Success(endOfPaginationReached = lastItemRemoteKeys != null)
                 }
                 nextKey
             }
@@ -107,10 +109,12 @@ class PhotoRemoteMediator @Inject constructor(
     }
 
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Photo>): RemoteKeys? {
+
         // Get the first page that was retrieved, that contained items.
         // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { photo ->
+
                 // Get the remote keys of the first items retrieved
                 photoDatabase.remoteKeysDao().remoteKeysPhotoId(photo.id)
             }
@@ -119,6 +123,7 @@ class PhotoRemoteMediator @Inject constructor(
     private suspend fun getRemoteKeyClosestToCurrentPosition(
         state: PagingState<Int, Photo>
     ): RemoteKeys? {
+
         // The paging library is trying to load data after the anchor position
         // Get the item closest to the anchor position
         return state.anchorPosition?.let { position ->
