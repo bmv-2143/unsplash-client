@@ -5,7 +5,7 @@ import com.example.unsplashattestationproject.data.room.entities.Photo
 
 fun UnsplashPhoto.toPhoto(): Photo {
     return Photo(
-        id = id,
+        remoteId = id,
         createdAt = createdAt,
         updatedAt = updatedAt,
         width = width,

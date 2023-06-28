@@ -27,7 +27,7 @@ class PhotoListFragment : Fragment() {
 
     private val photoListViewModel: PhotoListViewModel by viewModels()
     private val photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
-    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager;
+    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,10 +67,9 @@ class PhotoListFragment : Fragment() {
     private fun observerPhotosPagedFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                photoListViewModel.getPhotosPagedFlow().collect {
-                    it.let { photosPage ->
+                photoListViewModel.getPhotosPagedFlow().collectLatest { photosPage ->
                         photoListAdapter.submitData(photosPage)
-                    }
+                        convertToList(photosPage) // TODO: remove me
                 }
             }
         }
@@ -78,7 +77,7 @@ class PhotoListFragment : Fragment() {
 
     private fun observerPagingAdapterUpdates() {
         viewLifecycleOwner.lifecycleScope.launch {
-            photoListAdapter.loadStateFlow.collectLatest { loadStates ->
+            photoListAdapter.loadStateFlow.collect { loadStates ->
                 photoListViewModel.handleAdapterUpdates(loadStates)
             }
         }

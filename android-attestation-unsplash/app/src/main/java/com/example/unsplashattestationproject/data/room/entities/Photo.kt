@@ -1,15 +1,14 @@
 package com.example.unsplashattestationproject.data.room.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "photos")
 data class Photo(
 
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val remoteId: String,
     val createdAt: String,
     val updatedAt: String,
     val width: Int,

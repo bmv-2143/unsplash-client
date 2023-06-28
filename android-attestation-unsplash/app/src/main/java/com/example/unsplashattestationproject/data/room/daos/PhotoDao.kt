@@ -20,8 +20,11 @@ interface PhotoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPhotos(photos: List<Photo>)
 
-    @Query("SELECT * FROM photos ORDER BY createdAt DESC")
+    @Query("SELECT * FROM photos ORDER BY id ASC")
     fun getPhotos(): PagingSource<Int, Photo>
+
+    @Query("SELECT * FROM photos WHERE remoteId IN (:ids)")
+    fun getPhotosByIds(ids: List<String>): List<Photo>
 
     @Query("DELETE FROM photos")
     suspend fun clearPhotos()

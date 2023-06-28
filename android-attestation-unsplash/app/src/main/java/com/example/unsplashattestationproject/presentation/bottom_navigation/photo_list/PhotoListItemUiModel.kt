@@ -1,7 +1,7 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list
 
 data class PhotoListItemUiModel(
-    val id: String,
+    val id: Long,
     val authorName: String,
     val authorUsername: String,
     val likes: Int,
