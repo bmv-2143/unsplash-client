@@ -5,10 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".presentation.bottom_navigation.photo_details.PhotoDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <include
+        android:id="@+id/photo_item"
+        layout="@layout/photo_list_item" />
 
 </FrameLayout>

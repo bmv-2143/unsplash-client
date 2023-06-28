@@ -5,20 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
 import com.example.unsplashattestationproject.log.TAG
-import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_details.PhotoDetailsFragment
+import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
 import com.example.unsplashattestationproject.utils.NetworkStateChecker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +34,8 @@ class PhotoListFragment : Fragment() {
 
     private val photoListViewModel: PhotoListViewModel by viewModels()
     private val photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
+    private val activityViewModel : BottomNavigationActivityViewModel by activityViewModels()
+
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
     @Inject
@@ -147,8 +148,8 @@ class PhotoListFragment : Fragment() {
 
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
         val navController = findNavController()
-        val bundle = bundleOf("myArgument" to "myValue") // TODO: fix me
-        navController.navigate(R.id.photoDetailsFragment, bundle)
+        activityViewModel.selectedPhoto = photo
+        navController.navigate(R.id.photoDetailsFragment)
     }
 
     override fun onDestroyView() {
