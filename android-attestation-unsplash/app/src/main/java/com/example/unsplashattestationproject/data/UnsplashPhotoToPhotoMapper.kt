@@ -28,5 +28,6 @@ fun UnsplashPhoto.toPhoto(): Photo {
         userId = user.id,
         userName = user.name,
         userNickname = user.username,
+        userAvatar = user.profileImage.small
     )
 }

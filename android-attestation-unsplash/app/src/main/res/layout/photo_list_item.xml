@@ -38,6 +38,16 @@
         app:layout_constraintEnd_toEndOf="@id/photo_list_item_image"
         app:layout_constraintStart_toStartOf="@id/photo_list_item_image" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/photo_list_item_author_avatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toStartOf="@id/photo_list_item_text_background"
+        app:layout_constraintTop_toTopOf="@id/photo_list_item_text_background"
+        app:layout_constraintBottom_toBottomOf="@id/photo_list_item_text_background"
+        />
+
     <TextView
         android:id="@+id/photo_list_item_author_name"
         android:layout_width="wrap_content"
@@ -48,7 +58,7 @@
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/photo_list_item_author_nickname"
-        app:layout_constraintStart_toStartOf="@id/photo_list_item_text_background"
+        app:layout_constraintStart_toEndOf="@id/photo_list_item_author_avatar"
         app:layout_constraintTop_toTopOf="@id/photo_list_item_text_background"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -61,7 +71,7 @@
         android:textColor="@android:color/white"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/photo_list_item_text_background"
-        app:layout_constraintStart_toStartOf="@+id/photo_list_item_text_background"
+        app:layout_constraintStart_toEndOf="@+id/photo_list_item_author_avatar"
         app:layout_constraintTop_toBottomOf="@+id/photo_list_item_author_name" />
 
     <androidx.appcompat.widget.AppCompatImageView

@@ -31,7 +31,8 @@ class PhotosAdapterViewHolder(
         currentItem = photoItem
         setPhotoTexts(photoItem)
         updateLikeButtonState(photoItem)
-        loadCharacterImage(photoItem.imageUrl)
+        loadAuthorAvatar(photoItem.authorAvatar)
+        loadPhoto(photoItem.imageUrl)
     }
 
     private fun setPhotoTexts(photoItem: PhotoListItemUiModel) {
@@ -50,7 +51,15 @@ class PhotosAdapterViewHolder(
         )
     }
 
-    private fun loadCharacterImage(imageUrl: String) {
+    private fun loadAuthorAvatar(avatarUrl: String) {
+        Glide.with(binding.root.context)
+            .load(avatarUrl)
+            .circleCrop()
+            .placeholder(R.drawable.photo_list_item_avatar_placeholder)
+            .into(binding.photoListItemAuthorAvatar)
+    }
+
+    private fun loadPhoto(imageUrl: String) {
 
         progressBarSetVisible(binding, true)
 

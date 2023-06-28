@@ -44,6 +44,7 @@ class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase)
             id = id,
             authorName = userName,
             authorUsername = userNickname,
+            authorAvatar = userAvatar,
             likes = likes,
             likedByUser = likedByUser,
             imageUrl = urlsRegular

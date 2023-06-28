@@ -31,5 +31,5 @@ data class Photo(
     val userId: String,
     val userName: String,
     val userNickname: String,
-
+    val userAvatar: String,
 )
