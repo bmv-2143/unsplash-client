@@ -66,6 +66,7 @@ class PhotoDetailsFragment : Fragment() {
                 photoDetailsFragmentViewModel.photoDetailsFlow.collect { photoDetails ->
                     Log.e(TAG, "PHOTO DETAILS: $photoDetails")
                     updateLocation(photoDetails)
+                    updateTags(photoDetails)
                 }
             }
         }
@@ -89,6 +90,11 @@ class PhotoDetailsFragment : Fragment() {
             } else {
                 View.VISIBLE
             }
+    }
+
+    private fun updateTags(photoDetails: UnsplashPhotoDetails) {
+        binding.fragmentPhotoDetailsTags.text =
+            photoDetails.tags?.map { it.title }?.joinToString { "#$it" }
     }
 
     override fun onDestroyView() {
