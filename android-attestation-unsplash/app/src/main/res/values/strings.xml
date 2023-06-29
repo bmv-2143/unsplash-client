@@ -24,5 +24,6 @@
     <string name="fragment_photo_details_exif_aperture">Aperture: %1s</string>
     <string name="fragment_photo_details_exif_focal_length">Focal Length: %1s</string>
     <string name="fragment_photo_details_exif_iso">ISO: %1s</string>
+    <string name="fragment_photo_details_about_author">About @%1s:\n%1s</string>
 
 </resources>

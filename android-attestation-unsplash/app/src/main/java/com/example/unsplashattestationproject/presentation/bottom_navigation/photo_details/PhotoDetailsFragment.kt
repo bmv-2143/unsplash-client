@@ -70,6 +70,7 @@ class PhotoDetailsFragment : Fragment() {
                     updateLocation(photoDetails)
                     updateTags(photoDetails)
                     updateExif(photoDetails)
+                    updateAboutAuthor(photoDetails)
                 }
             }
         }
@@ -121,6 +122,14 @@ class PhotoDetailsFragment : Fragment() {
         } else {
             textView.text = getString(patternId, textToSet)
         }
+    }
+
+    private fun updateAboutAuthor(photoDetails: UnsplashPhotoDetails) {
+        binding.fragmentPhotoDetailsAboutAuthor.text = getString(
+            R.string.fragment_photo_details_about_author,
+            photoDetails.user.username,
+            photoDetails.user.bio ?: "",
+        )
     }
 
     override fun onDestroyView() {
