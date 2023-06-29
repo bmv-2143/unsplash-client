@@ -16,22 +16,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UnsplashAttestationProject"
         tools:targetApi="31">
+
         <activity
             android:name=".presentation.bottom_navigation.BottomNavigationActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/activity_bottom_nav_title"
-            android:theme="@style/Theme.UnsplashAndroidAttestation"/>
+            android:theme="@style/Theme.UnsplashAndroidAttestation">
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="unsplash.com"
+                    android:pathPrefix="/photos"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".presentation.authorization.AuthorizationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -40,9 +50,11 @@
                     android:scheme="com.example.unsplashattestationproject" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>

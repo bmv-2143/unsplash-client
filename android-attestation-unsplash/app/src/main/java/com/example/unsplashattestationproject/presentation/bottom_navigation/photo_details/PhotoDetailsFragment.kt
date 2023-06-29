@@ -20,6 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.unsplashattestationproject.App
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.databinding.FragmentPhotoDetailsBinding
@@ -43,7 +44,6 @@ class PhotoDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPhotoDetailsBinding.inflate(inflater, container, false)
-        loadPhotoItemData()
         return binding.root
     }
 
@@ -57,10 +57,17 @@ class PhotoDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setClickListeners()
-        observerPhotoDetails()
-        photoDetailsFragmentViewModel.loadPhotoDetails(activityViewModel.selectedPhoto!!.remoteId)
-        addActionBarMenu()
+
+        val photoId = arguments?.getString(App.INTENT_KEY_PHOTO_ID)
+        if (photoId != null) {
+            Toast.makeText(requireContext(), "PhotoId: $photoId", Toast.LENGTH_SHORT).show()
+        } else {
+            loadPhotoItemData()
+            setClickListeners()
+            observerPhotoDetails()
+            photoDetailsFragmentViewModel.loadPhotoDetails(activityViewModel.selectedPhoto!!.remoteId)
+            addActionBarMenu()
+        }
     }
 
     private fun setClickListeners() {
@@ -113,21 +120,33 @@ class PhotoDetailsFragment : Fragment() {
     }
 
     private fun updateExif(photoDetails: UnsplashPhotoDetails) {
-        updateTextOrHide(binding.fragmentPhotoDetailsExifMadeWith, photoDetails.exif?.make,
-            R.string.fragment_photo_details_exif_made_with)
-        updateTextOrHide(binding.fragmentPhotoDetailsExifModel, photoDetails.exif?.model,
-            R.string.fragment_photo_details_exif_model)
-        updateTextOrHide(binding.fragmentPhotoDetailsExifExposure, photoDetails.exif?.exposureTime,
-            R.string.fragment_photo_details_exif_exposure)
-        updateTextOrHide(binding.fragmentPhotoDetailsExifAperture, photoDetails.exif?.aperture,
-            R.string.fragment_photo_details_exif_aperture)
-        updateTextOrHide(binding.fragmentPhotoDetailsExifFocalLength, photoDetails.exif?.focalLength,
-            R.string.fragment_photo_details_exif_focal_length)
-        updateTextOrHide(binding.fragmentPhotoDetailsExifIso, photoDetails.exif?.iso?.toString(),
-            R.string.fragment_photo_details_exif_iso)
+        updateTextOrHide(
+            binding.fragmentPhotoDetailsExifMadeWith, photoDetails.exif?.make,
+            R.string.fragment_photo_details_exif_made_with
+        )
+        updateTextOrHide(
+            binding.fragmentPhotoDetailsExifModel, photoDetails.exif?.model,
+            R.string.fragment_photo_details_exif_model
+        )
+        updateTextOrHide(
+            binding.fragmentPhotoDetailsExifExposure, photoDetails.exif?.exposureTime,
+            R.string.fragment_photo_details_exif_exposure
+        )
+        updateTextOrHide(
+            binding.fragmentPhotoDetailsExifAperture, photoDetails.exif?.aperture,
+            R.string.fragment_photo_details_exif_aperture
+        )
+        updateTextOrHide(
+            binding.fragmentPhotoDetailsExifFocalLength, photoDetails.exif?.focalLength,
+            R.string.fragment_photo_details_exif_focal_length
+        )
+        updateTextOrHide(
+            binding.fragmentPhotoDetailsExifIso, photoDetails.exif?.iso?.toString(),
+            R.string.fragment_photo_details_exif_iso
+        )
     }
 
-    private fun updateTextOrHide(textView : TextView, textToSet : String?, patternId : Int) {
+    private fun updateTextOrHide(textView: TextView, textToSet: String?, patternId: Int) {
         if (textToSet == null) {
             textView.visibility = View.GONE
         } else {
@@ -145,7 +164,8 @@ class PhotoDetailsFragment : Fragment() {
 
     private fun updateDownloadCount(photoDetails: UnsplashPhotoDetails) {
         binding.fragmentPhotoDetailsDownloadBtnText.text = getString(
-            R.string.fragment_photo_details_download_btn_text, photoDetails.downloads)
+            R.string.fragment_photo_details_download_btn_text, photoDetails.downloads
+        )
     }
 
     private fun addActionBarMenu() {

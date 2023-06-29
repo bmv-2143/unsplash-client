@@ -10,5 +10,6 @@ class App : Application() {
 
     companion object {
         const val SHARED_PREFERENCES = "sharedPreferences"
+        const val INTENT_KEY_PHOTO_ID = "photoId"
     }
 }
