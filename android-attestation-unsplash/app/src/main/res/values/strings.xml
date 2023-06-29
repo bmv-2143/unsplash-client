@@ -18,6 +18,8 @@
     <string name="fragment_photo_list_no_internet_msg">No Internet connection. Images will be shows from the cache.</string>
     <string name="fragment_photo_list_not_internet_msg_close">Close</string>
 
+    <string name="photo_item_author_nickname_template">\@%1s</string>
+
     <string name="fragment_photo_details_exif_made_with">Made with: %1s</string>
     <string name="fragment_photo_details_exif_model">Model: %1s</string>
     <string name="fragment_photo_details_exif_exposure">Exposure: %1s</string>

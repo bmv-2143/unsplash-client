@@ -23,8 +23,9 @@ class PhotoItemLoader(val binding: PhotoListItemBinding) {
     }
 
     private fun setPhotoTexts(photoItem: PhotoListItemUiModel) {
-        binding.photoListItemAuthorName.text = photoItem.authorUsername
-        binding.photoListItemAuthorNickname.text = photoItem.authorName
+        binding.photoListItemAuthorName.text = photoItem.authorName
+        binding.photoListItemAuthorNickname.text =
+        binding.root.context.getString(R.string.photo_item_author_nickname_template, photoItem.authorUsername)
         binding.photoListItemLikeCount.text = photoItem.likes.toString()
     }
 
