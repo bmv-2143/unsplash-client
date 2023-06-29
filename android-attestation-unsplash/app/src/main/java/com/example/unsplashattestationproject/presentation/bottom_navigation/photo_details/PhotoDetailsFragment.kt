@@ -1,13 +1,19 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_details
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -54,6 +60,7 @@ class PhotoDetailsFragment : Fragment() {
         setClickListeners()
         observerPhotoDetails()
         photoDetailsFragmentViewModel.loadPhotoDetails(activityViewModel.selectedPhoto!!.remoteId)
+        addActionBarMenu()
     }
 
     private fun setClickListeners() {
@@ -139,6 +146,44 @@ class PhotoDetailsFragment : Fragment() {
     private fun updateDownloadCount(photoDetails: UnsplashPhotoDetails) {
         binding.fragmentPhotoDetailsDownloadBtnText.text = getString(
             R.string.fragment_photo_details_download_btn_text, photoDetails.downloads)
+    }
+
+    private fun addActionBarMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.photo_details_fragment_actionbar_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_share -> {
+                        sharePhoto()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun sharePhoto() {
+        activityViewModel.selectedPhoto?.let { photo ->
+            val photoId = photo.remoteId
+            val link = "https://unsplash.com/photos/$photoId"
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, link)
+            }
+            startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    getString(R.string.menu_action_share_photo)
+                )
+            )
+        }
     }
 
     override fun onDestroyView() {

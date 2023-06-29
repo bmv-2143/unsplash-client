@@ -28,5 +28,7 @@
     <string name="fragment_photo_details_exif_iso">ISO: %1s</string>
     <string name="fragment_photo_details_about_author">About @%1s:\n%1s</string>
     <string name="fragment_photo_details_download_btn_text"><u>Download (%1d)</u></string>
+    <string name="fragment_photo_details_share_menu_title">Share</string>
+    <string name="menu_action_share_photo">Share photo</string>
 
 </resources>
