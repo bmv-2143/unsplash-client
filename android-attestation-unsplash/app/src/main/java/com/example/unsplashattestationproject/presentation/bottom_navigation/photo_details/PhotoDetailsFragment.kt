@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.databinding.FragmentPhotoDetailsBinding
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
@@ -67,6 +69,7 @@ class PhotoDetailsFragment : Fragment() {
                     Log.e(TAG, "PHOTO DETAILS: $photoDetails")
                     updateLocation(photoDetails)
                     updateTags(photoDetails)
+                    updateExif(photoDetails)
                 }
             }
         }
@@ -95,6 +98,29 @@ class PhotoDetailsFragment : Fragment() {
     private fun updateTags(photoDetails: UnsplashPhotoDetails) {
         binding.fragmentPhotoDetailsTags.text =
             photoDetails.tags?.map { it.title }?.joinToString { "#$it" }
+    }
+
+    private fun updateExif(photoDetails: UnsplashPhotoDetails) {
+        updateTextOrHide(binding.fragmentPhotoDetailsExifMadeWith, photoDetails.exif?.make,
+            R.string.fragment_photo_details_exif_made_with)
+        updateTextOrHide(binding.fragmentPhotoDetailsExifModel, photoDetails.exif?.model,
+            R.string.fragment_photo_details_exif_model)
+        updateTextOrHide(binding.fragmentPhotoDetailsExifExposure, photoDetails.exif?.exposureTime,
+            R.string.fragment_photo_details_exif_exposure)
+        updateTextOrHide(binding.fragmentPhotoDetailsExifAperture, photoDetails.exif?.aperture,
+            R.string.fragment_photo_details_exif_aperture)
+        updateTextOrHide(binding.fragmentPhotoDetailsExifFocalLength, photoDetails.exif?.focalLength,
+            R.string.fragment_photo_details_exif_focal_length)
+        updateTextOrHide(binding.fragmentPhotoDetailsExifIso, photoDetails.exif?.iso?.toString(),
+            R.string.fragment_photo_details_exif_iso)
+    }
+
+    private fun updateTextOrHide(textView : TextView, textToSet : String?, patternId : Int) {
+        if (textToSet == null) {
+            textView.visibility = View.GONE
+        } else {
+            textView.text = getString(patternId, textToSet)
+        }
     }
 
     override fun onDestroyView() {

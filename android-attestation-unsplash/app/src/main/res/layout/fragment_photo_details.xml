@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_photo_details_scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="32dp"
     tools:context=".presentation.bottom_navigation.photo_details.PhotoDetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,12 +29,11 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="8dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/photo_item"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/photo_item"
-            app:layout_constraintTop_toBottomOf="@id/photo_item"
-            android:visibility="gone"
-            >
+            app:layout_constraintTop_toBottomOf="@id/photo_item">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="32dp"
@@ -59,6 +59,54 @@
             app:layout_constraintStart_toStartOf="@id/photo_item"
             app:layout_constraintTop_toBottomOf="@id/fragment_photo_details_location"
             tools:text="#tag_1 #tag_2 #tag_3" />
+
+        <LinearLayout
+            android:id="@+id/fragment_photo_details_exif"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="@id/photo_item"
+            app:layout_constraintStart_toStartOf="@id/photo_item"
+            app:layout_constraintTop_toBottomOf="@id/fragment_photo_details_tags">
+
+            <TextView
+                android:id="@+id/fragment_photo_details_exif_made_with"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_photo_details_exif_made_with" />
+
+            <TextView
+                android:id="@+id/fragment_photo_details_exif_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_photo_details_exif_model" />
+
+            <TextView
+                android:id="@+id/fragment_photo_details_exif_exposure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_photo_details_exif_exposure" />
+
+            <TextView
+                android:id="@+id/fragment_photo_details_exif_aperture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_photo_details_exif_aperture" />
+
+            <TextView
+                android:id="@+id/fragment_photo_details_exif_focal_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_photo_details_exif_focal_length" />
+
+            <TextView
+                android:id="@+id/fragment_photo_details_exif_iso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_photo_details_exif_iso" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
