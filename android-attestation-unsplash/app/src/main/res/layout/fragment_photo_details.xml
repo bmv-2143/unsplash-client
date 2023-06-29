@@ -67,9 +67,9 @@
             android:orientation="vertical"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="@id/photo_item"
+            app:layout_constraintEnd_toStartOf="@id/fragment_photo_details_about_author"
             app:layout_constraintStart_toStartOf="@id/photo_item"
-            app:layout_constraintTop_toBottomOf="@id/fragment_photo_details_tags"
-            app:layout_constraintEnd_toStartOf="@id/fragment_photo_details_about_author">
+            app:layout_constraintTop_toBottomOf="@id/fragment_photo_details_tags">
 
             <TextView
                 android:id="@+id/fragment_photo_details_exif_made_with"
@@ -112,13 +112,39 @@
         <TextView
             android:id="@+id/fragment_photo_details_about_author"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@id/fragment_photo_details_tags"
+            android:text="@string/fragment_photo_details_about_author"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_photo_details_exif"
             app:layout_constraintEnd_toEndOf="@id/photo_item"
             app:layout_constraintStart_toEndOf="@id/fragment_photo_details_exif"
-            android:text="@string/fragment_photo_details_about_author" />
-            />
+            app:layout_constraintTop_toBottomOf="@id/fragment_photo_details_tags" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/fragment_photo_details_download_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="@id/photo_item"
+            app:layout_constraintTop_toBottomOf="@id/fragment_photo_details_about_author">
+
+            <TextView
+                android:id="@+id/fragment_photo_details_download_btn_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_photo_details_download_btn_text" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/fragment_photo_details_download_icon_48" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

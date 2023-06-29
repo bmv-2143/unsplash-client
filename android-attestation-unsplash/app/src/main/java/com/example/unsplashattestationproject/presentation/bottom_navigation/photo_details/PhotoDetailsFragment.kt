@@ -60,6 +60,9 @@ class PhotoDetailsFragment : Fragment() {
         binding.fragmentPhotoDetailsLocation.setOnClickListener {
             Toast.makeText(requireContext(), "Location", Toast.LENGTH_SHORT).show()
         }
+        binding.fragmentPhotoDetailsDownloadBtn.setOnClickListener {
+            Toast.makeText(requireContext(), "Download", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun observerPhotoDetails() {
@@ -71,6 +74,7 @@ class PhotoDetailsFragment : Fragment() {
                     updateTags(photoDetails)
                     updateExif(photoDetails)
                     updateAboutAuthor(photoDetails)
+                    updateDownloadCount(photoDetails)
                 }
             }
         }
@@ -130,6 +134,11 @@ class PhotoDetailsFragment : Fragment() {
             photoDetails.user.username,
             photoDetails.user.bio ?: "",
         )
+    }
+
+    private fun updateDownloadCount(photoDetails: UnsplashPhotoDetails) {
+        binding.fragmentPhotoDetailsDownloadBtnText.text = getString(
+            R.string.fragment_photo_details_download_btn_text, photoDetails.downloads)
     }
 
     override fun onDestroyView() {
