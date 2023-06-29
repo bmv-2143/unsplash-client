@@ -148,7 +148,7 @@ class PhotoListFragment : Fragment() {
 
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
         val navController = findNavController()
-        activityViewModel.selectedPhoto = photo
+        activityViewModel.selectedFromPhotoList = photo
         navController.navigate(R.id.photoDetailsFragment)
     }
 

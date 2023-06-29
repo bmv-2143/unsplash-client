@@ -25,7 +25,9 @@ import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.databinding.FragmentPhotoDetailsBinding
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
+import com.example.unsplashattestationproject.presentation.bottom_navigation.model.toPhotoListItemUiModel
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoItemLoader
+import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -44,31 +46,37 @@ class PhotoDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPhotoDetailsBinding.inflate(inflater, container, false)
+
+        setClickListeners()
+        observerPhotoDetails()
+        addActionBarMenu()
+
         return binding.root
     }
 
-    private fun loadPhotoItemData() {
-        if (activityViewModel.selectedPhoto != null) {
-            PhotoItemLoader(binding.photoItem).loadData(activityViewModel.selectedPhoto!!)
-        } else {
-            Log.e(TAG, "onCreateView: selectedPhoto is null")
-        }
+    private fun displaySelectedPhotoLoadedData(selectedPhoto : PhotoListItemUiModel) {
+        PhotoItemLoader(binding.photoItem).loadData(selectedPhoto)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val photoId = arguments?.getString(App.INTENT_KEY_PHOTO_ID)
-        if (photoId != null) {
-            Log.e(TAG, "onViewCreated: photoId: $photoId")
-            Toast.makeText(requireContext(), "PhotoId: $photoId", Toast.LENGTH_SHORT).show()
+        val photoIdFromDeepLink = arguments?.getString(App.INTENT_KEY_PHOTO_ID)
+        if (photoIdFromDeepLink != null) {
+            displayDeepLinkPhoto(photoIdFromDeepLink)
         } else {
-            loadPhotoItemData()
-            setClickListeners()
-            observerPhotoDetails()
-            photoDetailsFragmentViewModel.loadPhotoDetails(activityViewModel.selectedPhoto!!.remoteId)
-            addActionBarMenu()
+            displaySelectedPhotoLoadedData(activityViewModel.selectedFromPhotoList!!)
+            photoDetailsFragmentViewModel.loadPhotoDetails(
+                activityViewModel.selectedFromPhotoList!!.remoteId)
         }
+    }
+
+    private fun displayDeepLinkPhoto(photoIdFromExternalSource: String) {
+        Log.e(TAG, "onViewCreated: photoId: $photoIdFromExternalSource")
+        Toast.makeText(requireContext(), "PhotoId: $photoIdFromExternalSource", Toast.LENGTH_SHORT)
+            .show()
+        activityViewModel.photoToShareId = photoIdFromExternalSource
+        photoDetailsFragmentViewModel.loadPhotoDetails(photoIdFromExternalSource)
     }
 
     private fun setClickListeners() {
@@ -85,11 +93,13 @@ class PhotoDetailsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoDetailsFragmentViewModel.photoDetailsFlow.collect { photoDetails ->
                     Log.e(TAG, "PHOTO DETAILS: $photoDetails")
+
                     updateLocation(photoDetails)
                     updateTags(photoDetails)
                     updateExif(photoDetails)
                     updateAboutAuthor(photoDetails)
                     updateDownloadCount(photoDetails)
+                    displaySelectedPhotoLoadedData(photoDetails.toPhotoListItemUiModel())
                 }
             }
         }
@@ -191,17 +201,16 @@ class PhotoDetailsFragment : Fragment() {
     }
 
     private fun sharePhoto() {
-        activityViewModel.selectedPhoto?.let { photo ->
-            val link = photoDetailsFragmentViewModel.getShareLink(photo)
-            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, link)
-            }
-            startActivity(
-                Intent.createChooser(
-                    shareIntent,
-                    getString(R.string.menu_action_share_photo)
-                )
+            if (activityViewModel.photoToShareId.isNotBlank()) {
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, activityViewModel.getShareLink())
+                }
+                startActivity(
+                    Intent.createChooser(
+                        shareIntent,
+                        getString(R.string.menu_action_share_photo)
+                    )
             )
         }
     }
@@ -209,6 +218,7 @@ class PhotoDetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        activityViewModel.selectedFromPhotoList = null
     }
 
 }

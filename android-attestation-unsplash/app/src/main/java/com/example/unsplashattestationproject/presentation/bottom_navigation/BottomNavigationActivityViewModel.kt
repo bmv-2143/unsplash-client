@@ -10,6 +10,15 @@ import javax.inject.Inject
 class BottomNavigationActivityViewModel @Inject constructor(application: Application
 ) : AndroidViewModel(application) {
 
-    var selectedPhoto: PhotoListItemUiModel? = null
+    var selectedFromPhotoList: PhotoListItemUiModel? = null
+        set(value) {
+            field = value
+            photoToShareId = value?.remoteId ?: ""
+        }
+
+    var photoToShareId: String = ""
+
+    fun getShareLink(): String =
+        "https://unsplash.com/photos/${photoToShareId}"
 
 }
