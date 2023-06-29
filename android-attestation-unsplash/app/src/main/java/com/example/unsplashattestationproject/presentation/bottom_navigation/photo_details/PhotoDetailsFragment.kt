@@ -171,8 +171,7 @@ class PhotoDetailsFragment : Fragment() {
 
     private fun sharePhoto() {
         activityViewModel.selectedPhoto?.let { photo ->
-            val photoId = photo.remoteId
-            val link = "https://unsplash.com/photos/$photoId"
+            val link = photoDetailsFragmentViewModel.getShareLink(photo)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, link)
