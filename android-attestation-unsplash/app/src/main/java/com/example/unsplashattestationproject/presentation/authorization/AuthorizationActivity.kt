@@ -1,6 +1,8 @@
 package com.example.unsplashattestationproject.presentation.authorization
 
+import android.content.ContentValues
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -9,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.unsplashattestationproject.App
+import com.example.unsplashattestationproject.App.Companion.INTENT_FILTER_DATA_HOST_AUTH
+import com.example.unsplashattestationproject.App.Companion.INTENT_FILTER_DATA_HOST_UNSPLASH
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_CODE
 import com.example.unsplashattestationproject.databinding.ActivityAuthorizationBinding
 import com.example.unsplashattestationproject.log.TAG
@@ -35,12 +40,14 @@ class AuthorizationActivity : AppCompatActivity() {
 
         observeAuthorizationState()
         setAuthButtonListener()
-        handleAuthDeepLink(intent)
+        handleIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.let { handleAuthDeepLink(it) }
+        intent?.let {
+            handleIntent(intent)
+        }
     }
 
     private fun openOnboardingActivity() {
@@ -64,10 +71,38 @@ class AuthorizationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun handleAuthDeepLink(intent: Intent) {
+    private fun handleIntent(intent: Intent) {
         if (intent.action != Intent.ACTION_VIEW)
             return
-        val deepLinkUrl = intent.data ?: return
+
+        val deepLinkData = intent.data ?: return
+
+        deepLinkData.host?.let { host ->
+            if (host == INTENT_FILTER_DATA_HOST_AUTH) {
+                authorize(deepLinkData)
+            } else if (host == INTENT_FILTER_DATA_HOST_UNSPLASH) {
+                openPhotoViewScreen(deepLinkData)
+            }
+        }
+    }
+
+    private fun openPhotoViewScreen(data: Uri?) {
+        Log.e(TAG, "openPhotoViewScreen: $data")
+
+        val photoId = data?.lastPathSegment
+        if (photoId != null) {
+            val intent = Intent(this, BottomNavigationActivity::class.java).apply {
+                putExtra(App.INTENT_KEY_PHOTO_ID, photoId)
+            }
+            startActivity(intent)
+            finish()
+        } else {
+            Log.e(ContentValues.TAG, "openPhotoViewScreen: photoId is null")
+        }
+    }
+
+    private fun authorize(deepLinkUrl: Uri) {
+        Log.e(TAG, "authorize: $deepLinkUrl")
 
         if (deepLinkUrl.queryParameterNames.contains(PARAM_CODE)) {
             viewModel.authCode = deepLinkUrl.getQueryParameter(PARAM_CODE)

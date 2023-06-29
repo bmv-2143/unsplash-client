@@ -60,6 +60,7 @@ class PhotoDetailsFragment : Fragment() {
 
         val photoId = arguments?.getString(App.INTENT_KEY_PHOTO_ID)
         if (photoId != null) {
+            Log.e(TAG, "onViewCreated: photoId: $photoId")
             Toast.makeText(requireContext(), "PhotoId: $photoId", Toast.LENGTH_SHORT).show()
         } else {
             loadPhotoItemData()

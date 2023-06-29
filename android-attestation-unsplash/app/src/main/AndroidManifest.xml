@@ -19,29 +19,22 @@
 
         <activity
             android:name=".presentation.bottom_navigation.BottomNavigationActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/activity_bottom_nav_title"
-            android:theme="@style/Theme.UnsplashAndroidAttestation">
-            <intent-filter android:autoVerify="false">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:host="unsplash.com"
-                    android:pathPrefix="/photos"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.UnsplashAndroidAttestation" />
 
         <activity
             android:name=".presentation.authorization.AuthorizationActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -49,6 +42,19 @@
                     android:host="auth"
                     android:scheme="com.example.unsplashattestationproject" />
             </intent-filter>
+
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="unsplash.com"
+                    android:pathPrefix="/photos"
+                    android:scheme="https" />
+            </intent-filter>
+
         </activity>
 
         <activity

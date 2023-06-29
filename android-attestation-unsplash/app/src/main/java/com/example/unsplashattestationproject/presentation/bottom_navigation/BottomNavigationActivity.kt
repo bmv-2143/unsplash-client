@@ -67,10 +67,9 @@ class BottomNavigationActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-        Log.e(TAG, "handleIntent: $intent")
-        val data = intent.data
-        val photoId = data?.lastPathSegment
-        if (photoId != null) {
+        Log.e(TAG, "BottomNavigationActivity: handleIntent: $intent")
+
+        intent.getStringExtra(App.INTENT_KEY_PHOTO_ID)?.let { photoId ->
             val args = Bundle().apply {
                 putString(App.INTENT_KEY_PHOTO_ID, photoId)
             }
