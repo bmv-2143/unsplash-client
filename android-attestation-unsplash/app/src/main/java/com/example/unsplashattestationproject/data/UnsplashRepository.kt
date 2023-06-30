@@ -7,6 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.unsplashattestationproject.FEATURE_FLAG_REMOTE_MEDIATOR
+import com.example.unsplashattestationproject.data.downloads.UnsplashDownloader
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.room.PhotoDatabase
@@ -24,7 +25,8 @@ class UnsplashRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
     private val photoDatabase: PhotoDatabase,
-    private val photoRemoteMediator: PhotoRemoteMediator
+    private val photoRemoteMediator: PhotoRemoteMediator,
+    private val unsplashDownloader: UnsplashDownloader
 ) {
 
     init {
@@ -92,6 +94,10 @@ class UnsplashRepository @Inject constructor(
 
     suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails =
         unsplashNetworkDataSource.getPhotoDetails(photoId)
+
+    fun downloadPhoto(photoUrl: String) {
+        unsplashDownloader.downloadFile(photoUrl, unsplashAccessToken)
+    }
 
     companion object {
 

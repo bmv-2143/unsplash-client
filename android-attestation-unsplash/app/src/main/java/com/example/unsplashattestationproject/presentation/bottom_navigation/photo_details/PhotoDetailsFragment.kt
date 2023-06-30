@@ -84,7 +84,8 @@ class PhotoDetailsFragment : Fragment() {
             Toast.makeText(requireContext(), "Location", Toast.LENGTH_SHORT).show()
         }
         binding.fragmentPhotoDetailsDownloadBtn.setOnClickListener {
-            Toast.makeText(requireContext(), "Download", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Download Started", Toast.LENGTH_SHORT).show()
+            photoDetailsFragmentViewModel.downloadPhoto()
         }
     }
 
