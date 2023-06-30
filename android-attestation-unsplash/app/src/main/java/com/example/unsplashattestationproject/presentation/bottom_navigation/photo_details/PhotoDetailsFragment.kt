@@ -175,6 +175,7 @@ class PhotoDetailsFragment : Fragment() {
     }
 
     private fun updateDownloadCount(photoDetails: UnsplashPhotoDetails) {
+        binding.fragmentPhotoDetailsDownloadBtn.visibility = View.VISIBLE
         binding.fragmentPhotoDetailsDownloadBtnText.text = getString(
             R.string.fragment_photo_details_download_btn_text, photoDetails.downloads
         )
