@@ -82,7 +82,7 @@ class PhotoListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoListViewModel.getPhotosPagedFlow().collectLatest { photosPage ->
                     photoListAdapter.submitData(photosPage)
-                    convertToList(photosPage) // TODO: remove me
+//                    convertToList(photosPage) // TODO: remove me
                 }
             }
         }

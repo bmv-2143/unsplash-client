@@ -14,15 +14,21 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.unsplashattestationproject.App
 import com.example.unsplashattestationproject.R
+import com.example.unsplashattestationproject.data.SharedRepository
 import com.example.unsplashattestationproject.databinding.ActivityUnsplashBottomNavigationsBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class BottomNavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUnsplashBottomNavigationsBinding
     lateinit var navigationController: NavController
+
+    @Inject
+    lateinit var sharedRepository: SharedRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +37,11 @@ class BottomNavigationActivity : AppCompatActivity() {
         navigationController = getNavController()
         setupBottomNavigation()
         handleIntent(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        observePhotoDownloadComplete()
     }
 
     private fun setupBottomNavigation() {
@@ -74,6 +85,21 @@ class BottomNavigationActivity : AppCompatActivity() {
                 putString(App.INTENT_KEY_PHOTO_ID, photoId)
             }
             navigationController.navigate(R.id.photoDetailsFragment, args)
+        }
+    }
+
+    private fun observePhotoDownloadComplete() {
+        sharedRepository.photoDownloadCompletedEvent.observe(this) { id ->
+            Snackbar.make(
+                binding.root,
+                "Download with ID $id completed!",
+                Snackbar.LENGTH_INDEFINITE
+            )
+                .setAction("View") {
+                    // Open photo using an external application
+                    Log.e(TAG, "observeSharedRepository: COMPLETE $id")
+                }
+                .show()
         }
     }
 
