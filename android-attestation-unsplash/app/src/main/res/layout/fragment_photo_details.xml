@@ -75,37 +75,37 @@
                 android:id="@+id/fragment_photo_details_exif_made_with"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_photo_details_exif_made_with" />
+                tools:text="@string/fragment_photo_details_exif_made_with" />
 
             <TextView
                 android:id="@+id/fragment_photo_details_exif_model"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_photo_details_exif_model" />
+                tools:text="@string/fragment_photo_details_exif_model" />
 
             <TextView
                 android:id="@+id/fragment_photo_details_exif_exposure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_photo_details_exif_exposure" />
+                tools:text="@string/fragment_photo_details_exif_exposure" />
 
             <TextView
                 android:id="@+id/fragment_photo_details_exif_aperture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_photo_details_exif_aperture" />
+                tools:text="@string/fragment_photo_details_exif_aperture" />
 
             <TextView
                 android:id="@+id/fragment_photo_details_exif_focal_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_photo_details_exif_focal_length" />
+                tools:text="@string/fragment_photo_details_exif_focal_length" />
 
             <TextView
                 android:id="@+id/fragment_photo_details_exif_iso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_photo_details_exif_iso" />
+                tools:text="@string/fragment_photo_details_exif_iso" />
 
         </LinearLayout>
 
@@ -114,7 +114,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="16dp"
-            android:text="@string/fragment_photo_details_about_author"
+            tools:text="@string/fragment_photo_details_about_author"
             app:layout_constraintBottom_toBottomOf="@+id/fragment_photo_details_exif"
             app:layout_constraintEnd_toEndOf="@id/photo_item"
             app:layout_constraintStart_toEndOf="@id/fragment_photo_details_exif"
@@ -137,7 +137,7 @@
                 android:id="@+id/fragment_photo_details_download_btn_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_photo_details_download_btn_text" />
+                tools:text="@string/fragment_photo_details_download_btn_text" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="24dp"
