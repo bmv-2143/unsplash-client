@@ -3,6 +3,6 @@ package com.example.unsplashattestationproject.data.downloads
 
 fun interface Downloader {
 
-    fun downloadFile(url: String, accessToken : String): Long
+    fun downloadFile(url: String, fileName : String, accessToken : String): Long
 
 }

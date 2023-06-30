@@ -20,22 +20,26 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
     private val downloadPhotoUseCase: DownloadPhotoUseCase
 ) : ViewModel() {
 
-    private val _photoDetailsFlow : MutableSharedFlow<UnsplashPhotoDetails> = MutableSharedFlow()
+    private val _photoDetailsFlow: MutableSharedFlow<UnsplashPhotoDetails> = MutableSharedFlow()
     internal val photoDetailsFlow = _photoDetailsFlow.asSharedFlow()
 
-    private var photoDownloadUrl : String = ""
+    private var photoToDownload: UnsplashPhotoDetails? = null
 
     fun loadPhotoDetails(photoId: String) {
         viewModelScope.launch {
             val photoDetails = getPhotoDetailsUseCase(photoId)
-            photoDownloadUrl = photoDetails.urls.raw
+            photoToDownload = photoDetails
             _photoDetailsFlow.emit(photoDetails)
         }
     }
 
     fun downloadPhoto() {
-        Log.e(TAG, "downloadPhoto: $photoDownloadUrl")
-        downloadPhotoUseCase(photoDownloadUrl)
-    }
+        Log.e(TAG, "downloadPhoto: id ${photoToDownload?.id} url: ${photoToDownload?.urls?.raw}")
 
+        if (photoToDownload != null) {
+            downloadPhotoUseCase(photoToDownload!!)
+        } else {
+            Log.e(TAG, "Failed to start download: photoToDownload is null")
+        }
+    }
 }

@@ -11,8 +11,7 @@ class UnsplashDownloader @Inject constructor(
     private val downloadManager: DownloadManager
 ) : Downloader {
 
-    override fun downloadFile(url: String, accessToken : String): Long {
-        val fileName = getFileNameFromUri(url)
+    override fun downloadFile(url: String, fileName : String, accessToken : String): Long {
         val request = DownloadManager.Request(url.toUri())
             .setMimeType(parseMimeType(url))
             .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE)
@@ -28,11 +27,7 @@ class UnsplashDownloader @Inject constructor(
         val map = MimeTypeMap.getSingleton()
         val ext = MimeTypeMap.getFileExtensionFromUrl(file.name)
         var type = map.getMimeTypeFromExtension(ext)
-        type = type ?: "*/*"
+        type = type ?: "image/jpeg"
         return type
-    }
-
-    private fun getFileNameFromUri(url: String): String {
-        return url.substring(url.lastIndexOf('/') + 1, url.length)
     }
 }

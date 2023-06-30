@@ -95,8 +95,16 @@ class UnsplashRepository @Inject constructor(
     suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails =
         unsplashNetworkDataSource.getPhotoDetails(photoId)
 
-    fun downloadPhoto(photoUrl: String) {
-        unsplashDownloader.downloadFile(photoUrl, unsplashAccessToken)
+    fun downloadPhoto(photo : UnsplashPhotoDetails) {
+        unsplashDownloader.downloadFile(
+            photo.urls.raw,
+            getFileNameForDownload(photo.id),
+            unsplashAccessToken
+        )
+    }
+
+    private fun getFileNameForDownload(photoId: String): String {
+        return "unsplash-photo-$photoId.jpeg"
     }
 
     companion object {
