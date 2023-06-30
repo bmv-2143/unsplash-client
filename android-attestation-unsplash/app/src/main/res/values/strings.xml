@@ -30,5 +30,6 @@
     <string name="fragment_photo_details_download_btn_text"><u>Download (%1d)</u></string>
     <string name="fragment_photo_details_share_menu_title">Share</string>
     <string name="menu_action_share_photo">Share photo</string>
+    <string name="activity_bottom_navigation_snackbar_view_downloaded_photo">View</string>
 
 </resources>

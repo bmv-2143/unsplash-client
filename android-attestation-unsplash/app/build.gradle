@@ -26,6 +26,13 @@ android {
         buildConfigField("String", "ACCESS_KEY", "\"YOUR_UNSPLASH_ACCESS_KEY\"")
         buildConfigField("String", "DATABASE_NAME", "\"photo_database\"")
 
+        def addConstant = {constantName, constantValue ->
+            manifestPlaceholders += [(constantName) : constantValue]
+            buildConfigField "String", "${constantName}", "\"${constantValue}\""
+        }
+
+        addConstant("DOWNLOADED_FILE_PROVIDER_AUTHORITY", "${applicationId}.fileprovider")
+
     }
 
     buildTypes {

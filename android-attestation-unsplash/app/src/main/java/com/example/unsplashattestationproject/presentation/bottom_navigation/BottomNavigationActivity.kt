@@ -3,22 +3,26 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.unsplashattestationproject.App
+import com.example.unsplashattestationproject.BuildConfig
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.SharedRepository
 import com.example.unsplashattestationproject.databinding.ActivityUnsplashBottomNavigationsBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -89,22 +93,44 @@ class BottomNavigationActivity : AppCompatActivity() {
     }
 
     private fun observePhotoDownloadComplete() {
-        sharedRepository.photoDownloadCompletedEvent.observe(this)
-        { downloadResult ->
-            Snackbar.make(
-                binding.root,
-                "Download with ID ${downloadResult.first} completed!",
-                Snackbar.LENGTH_INDEFINITE
-            )
-                .setAction("View") {
-                    Log.e(TAG, "observeSharedRepository: COMPLETE_ID ${downloadResult.first}")
-                    Log.e(TAG, "observeSharedRepository: COMPLETE_URI ${downloadResult.second}")
+        sharedRepository.photoDownloadCompletedEvent.observe(
+            this,
+            ::showDownloadCompleteSnackbar
+        )
+    }
 
-                    // Open photo using an external application
-                    // todo: implementation
-                }
-                .show()
+    private fun showDownloadCompleteSnackbar(downloadResult: Pair<Long, Uri>) {
+        Snackbar.make(
+            binding.root,
+            "Download with ID ${downloadResult.first} completed!",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction(getString(R.string.activity_bottom_navigation_snackbar_view_downloaded_photo)) {
+                Log.e(TAG, "observeSharedRepository: COMPLETE_ID ${downloadResult.first}")
+                Log.e(TAG, "observeSharedRepository: COMPLETE_URI ${downloadResult.second}")
+
+                viewDownloadedPhoto(downloadResult.second)
+            }
+            .show()
+    }
+
+    private fun viewDownloadedPhoto(fileUri: Uri) {
+        val filePath = fileUri.path
+        if (filePath == null) {
+            Log.e(TAG, "${::viewDownloadedPhoto}: fileUri.path is null")
+            return
         }
+
+        val uri = FileProvider.getUriForFile(
+            this,
+            BuildConfig.DOWNLOADED_FILE_PROVIDER_AUTHORITY, File(filePath)
+        )
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "image/*")
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }
+
+        startActivity(intent)
     }
 
     companion object {
