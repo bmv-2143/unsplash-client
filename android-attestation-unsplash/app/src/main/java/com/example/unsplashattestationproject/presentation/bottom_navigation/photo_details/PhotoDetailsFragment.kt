@@ -65,7 +65,7 @@ class PhotoDetailsFragment : Fragment() {
         if (photoIdFromDeepLink != null) {
             displayDeepLinkPhoto(photoIdFromDeepLink)
         } else {
-            displaySelectedPhotoLoadedData(activityViewModel.selectedFromPhotoList!!)
+//            displaySelectedPhotoLoadedData(activityViewModel.selectedFromPhotoList!!) // todo: this doesn't use loaded data, but has no progress bar blinking
             photoDetailsFragmentViewModel.loadPhotoDetails(
                 activityViewModel.selectedFromPhotoList!!.remoteId)
         }
