@@ -89,15 +89,19 @@ class BottomNavigationActivity : AppCompatActivity() {
     }
 
     private fun observePhotoDownloadComplete() {
-        sharedRepository.photoDownloadCompletedEvent.observe(this) { id ->
+        sharedRepository.photoDownloadCompletedEvent.observe(this)
+        { downloadResult ->
             Snackbar.make(
                 binding.root,
-                "Download with ID $id completed!",
+                "Download with ID ${downloadResult.first} completed!",
                 Snackbar.LENGTH_INDEFINITE
             )
                 .setAction("View") {
+                    Log.e(TAG, "observeSharedRepository: COMPLETE_ID ${downloadResult.first}")
+                    Log.e(TAG, "observeSharedRepository: COMPLETE_URI ${downloadResult.second}")
+
                     // Open photo using an external application
-                    Log.e(TAG, "observeSharedRepository: COMPLETE $id")
+                    // todo: implementation
                 }
                 .show()
         }
