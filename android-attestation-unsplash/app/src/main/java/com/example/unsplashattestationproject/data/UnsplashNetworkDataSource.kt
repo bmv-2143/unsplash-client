@@ -43,7 +43,7 @@ class UnsplashNetworkDataSource @Inject constructor(
             unsplashService.unsplashApi.getPhotoDetails(photoId)
         } catch (e: Exception) {
             Log.e(TAG, "${::getPhotoDetails.name} error: ${e.message}")
-            throw Exception(e) // todo: error 403 will crash app, need to handle it
+            throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
         }
     }
 
