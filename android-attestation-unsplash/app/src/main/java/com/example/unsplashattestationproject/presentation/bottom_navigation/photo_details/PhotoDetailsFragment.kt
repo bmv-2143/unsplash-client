@@ -218,7 +218,6 @@ class PhotoDetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        activityViewModel.selectedFromPhotoList = null
     }
 
 }
