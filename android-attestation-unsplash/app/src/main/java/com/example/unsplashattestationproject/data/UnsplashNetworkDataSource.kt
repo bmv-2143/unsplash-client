@@ -10,6 +10,10 @@ import com.example.unsplashattestationproject.data.network.UnsplashAuthorization
 import com.example.unsplashattestationproject.data.network.UnsplashService
 import com.example.unsplashattestationproject.log.TAG
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import retrofit2.HttpException
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,6 +22,9 @@ class UnsplashNetworkDataSource @Inject constructor(
     private val unsplashAuthorizationService: UnsplashAuthorizationService,
     private val unsplashService: UnsplashService
 ) {
+
+    private val _networkErrorsFlow = MutableSharedFlow<NetworkErrors>()
+    val networkErrorsFlow = _networkErrorsFlow.asSharedFlow()
 
     suspend fun getAccessToken(code: String): AuthInfo =
         unsplashAuthorizationService.unsplashAuthApi.getAccessToken(
@@ -33,9 +40,27 @@ class UnsplashNetworkDataSource @Inject constructor(
                 perPage = perPage,
 //                orderBy = "latest"
             )
+        } catch (e: UnknownHostException) {
+            _networkErrorsFlow.emit(NetworkErrors.NoInternetConnection(e.message ?: "No internet connection"))
+            listOf()
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            listOf()
         } catch (e: Exception) {
             Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
-            throw Exception(e)
+//            throw Exception(e)
+            listOf()
+        }
+    }
+
+    private suspend fun handleHttpException(e: HttpException) {
+        Log.e(TAG, "${::handleHttpException.name} error: ${e.message}")
+        when (e.code()) {
+            403 -> _networkErrorsFlow.emit(NetworkErrors.ForbiddenApiRateExceeded(e.message()))
+
+            401 -> _networkErrorsFlow.emit(NetworkErrors.Unauthorized(e.message()))
+
+            else -> _networkErrorsFlow.emit(NetworkErrors.HttpError(e.message()))
         }
     }
 

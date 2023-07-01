@@ -7,8 +7,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,6 +27,7 @@ import com.example.unsplashattestationproject.presentation.permissions.Permissio
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
@@ -37,6 +42,8 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
 
     private lateinit var permissionRequester: PermissionRequester
 
+    private val viewModel by viewModels<BottomNavigationActivityViewModel>()
+
     override fun getPermissionRequester()
         = permissionRequester
 
@@ -48,6 +55,7 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
         setupBottomNavigation()
         handleIntent(intent)
         permissionRequester = PermissionRequester(this)
+        observerNetworkErrors()
     }
 
     override fun onStart() {
@@ -104,6 +112,22 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
             this,
             ::showDownloadCompleteSnackbar
         )
+    }
+
+    private fun observerNetworkErrors() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.networkErrorsFlow.collect { error ->
+                    Log.e(TAG, "observerNetworkErrors: $error")
+
+                    Snackbar.make(
+                        binding.root,
+                        error.message,
+                        Snackbar.LENGTH_INDEFINITE
+                    ).show()
+                }
+            }
+        }
     }
 
     private fun showDownloadCompleteSnackbar(downloadResult: Pair<Long, Uri>) {

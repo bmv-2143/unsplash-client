@@ -33,6 +33,8 @@ class UnsplashRepository @Inject constructor(
         unsplashAccessToken = sharedPreferences.getString(PREFS_KEY_ACCESS_TOKEN, "") ?: ""
     }
 
+    val networkErrorsFlow = unsplashNetworkDataSource.networkErrorsFlow
+
     private fun saveAccessToken(accessToken: String) {
         Log.e(TAG, "ACCESS_TOKEN: $accessToken")
         cacheToken(accessToken)
