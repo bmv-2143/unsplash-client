@@ -85,7 +85,7 @@ class PhotoDetailsFragment : Fragment() {
         }
         binding.fragmentPhotoDetailsDownloadBtn.setOnClickListener {
             Toast.makeText(requireContext(), "Download Started", Toast.LENGTH_SHORT).show()
-            photoDetailsFragmentViewModel.downloadPhoto()
+            photoDetailsFragmentViewModel.downloadPhotoRaw()
         }
     }
 

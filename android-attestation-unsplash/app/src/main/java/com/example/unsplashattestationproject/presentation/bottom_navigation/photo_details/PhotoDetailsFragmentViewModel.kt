@@ -33,13 +33,24 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
         }
     }
 
-    fun downloadPhoto() {
+    fun downloadPhotoRaw() {
         Log.e(TAG, "downloadPhoto: id ${photoToDownload?.id} url: ${photoToDownload?.urls?.raw}")
 
         if (photoToDownload != null) {
             downloadPhotoUseCase(photoToDownload!!)
         } else {
             Log.e(TAG, "Failed to start download: photoToDownload is null")
+        }
+    }
+
+    // This is here for demo purposes only (Unsplash service recommends using tracked downloads)
+    private fun downloadPhotoTracked() {
+        viewModelScope.launch {
+            val id = photoToDownload?.id
+            val url = downloadPhotoUseCase.getTrackedDownloadUrl(id!!)
+            downloadPhotoUseCase.startTrackedDownload(url, photoToDownload!!.id)
+            Log.e(TAG, "requestPhotoDownloadTrackApi: url: $url")
+            downloadPhotoUseCase(photoToDownload!!)
         }
     }
 }

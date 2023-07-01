@@ -34,6 +34,7 @@ class UnsplashRepository @Inject constructor(
     }
 
     private fun saveAccessToken(accessToken: String) {
+        Log.e(TAG, "ACCESS_TOKEN: $accessToken")
         cacheToken(accessToken)
 
         val editor = sharedPreferences.edit()
@@ -95,13 +96,24 @@ class UnsplashRepository @Inject constructor(
     suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails =
         unsplashNetworkDataSource.getPhotoDetails(photoId)
 
-    fun downloadPhoto(photo : UnsplashPhotoDetails) {
+    fun getTrackedDownloadPhotoUrl(photo : UnsplashPhotoDetails) {
         unsplashDownloader.downloadFile(
             photo.urls.raw,
-            getFileNameForDownload(photo.id),
+            getFileNameForDownload(photo.id + "_RAW"),
             unsplashAccessToken
         )
     }
+
+    fun startTrackedDownload(url : String, id : String) {
+        unsplashDownloader.downloadFile(
+            url,
+            getFileNameForDownload(id),
+            unsplashAccessToken
+        )
+    }
+
+    suspend fun getTrackedDownloadPhotoUrl(photoId : String) : String =
+        unsplashNetworkDataSource.getTrackedDownloadPhotoUrl(photoId)
 
     private fun getFileNameForDownload(photoId: String): String {
         return "unsplash-photo-$photoId.jpeg"

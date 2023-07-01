@@ -1,5 +1,6 @@
 package com.example.unsplashattestationproject.data.network
 
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import retrofit2.http.GET
@@ -17,5 +18,9 @@ interface UnsplashApi {
 
     @GET("photos/{id}")
     suspend fun getPhotoDetails(@Path("id") id: String): UnsplashPhotoDetails
+
+
+    @GET("photos/{id}/download")
+    suspend fun getTrackedDownloadPhoto(@Path("id") id: String): UnsplashTrackedDownloadResponse
 
 }
