@@ -23,8 +23,8 @@ class UnsplashNetworkDataSource @Inject constructor(
     private val unsplashService: UnsplashService
 ) {
 
-    private val _networkErrorsFlow = MutableSharedFlow<NetworkErrors>()
-    val networkErrorsFlow = _networkErrorsFlow.asSharedFlow()
+    private val _networkErrorFlow = MutableSharedFlow<NetworkError>()
+    val networkErrorsFlow = _networkErrorFlow.asSharedFlow()
 
     suspend fun getAccessToken(code: String): AuthInfo =
         unsplashAuthorizationService.unsplashAuthApi.getAccessToken(
@@ -41,7 +41,8 @@ class UnsplashNetworkDataSource @Inject constructor(
 //                orderBy = "latest"
             )
         } catch (e: UnknownHostException) {
-            _networkErrorsFlow.emit(NetworkErrors.NoInternetConnection(e.message ?: "No internet connection"))
+            _networkErrorFlow.emit(NetworkError.NoInternetConnection(
+                e.message ?: "No internet connection"))
             listOf()
         } catch (e: HttpException) {
             handleHttpException(e)
@@ -56,11 +57,11 @@ class UnsplashNetworkDataSource @Inject constructor(
     private suspend fun handleHttpException(e: HttpException) {
         Log.e(TAG, "${::handleHttpException.name} error: ${e.message}")
         when (e.code()) {
-            403 -> _networkErrorsFlow.emit(NetworkErrors.ForbiddenApiRateExceeded(e.message()))
+            403 -> _networkErrorFlow.emit(NetworkError.ForbiddenApiRateExceeded(e.message()))
 
-            401 -> _networkErrorsFlow.emit(NetworkErrors.Unauthorized(e.message()))
+            401 -> _networkErrorFlow.emit(NetworkError.Unauthorized(e.message()))
 
-            else -> _networkErrorsFlow.emit(NetworkErrors.HttpError(e.message()))
+            else -> _networkErrorFlow.emit(NetworkError.HttpError(e.message()))
         }
     }
 

@@ -21,11 +21,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.unsplashattestationproject.App
 import com.example.unsplashattestationproject.BuildConfig
 import com.example.unsplashattestationproject.R
+import com.example.unsplashattestationproject.data.NetworkError
+import com.example.unsplashattestationproject.data.NetworkError.ForbiddenApiRateExceeded
+import com.example.unsplashattestationproject.data.NetworkError.Unauthorized
 import com.example.unsplashattestationproject.data.SharedRepository
 import com.example.unsplashattestationproject.databinding.ActivityUnsplashBottomNavigationsBinding
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester
+import com.example.unsplashattestationproject.presentation.utils.SnackbarFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -40,12 +43,14 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
     @Inject
     lateinit var sharedRepository: SharedRepository
 
+    @Inject
+    lateinit var snackbarFactory: SnackbarFactory
+
     private lateinit var permissionRequester: PermissionRequester
 
     private val viewModel by viewModels<BottomNavigationActivityViewModel>()
 
-    override fun getPermissionRequester()
-        = permissionRequester
+    override fun getPermissionRequester() = permissionRequester
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,30 +124,43 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.networkErrorsFlow.collect { error ->
                     Log.e(TAG, "observerNetworkErrors: $error")
-
-                    Snackbar.make(
-                        binding.root,
-                        error.message,
-                        Snackbar.LENGTH_INDEFINITE
-                    ).show()
+                    handleNetworkError(error)
                 }
             }
         }
     }
 
-    private fun showDownloadCompleteSnackbar(downloadResult: Pair<Long, Uri>) {
-        Snackbar.make(
-            binding.root,
-            "Download with ID ${downloadResult.first} completed!",
-            Snackbar.LENGTH_INDEFINITE
-        )
-            .setAction(getString(R.string.activity_bottom_navigation_snackbar_view_downloaded_photo)) {
-                Log.e(TAG, "observeSharedRepository: COMPLETE_ID ${downloadResult.first}")
-                Log.e(TAG, "observeSharedRepository: COMPLETE_URI ${downloadResult.second}")
-
-                viewDownloadedPhoto(downloadResult.second)
+    private fun handleNetworkError(error: NetworkError) {
+        when (error) {
+            is ForbiddenApiRateExceeded -> {
+                snackbarFactory.showWarningSnackbar(
+                    binding.root, "API rate limit exceeded!"
+                )
             }
-            .show()
+
+            is Unauthorized -> {
+                snackbarFactory.showErrorSnackbar(
+                    binding.root, "Unauthorized!"
+                )
+                // todo: open login screen, close this screen
+            }
+
+            else -> {
+                snackbarFactory.showErrorSnackbar(binding.root, error.message)
+            }
+        }
+    }
+
+    private fun showDownloadCompleteSnackbar(downloadResult: Pair<Long, Uri>) {
+        Log.e(TAG, "observeSharedRepository: COMPLETE_ID ${downloadResult.first}")
+        Log.e(TAG, "observeSharedRepository: COMPLETE_URI ${downloadResult.second}")
+
+        snackbarFactory.showSnackbar(
+            binding.root,
+            "Download with ID ${downloadResult.first} completed!"
+        ) {
+            viewDownloadedPhoto(downloadResult.second)
+        }
     }
 
     private fun viewDownloadedPhoto(fileUri: Uri) {
