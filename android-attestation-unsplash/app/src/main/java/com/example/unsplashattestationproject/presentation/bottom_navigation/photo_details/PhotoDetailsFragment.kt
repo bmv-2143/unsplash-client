@@ -63,7 +63,8 @@ class PhotoDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentPhotoDetailsBinding.inflate(inflater, container, false)
 
-        setClickListeners()
+        setLocationButtonListener()
+        setDownloadButtonListener()
         observerPhotoDetails()
         addActionBarMenu()
 
@@ -98,13 +99,14 @@ class PhotoDetailsFragment : Fragment() {
         photoDetailsFragmentViewModel.loadPhotoDetails(photoIdFromExternalSource)
     }
 
-    private fun setClickListeners() {
+    private fun setLocationButtonListener() {
         binding.fragmentPhotoDetailsLocation.setOnClickListener {
             Toast.makeText(requireContext(), "Location", Toast.LENGTH_SHORT).show()
         }
+    }
 
+    private fun setDownloadButtonListener() {
         binding.fragmentPhotoDetailsDownloadBtn.setOnClickListener {
-
             if (permissionRequester.areAllPermissionsGranted(REQUIRED_PERMISSIONS)) {
                 Toast.makeText(requireContext(), "Download Started", Toast.LENGTH_SHORT).show()
                 photoDetailsFragmentViewModel.downloadPhotoRaw()
