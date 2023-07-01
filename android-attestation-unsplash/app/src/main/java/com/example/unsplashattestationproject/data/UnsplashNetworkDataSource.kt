@@ -26,7 +26,7 @@ class UnsplashNetworkDataSource @Inject constructor(
     suspend fun getPhotos(page : Int, perPage : Int) : List<UnsplashPhoto> {
         return try {
             Log.e(TAG, "\n*********** getPhotos: page = $page, perPage = $perPage ***********")
-            delay(2000)
+            delay(2000) // todo: REMOVE ME
             unsplashService.unsplashApi.getPhotos(
                 page,
                 perPage = perPage,
