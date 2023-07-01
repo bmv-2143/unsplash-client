@@ -17,26 +17,15 @@ class PhotoItemLoader(val binding: PhotoListItemBinding) {
     internal fun loadData(photoItem: PhotoListItemUiModel) {
         val photoItemLoader = PhotoItemLoader(binding)
         photoItemLoader.setPhotoTexts(photoItem)
-        photoItemLoader.updateLikeButtonState(photoItem)
         photoItemLoader.loadAuthorAvatar(photoItem.authorAvatar)
         photoItemLoader.loadPhoto(photoItem.imageUrl)
+        PhotoLikesLoader.updateLikes(binding, Pair(photoItem.likedByUser, photoItem.likes))
     }
 
     private fun setPhotoTexts(photoItem: PhotoListItemUiModel) {
         binding.photoListItemAuthorName.text = photoItem.authorName
         binding.photoListItemAuthorNickname.text =
         binding.root.context.getString(R.string.photo_item_author_nickname_template, photoItem.authorUsername)
-        binding.photoListItemLikeCount.text = photoItem.likes.toString()
-    }
-
-    private fun updateLikeButtonState(photoItem: PhotoListItemUiModel) {
-        binding.photoListItemLikeButton.setImageResource(
-            if (photoItem.likedByUser) {
-                R.drawable.photo_list_item_favorite_filled
-            } else {
-                R.drawable.photo_list_item_favorite_empty
-            }
-        )
     }
 
     private fun loadAuthorAvatar(avatarUrl: String) {
