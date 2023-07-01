@@ -2,6 +2,7 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.ph
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,9 +26,15 @@ import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.databinding.FragmentPhotoDetailsBinding
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
+import com.example.unsplashattestationproject.presentation.bottom_navigation.PermissionRequestProvider
 import com.example.unsplashattestationproject.presentation.bottom_navigation.model.toPhotoListItemUiModel
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoItemLoader
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
+import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester
+import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.AllGranted
+import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.Initial
+import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.NotAllGranted
+import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.Requesting
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,6 +47,15 @@ class PhotoDetailsFragment : Fragment() {
     private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
 
     private val photoDetailsFragmentViewModel: PhotoDetailsFragmentViewModel by viewModels()
+
+    private lateinit var permissionRequester: PermissionRequester
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        permissionRequester =
+            (requireActivity() as PermissionRequestProvider).getPermissionRequester()
+        observerPermissionRequest()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +70,7 @@ class PhotoDetailsFragment : Fragment() {
         return binding.root
     }
 
-    private fun displaySelectedPhotoLoadedData(selectedPhoto : PhotoListItemUiModel) {
+    private fun displaySelectedPhotoLoadedData(selectedPhoto: PhotoListItemUiModel) {
         PhotoItemLoader(binding.photoItem).loadData(selectedPhoto)
     }
 
@@ -67,8 +83,11 @@ class PhotoDetailsFragment : Fragment() {
         } else {
 //            displaySelectedPhotoLoadedData(activityViewModel.selectedFromPhotoList!!) // todo: this doesn't use loaded data, but has no progress bar blinking
             photoDetailsFragmentViewModel.loadPhotoDetails(
-                activityViewModel.selectedFromPhotoList!!.remoteId)
+                activityViewModel.selectedFromPhotoList!!.remoteId
+            )
         }
+
+        permissionRequester.checkAndRequestPermissions(REQUIRED_PERMISSIONS)
     }
 
     private fun displayDeepLinkPhoto(photoIdFromExternalSource: String) {
@@ -83,9 +102,19 @@ class PhotoDetailsFragment : Fragment() {
         binding.fragmentPhotoDetailsLocation.setOnClickListener {
             Toast.makeText(requireContext(), "Location", Toast.LENGTH_SHORT).show()
         }
+
         binding.fragmentPhotoDetailsDownloadBtn.setOnClickListener {
-            Toast.makeText(requireContext(), "Download Started", Toast.LENGTH_SHORT).show()
-            photoDetailsFragmentViewModel.downloadPhotoRaw()
+
+            if (permissionRequester.areAllPermissionsGranted(REQUIRED_PERMISSIONS)) {
+                Toast.makeText(requireContext(), "Download Started", Toast.LENGTH_SHORT).show()
+                photoDetailsFragmentViewModel.downloadPhotoRaw()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Not all required permissions were granted",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -203,16 +232,16 @@ class PhotoDetailsFragment : Fragment() {
     }
 
     private fun sharePhoto() {
-            if (activityViewModel.photoToShareId.isNotBlank()) {
-                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, activityViewModel.getShareLink())
-                }
-                startActivity(
-                    Intent.createChooser(
-                        shareIntent,
-                        getString(R.string.menu_action_share_photo)
-                    )
+        if (activityViewModel.photoToShareId.isNotBlank()) {
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, activityViewModel.getShareLink())
+            }
+            startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    getString(R.string.menu_action_share_photo)
+                )
             )
         }
     }
@@ -222,4 +251,31 @@ class PhotoDetailsFragment : Fragment() {
         _binding = null
     }
 
+    private fun observerPermissionRequest() {
+        lifecycleScope.launch {
+            permissionRequester.permissionState.collect { permissionState ->
+                when (permissionState) {
+                    Initial -> Log.d(TAG, Initial.name)
+                    Requesting -> Log.d(TAG, Requesting.name)
+                    NotAllGranted -> Log.e(TAG, NotAllGranted.name)
+                    AllGranted -> Log.d(TAG, AllGranted.name)
+                }
+            }
+        }
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS: Array<String> =
+            if (Build.VERSION.SDK_INT >= 33) {
+                arrayOf(
+                    android.Manifest.permission.POST_NOTIFICATIONS,
+                )
+            } else if (Build.VERSION.SDK_INT >= 23) {
+                arrayOf(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                )
+            } else {
+                arrayOf()
+            }
+    }
 }

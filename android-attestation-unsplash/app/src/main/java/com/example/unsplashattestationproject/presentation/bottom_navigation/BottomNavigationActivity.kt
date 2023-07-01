@@ -19,6 +19,7 @@ import com.example.unsplashattestationproject.BuildConfig
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.SharedRepository
 import com.example.unsplashattestationproject.databinding.ActivityUnsplashBottomNavigationsBinding
+import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,13 +27,18 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BottomNavigationActivity : AppCompatActivity() {
+class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider {
 
     private lateinit var binding: ActivityUnsplashBottomNavigationsBinding
     lateinit var navigationController: NavController
 
     @Inject
     lateinit var sharedRepository: SharedRepository
+
+    private lateinit var permissionRequester: PermissionRequester
+
+    override fun getPermissionRequester()
+        = permissionRequester
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,7 @@ class BottomNavigationActivity : AppCompatActivity() {
         navigationController = getNavController()
         setupBottomNavigation()
         handleIntent(intent)
+        permissionRequester = PermissionRequester(this)
     }
 
     override fun onStart() {
