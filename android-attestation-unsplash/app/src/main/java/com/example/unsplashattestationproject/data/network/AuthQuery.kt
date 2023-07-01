@@ -22,7 +22,7 @@ class AuthQuery {
         const val VAL_RESPONSE_TYPE_CODE: String = "code"
 
         const val PARAM_SCOPE: String = "scope"
-        const val VAL_PUBLIC: String = "public"
+        const val VAL_SCOPE_PUBLIC_WRITE_PHOTOS: String = "public write_likes"
 
         const val PARAM_CODE: String = "code"
 

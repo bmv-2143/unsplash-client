@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.domain.DownloadPhotoUseCase
 import com.example.unsplashattestationproject.domain.GetPhotoDetailsUseCase
+import com.example.unsplashattestationproject.domain.LikePhotoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PhotoDetailsFragmentViewModel @Inject constructor(
     private val getPhotoDetailsUseCase: GetPhotoDetailsUseCase,
-    private val downloadPhotoUseCase: DownloadPhotoUseCase
+    private val downloadPhotoUseCase: DownloadPhotoUseCase,
+    private val likePhotoUseCase: LikePhotoUseCase
 ) : ViewModel() {
 
     private val _photoDetailsFlow: MutableSharedFlow<UnsplashPhotoDetails> = MutableSharedFlow()
@@ -43,7 +45,7 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
         }
     }
 
-    // This is here for demo purposes only (Unsplash service recommends using tracked downloads)
+    // This is here for demo purposes only (Unsplash service recommends using tracked downloads).
     private fun downloadPhotoTracked() {
         viewModelScope.launch {
             val id = photoToDownload?.id
@@ -51,6 +53,22 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
             downloadPhotoUseCase.startTrackedDownload(url, photoToDownload!!.id)
             Log.e(TAG, "requestPhotoDownloadTrackApi: url: $url")
             downloadPhotoUseCase(photoToDownload!!)
+        }
+    }
+
+    private val _photoLikes: MutableSharedFlow<Pair<Boolean, Int>> = MutableSharedFlow()
+    internal val photoLikesFlow = _photoLikes.asSharedFlow()
+
+    fun likePhoto() {
+        viewModelScope.launch {
+            val photoId = photoToDownload?.id
+            if (photoId != null) {
+                val likeResult = likePhotoUseCase(photoId)
+                Log.e(TAG, "likePhoto: liked?: ${likeResult.likedByUser}, likes: ${likeResult.likes}")
+                _photoLikes.emit(Pair(likeResult.likedByUser, likeResult.likes))
+            } else {
+                Log.e(TAG, "likePhoto: photoId is null")
+            }
         }
     }
 }

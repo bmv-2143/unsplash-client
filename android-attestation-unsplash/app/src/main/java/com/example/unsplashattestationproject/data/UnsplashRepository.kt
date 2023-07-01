@@ -119,6 +119,10 @@ class UnsplashRepository @Inject constructor(
         return "unsplash-photo-$photoId.jpeg"
     }
 
+    suspend fun likePhoto(photoId: String) : UnsplashPhoto {
+        return unsplashNetworkDataSource.likePhoto(photoId).photo
+    }
+
     companion object {
 
         const val PREFS_KEY_ACCESS_TOKEN = "access_token"

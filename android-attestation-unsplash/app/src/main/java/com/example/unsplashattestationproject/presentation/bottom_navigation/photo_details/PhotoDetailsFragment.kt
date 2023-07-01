@@ -29,6 +29,7 @@ import com.example.unsplashattestationproject.presentation.bottom_navigation.Bot
 import com.example.unsplashattestationproject.presentation.bottom_navigation.PermissionRequestProvider
 import com.example.unsplashattestationproject.presentation.bottom_navigation.model.toPhotoListItemUiModel
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoItemLoader
+import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoLikesLoader
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.AllGranted
@@ -65,7 +66,9 @@ class PhotoDetailsFragment : Fragment() {
 
         setLocationButtonListener()
         setDownloadButtonListener()
+        setLikePhotoClickListener()
         observerPhotoDetails()
+        observerPhotoLikes()
         addActionBarMenu()
 
         return binding.root
@@ -120,6 +123,12 @@ class PhotoDetailsFragment : Fragment() {
         }
     }
 
+    private fun setLikePhotoClickListener() {
+        binding.photoItem.photoListItemLikeButton.setOnClickListener {
+            photoDetailsFragmentViewModel.likePhoto()
+        }
+    }
+
     private fun observerPhotoDetails() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -132,6 +141,16 @@ class PhotoDetailsFragment : Fragment() {
                     updateAboutAuthor(photoDetails)
                     updateDownloadCount(photoDetails)
                     displaySelectedPhotoLoadedData(photoDetails.toPhotoListItemUiModel())
+                }
+            }
+        }
+    }
+
+    private fun observerPhotoLikes() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                photoDetailsFragmentViewModel.photoLikesFlow.collect { photoLikesData ->
+                    PhotoLikesLoader.updateLikes(binding.photoItem, photoLikesData)
                 }
             }
         }

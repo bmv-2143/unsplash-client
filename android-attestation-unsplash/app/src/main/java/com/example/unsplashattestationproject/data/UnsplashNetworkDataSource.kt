@@ -3,6 +3,7 @@ package com.example.unsplashattestationproject.data
 import android.util.Log
 import com.example.unsplashattestationproject.data.dto.auth.AuthInfo
 import com.example.unsplashattestationproject.data.dto.auth.TokenBody
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.network.UnsplashAuthorizationService
@@ -54,6 +55,15 @@ class UnsplashNetworkDataSource @Inject constructor(
             result.url
         } catch (e: Exception) {
             Log.e(TAG, "${::getTrackedDownloadPhotoUrl.name} error: ${e.message}")
+            throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
+        }
+    }
+
+    suspend fun likePhoto(photoId: String) : UnsplashLikeResponse {
+        return try {
+            unsplashService.unsplashApi.likePhoto(photoId)
+        } catch (e: Exception) {
+            Log.e(TAG, "${::likePhoto.name} error: ${e.message}")
             throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
         }
     }

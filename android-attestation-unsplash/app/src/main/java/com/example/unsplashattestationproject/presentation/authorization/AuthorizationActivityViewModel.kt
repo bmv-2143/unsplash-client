@@ -10,10 +10,9 @@ import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.P
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_REDIRECT_URI
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_RESPONSE_TYPE
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_SCOPE
-import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_PUBLIC
+import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_SCOPE_PUBLIC_WRITE_PHOTOS
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.VAL_RESPONSE_TYPE_CODE
 import com.example.unsplashattestationproject.domain.AuthorizeUserUseCase
-import com.example.unsplashattestationproject.domain.GetPhotosUseCase
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -60,6 +59,6 @@ class AuthorizationActivityViewModel @Inject constructor(
                 AuthQuery.VAL_REDIRECT_URL
             )
             .appendQueryParameter(PARAM_RESPONSE_TYPE, VAL_RESPONSE_TYPE_CODE)
-            .appendQueryParameter(PARAM_SCOPE, VAL_PUBLIC)
+            .appendQueryParameter(PARAM_SCOPE, VAL_SCOPE_PUBLIC_WRITE_PHOTOS)
             .build()
 }
