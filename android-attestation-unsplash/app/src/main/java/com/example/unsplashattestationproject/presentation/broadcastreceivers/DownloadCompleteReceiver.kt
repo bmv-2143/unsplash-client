@@ -9,6 +9,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.util.Log
 import com.example.unsplashattestationproject.data.SharedRepository
+import com.example.unsplashattestationproject.presentation.notifications.NotificationMaker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -17,6 +18,9 @@ class DownloadCompletedReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var sharedRepository: SharedRepository
+
+    @Inject
+    lateinit var notificationMaker: NotificationMaker
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action != DOWNLOAD_COMPLETED_ACTION)
@@ -37,15 +41,24 @@ class DownloadCompletedReceiver : BroadcastReceiver() {
             return
         }
         sendDownloadCompleteEvent(id, downloadFileUri)
+        sendNotification(downloadFileUri)
     }
 
-    private fun sendDownloadCompleteEvent(id: Long, fileUri : Uri) {
+    private fun sendDownloadCompleteEvent(id: Long, fileUri: Uri) {
         if (::sharedRepository.isInitialized) {
             sharedRepository.onDownloadCompleted(id, fileUri)
         }
     }
 
-    private fun getDownloadedFileUri(context: Context?, id: Long) : Uri? {
+    private fun sendNotification(downloadFileUri: Uri) {
+        if (::notificationMaker.isInitialized) {
+            notificationMaker.makeNotification(
+                "Download completed",
+                "File downloaded", downloadFileUri)
+        }
+    }
+
+    private fun getDownloadedFileUri(context: Context?, id: Long): Uri? {
         val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val query = DownloadManager.Query().setFilterById(id)
         val cursor = downloadManager.query(query)
@@ -66,7 +79,7 @@ class DownloadCompletedReceiver : BroadcastReceiver() {
         return null
     }
 
-    private fun getUri(cursor : Cursor) : Uri? {
+    private fun getUri(cursor: Cursor): Uri? {
         val uriIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)
 
         if (doesColumnExist(uriIndex)) {
@@ -78,7 +91,7 @@ class DownloadCompletedReceiver : BroadcastReceiver() {
         return null
     }
 
-    private fun doesColumnExist(columnIndex : Int) : Boolean = columnIndex != -1
+    private fun doesColumnExist(columnIndex: Int): Boolean = columnIndex != -1
 
     companion object {
         const val DOWNLOAD_COMPLETED_ACTION = "android.intent.action.DOWNLOAD_COMPLETE"
