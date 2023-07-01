@@ -125,7 +125,7 @@ class PhotoDetailsFragment : Fragment() {
 
     private fun setLikePhotoClickListener() {
         binding.photoItem.photoListItemLikeButton.setOnClickListener {
-            photoDetailsFragmentViewModel.likePhoto()
+            photoDetailsFragmentViewModel.updatePhotoLikeStatus()
         }
     }
 

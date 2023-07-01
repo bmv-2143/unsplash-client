@@ -96,7 +96,7 @@ class UnsplashRepository @Inject constructor(
     suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails =
         unsplashNetworkDataSource.getPhotoDetails(photoId)
 
-    fun getTrackedDownloadPhotoUrl(photo : UnsplashPhotoDetails) {
+    fun getTrackedDownloadPhotoUrl(photo: UnsplashPhotoDetails) {
         unsplashDownloader.downloadFile(
             photo.urls.raw,
             getFileNameForDownload(photo.id + "_RAW"),
@@ -104,7 +104,7 @@ class UnsplashRepository @Inject constructor(
         )
     }
 
-    fun startTrackedDownload(url : String, id : String) {
+    fun startTrackedDownload(url: String, id: String) {
         unsplashDownloader.downloadFile(
             url,
             getFileNameForDownload(id),
@@ -112,15 +112,28 @@ class UnsplashRepository @Inject constructor(
         )
     }
 
-    suspend fun getTrackedDownloadPhotoUrl(photoId : String) : String =
+    suspend fun getTrackedDownloadPhotoUrl(photoId: String): String =
         unsplashNetworkDataSource.getTrackedDownloadPhotoUrl(photoId)
 
     private fun getFileNameForDownload(photoId: String): String {
         return "unsplash-photo-$photoId.jpeg"
     }
 
-    suspend fun likePhoto(photoId: String) : UnsplashPhoto {
+
+    suspend fun updateLikeStatus(photoId: String, isLiked: Boolean) : UnsplashPhoto {
+        return if (isLiked) {
+            likePhoto(photoId)
+        } else {
+            unlikePhoto(photoId)
+        }
+    }
+
+    private suspend fun likePhoto(photoId: String): UnsplashPhoto {
         return unsplashNetworkDataSource.likePhoto(photoId).photo
+    }
+
+    private suspend fun unlikePhoto(photoId: String): UnsplashPhoto {
+        return unsplashNetworkDataSource.unlikePhoto(photoId).photo
     }
 
     companion object {

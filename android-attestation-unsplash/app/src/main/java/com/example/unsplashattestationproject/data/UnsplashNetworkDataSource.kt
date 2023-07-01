@@ -68,4 +68,14 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
+    suspend fun unlikePhoto(photoId: String) : UnsplashLikeResponse {
+        return try {
+            unsplashService.unsplashApi.unlikePhoto(photoId)
+        } catch (e: Exception) {
+            Log.e(TAG, "${::likePhoto.name} error: ${e.message}")
+            throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
+        }
+    }
+
+
 }

@@ -4,6 +4,7 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeRespon
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -26,4 +27,7 @@ interface UnsplashApi {
 
     @POST("photos/{id}/like")
     suspend fun likePhoto(@Path("id") id: String) : UnsplashLikeResponse
+
+    @DELETE("photos/{id}/like")
+    suspend fun unlikePhoto(@Path("id") id: String) : UnsplashLikeResponse
 }

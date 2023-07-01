@@ -26,11 +26,13 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
     internal val photoDetailsFlow = _photoDetailsFlow.asSharedFlow()
 
     private var photoToDownload: UnsplashPhotoDetails? = null
+    private lateinit var likesStatus: Pair<Boolean, Int>
 
     fun loadPhotoDetails(photoId: String) {
         viewModelScope.launch {
             val photoDetails = getPhotoDetailsUseCase(photoId)
             photoToDownload = photoDetails
+            likesStatus = Pair(photoDetails.likedByUser, photoDetails.likes)
             _photoDetailsFlow.emit(photoDetails)
         }
     }
@@ -59,16 +61,16 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
     private val _photoLikes: MutableSharedFlow<Pair<Boolean, Int>> = MutableSharedFlow()
     internal val photoLikesFlow = _photoLikes.asSharedFlow()
 
-    fun likePhoto() {
+    fun updatePhotoLikeStatus() {
         viewModelScope.launch {
-            val photoId = photoToDownload?.id
-            if (photoId != null) {
-                val likeResult = likePhotoUseCase(photoId)
-                Log.e(TAG, "likePhoto: liked?: ${likeResult.likedByUser}, likes: ${likeResult.likes}")
-                _photoLikes.emit(Pair(likeResult.likedByUser, likeResult.likes))
-            } else {
-                Log.e(TAG, "likePhoto: photoId is null")
+            if (photoToDownload == null) {
+                Log.e(TAG, "updatePhotoLikeStatus: photoToDownload is null")
+                return@launch
             }
+            val likeActionResult = likePhotoUseCase(photoToDownload?.id!!, !likesStatus.first)
+            Log.e(TAG, "likePhoto: liked?: ${likeActionResult.likedByUser}, likes: ${likeActionResult.likes}")
+            likesStatus = Pair(likeActionResult.likedByUser, likeActionResult.likes)
+            _photoLikes.emit(likesStatus)
         }
     }
 }

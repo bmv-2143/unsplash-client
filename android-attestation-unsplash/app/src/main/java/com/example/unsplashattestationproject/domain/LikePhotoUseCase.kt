@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class LikePhotoUseCase @Inject constructor(private val unsplashRepository: UnsplashRepository) {
 
-    suspend operator fun invoke(photoId : String): UnsplashPhoto =
-        unsplashRepository.likePhoto(photoId)
+    suspend operator fun invoke(photoId : String, isLiked : Boolean): UnsplashPhoto =
+        unsplashRepository.updateLikeStatus(photoId, isLiked)
 
 }
