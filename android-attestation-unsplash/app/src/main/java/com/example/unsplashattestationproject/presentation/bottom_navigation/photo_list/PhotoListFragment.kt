@@ -18,8 +18,8 @@ import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
 import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
+import com.example.unsplashattestationproject.presentation.utils.SnackbarFactory
 import com.example.unsplashattestationproject.utils.NetworkStateChecker
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,6 +40,9 @@ class PhotoListFragment : Fragment() {
 
     @Inject
     lateinit var networkStateChecker: NetworkStateChecker
+
+    @Inject
+    lateinit var snackbarFactory: SnackbarFactory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,17 +123,10 @@ class PhotoListFragment : Fragment() {
 
     private fun showNoConnectionSnackbar() {
         if (!networkStateChecker.isNetworkAvailable()) {
-            with(
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.fragment_photo_list_no_internet_msg),
-                    Snackbar.LENGTH_INDEFINITE
-                )
-            ) {
-                setAction(
-                    getString(R.string.fragment_photo_list_not_internet_msg_close)
-                ) { this.dismiss() }
-            }.show()
+            snackbarFactory.showSnackbar(
+                binding.root,
+                getString(R.string.fragment_photo_list_no_internet_msg),
+                getString(R.string.fragment_photo_list_not_internet_msg_close))
         }
     }
 
