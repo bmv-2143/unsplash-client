@@ -38,20 +38,26 @@ class UnsplashNetworkDataSource @Inject constructor(
             unsplashService.unsplashApi.getPhotos(
                 page,
                 perPage = perPage,
-//                orderBy = "latest"
             )
         } catch (e: UnknownHostException) {
-            _networkErrorFlow.emit(NetworkError.NoInternetConnection(
-                e.message ?: "No internet connection"))
+            handleUnknownHostError(e)
             listOf()
         } catch (e: HttpException) {
             handleHttpException(e)
             listOf()
         } catch (e: Exception) {
             Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
-//            throw Exception(e)
             listOf()
         }
+    }
+
+    private suspend fun handleUnknownHostError(e: UnknownHostException) {
+        Log.e(TAG, "${::handleUnknownHostError.name} error: ${e.message}")
+        _networkErrorFlow.emit(
+            NetworkError.NoInternetConnection(
+                e.message ?: "No internet connection"
+            )
+        )
     }
 
     private suspend fun handleHttpException(e: HttpException) {
