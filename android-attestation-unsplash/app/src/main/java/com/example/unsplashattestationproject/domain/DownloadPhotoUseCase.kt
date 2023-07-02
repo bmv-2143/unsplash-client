@@ -10,7 +10,7 @@ class DownloadPhotoUseCase @Inject constructor(private val unsplashRepository: U
         unsplashRepository.getTrackedDownloadPhotoUrl(photo)
 
     // todo: use case should contain only one method
-    suspend fun getTrackedDownloadUrl(photoId: String) : String =
+    suspend fun getTrackedDownloadUrl(photoId: String) : String? =
         unsplashRepository.getTrackedDownloadPhotoUrl(photoId)
 
     fun startTrackedDownload(url : String, photoId: String) =

@@ -114,7 +114,7 @@ class UnsplashRepository @Inject constructor(
         )
     }
 
-    suspend fun getTrackedDownloadPhotoUrl(photoId: String): String =
+    suspend fun getTrackedDownloadPhotoUrl(photoId: String): String? =
         unsplashNetworkDataSource.getTrackedDownloadPhotoUrl(photoId)
 
     private fun getFileNameForDownload(photoId: String): String {

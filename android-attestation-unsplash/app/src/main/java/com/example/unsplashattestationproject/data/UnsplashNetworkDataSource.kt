@@ -86,14 +86,20 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
-    suspend fun getTrackedDownloadPhotoUrl(photoId: String) : String {
+    suspend fun getTrackedDownloadPhotoUrl(photoId: String) : String? {
         return try {
             val result = unsplashService.unsplashApi.getTrackedDownloadPhoto(photoId)
             Log.e(TAG, "downloadPhoto: photoId = $result")
             result.url
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            null
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            null
         } catch (e: Exception) {
             Log.e(TAG, "${::getTrackedDownloadPhotoUrl.name} error: ${e.message}")
-            throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
+            null
         }
     }
 

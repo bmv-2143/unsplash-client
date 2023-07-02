@@ -113,6 +113,7 @@ class PhotoDetailsFragment : Fragment() {
             if (permissionRequester.areAllPermissionsGranted(REQUIRED_PERMISSIONS)) {
                 Toast.makeText(requireContext(), "Download Started", Toast.LENGTH_SHORT).show()
                 photoDetailsFragmentViewModel.downloadPhotoRaw()
+//                photoDetailsFragmentViewModel.downloadPhotoTracked()
             } else {
                 Toast.makeText(
                     requireContext(),

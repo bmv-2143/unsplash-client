@@ -50,13 +50,15 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
     }
 
     // This is here for demo purposes only (Unsplash service recommends using tracked downloads).
-    private fun downloadPhotoTracked() {
+    fun downloadPhotoTracked() {
         viewModelScope.launch {
-            val id = photoToDownload?.id
-            val url = downloadPhotoUseCase.getTrackedDownloadUrl(id!!)
-            downloadPhotoUseCase.startTrackedDownload(url, photoToDownload!!.id)
+            val photo = photoToDownload
+            val id = photo?.id ?: return@launch
+            val url = downloadPhotoUseCase.getTrackedDownloadUrl(id) ?: return@launch
+            downloadPhotoUseCase.startTrackedDownload(url, photo.id)
             Log.e(TAG, "requestPhotoDownloadTrackApi: url: $url")
-            downloadPhotoUseCase(photoToDownload!!)
+            downloadPhotoUseCase(photo)
+
         }
     }
 
