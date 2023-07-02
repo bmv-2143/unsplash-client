@@ -2,6 +2,7 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.ph
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -104,7 +105,18 @@ class PhotoDetailsFragment : Fragment() {
 
     private fun setLocationButtonListener() {
         binding.fragmentPhotoDetailsLocation.setOnClickListener {
-            Toast.makeText(requireContext(), "Location", Toast.LENGTH_SHORT).show()
+            showLocationOnMap(photoDetailsFragmentViewModel.photoLocationRequest)
+        }
+    }
+
+    private fun showLocationOnMap(location: String) {
+        val geoLocation = Uri.encode(location)
+        val geoUri = Uri.parse("geo:0,0?q=$geoLocation")
+        val mapIntent = Intent(Intent.ACTION_VIEW, geoUri)
+        if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(mapIntent)
+        } else {
+            Toast.makeText(requireContext(), "Map app is not found", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -134,8 +146,6 @@ class PhotoDetailsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoDetailsFragmentViewModel.photoDetailsFlow.collect { photoDetails ->
-                    Log.e(TAG, "PHOTO DETAILS: $photoDetails")
-
                     updateLocation(photoDetails)
                     updateTags(photoDetails)
                     updateExif(photoDetails)
@@ -162,13 +172,14 @@ class PhotoDetailsFragment : Fragment() {
 
     private fun updateLocation(photoDetails: UnsplashPhotoDetails) {
         updateLocationVisibility(photoDetails)
-        setCityCountryText(photoDetails)
+        updateLocationText(photoDetails)
     }
 
-    private fun setCityCountryText(photoDetails: UnsplashPhotoDetails) {
-        val cityCountry = listOfNotNull(photoDetails.location?.city, photoDetails.location?.country)
-        binding.fragmentPhotoDetailsLocationText.text =
-            cityCountry.joinToString(separator = ", ")
+    private fun updateLocationText(photoDetails: UnsplashPhotoDetails) {
+        photoDetails.location?.let {
+            binding.fragmentPhotoDetailsLocationText.text =
+                photoDetailsFragmentViewModel.getLocationString(it)
+        }
     }
 
     private fun updateLocationVisibility(photoDetails: UnsplashPhotoDetails) {

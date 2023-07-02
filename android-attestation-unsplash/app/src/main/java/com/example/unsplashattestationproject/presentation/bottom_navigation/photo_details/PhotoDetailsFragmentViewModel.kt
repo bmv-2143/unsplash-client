@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.unsplashattestationproject.data.dto.photos.Location
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.domain.DownloadPhotoUseCase
 import com.example.unsplashattestationproject.domain.GetPhotoDetailsUseCase
@@ -12,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 
@@ -29,14 +29,50 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
     private var photoToDownload: UnsplashPhotoDetails? = null
     private lateinit var likesStatus: Pair<Boolean, Int>
 
+    internal lateinit var photoLocationRequest: String
+        private set
+
     fun loadPhotoDetails(photoId: String) {
         viewModelScope.launch {
             getPhotoDetailsUseCase(photoId)?.let { photoDetails ->
                 photoToDownload = photoDetails
                 likesStatus = Pair(photoDetails.likedByUser, photoDetails.likes)
+
+                photoDetails.location?.let {
+                    photoLocationRequest = getLocationRequest(it)
+                    Log.e(TAG, "loadPhotoDetails: location request $photoLocationRequest")
+                }
+
                 _photoDetailsFlow.emit(photoDetails)
             }
         }
+    }
+
+    private fun getLocationRequest(location: Location): String {
+        val position = location.position
+        return if (position?.latitude != null && position.longitude != null) {
+            "geo:${position.latitude},${position.longitude}"
+        } else {
+            val cityCountry =
+                listOfNotNull(location.city, location.country).joinToString(separator = ",")
+            "geo:0,0?q=$cityCountry"
+        }
+    }
+
+    fun getLocationString(location: Location): String {
+        val locationPresentation = mutableListOf<String>()
+        location.city?.let { locationPresentation.add(it) }
+        location.country?.let { locationPresentation.add(it) }
+
+        val separator = ", "
+
+        location.position?.let {
+            val positionPresentation = mutableListOf<String>()
+            it.latitude?.let { latitude -> positionPresentation.add(latitude.toString()) }
+            it.longitude?.let { longitude -> positionPresentation.add(longitude.toString()) }
+            locationPresentation.add(positionPresentation.joinToString(separator = separator))
+        }
+        return  locationPresentation.joinToString(separator = separator)
     }
 
     fun downloadPhotoRaw() {
