@@ -65,17 +65,20 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
 
     fun updatePhotoLikeStatus() {
         viewModelScope.launch {
-            if (photoToDownload == null) {
+            val photo = photoToDownload
+            if (photo == null) {
                 Log.e(TAG, "updatePhotoLikeStatus: photoToDownload is null")
                 return@launch
             }
-            try {
-                val likeActionResult = likePhotoUseCase(photoToDownload?.id!!, !likesStatus.first)
-                Log.e(TAG, "likePhoto: liked?: ${likeActionResult!!.likedByUser}, likes: ${likeActionResult.likes}")
+
+            likePhotoUseCase(photo.id, !likesStatus.first)?.let { likeActionResult ->
+                Log.e(
+                    TAG,
+                    "likePhoto: liked?: ${likeActionResult.likedByUser}, " +
+                            "likes: ${likeActionResult.likes}"
+                )
                 likesStatus = Pair(likeActionResult.likedByUser, likeActionResult.likes)
                 _photoLikes.emit(likesStatus)
-            } catch (e: NullPointerException) {
-                Log.e(TAG, "updatePhotoLikeStatus: photoToDownload is null")
             }
         }
     }
