@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.lang.NullPointerException
 import javax.inject.Inject
 
 
@@ -68,10 +69,14 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
                 Log.e(TAG, "updatePhotoLikeStatus: photoToDownload is null")
                 return@launch
             }
-            val likeActionResult = likePhotoUseCase(photoToDownload?.id!!, !likesStatus.first)
-            Log.e(TAG, "likePhoto: liked?: ${likeActionResult!!.likedByUser}, likes: ${likeActionResult.likes}")
-            likesStatus = Pair(likeActionResult.likedByUser, likeActionResult.likes)
-            _photoLikes.emit(likesStatus)
+            try {
+                val likeActionResult = likePhotoUseCase(photoToDownload?.id!!, !likesStatus.first)
+                Log.e(TAG, "likePhoto: liked?: ${likeActionResult!!.likedByUser}, likes: ${likeActionResult.likes}")
+                likesStatus = Pair(likeActionResult.likedByUser, likeActionResult.likes)
+                _photoLikes.emit(likesStatus)
+            } catch (e: NullPointerException) {
+                Log.e(TAG, "updatePhotoLikeStatus: photoToDownload is null")
+            }
         }
     }
 }

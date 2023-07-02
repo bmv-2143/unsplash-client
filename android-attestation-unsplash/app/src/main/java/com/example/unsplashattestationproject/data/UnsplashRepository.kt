@@ -134,8 +134,8 @@ class UnsplashRepository @Inject constructor(
         return unsplashNetworkDataSource.likePhoto(photoId)?.photo
     }
 
-    private suspend fun unlikePhoto(photoId: String): UnsplashPhoto {
-        return unsplashNetworkDataSource.unlikePhoto(photoId).photo
+    private suspend fun unlikePhoto(photoId: String): UnsplashPhoto? {
+        return unsplashNetworkDataSource.unlikePhoto(photoId)?.photo
     }
 
     companion object {
