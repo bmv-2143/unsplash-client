@@ -3,8 +3,14 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.ph
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -54,6 +60,7 @@ class PhotoListFragment : Fragment() {
         setupRecyclerViewLayoutManager()
         initRecyclerViewAdapter()
         setRecyclerViewScrollListener()
+        addActionBarMenu()
         return binding.root
     }
 
@@ -147,6 +154,31 @@ class PhotoListFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun addActionBarMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.photo_list_fragment_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_search -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Search clicked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
