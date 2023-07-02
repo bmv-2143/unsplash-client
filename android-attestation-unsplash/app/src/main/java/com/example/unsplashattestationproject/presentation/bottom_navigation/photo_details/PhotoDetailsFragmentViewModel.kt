@@ -30,10 +30,11 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
 
     fun loadPhotoDetails(photoId: String) {
         viewModelScope.launch {
-            val photoDetails = getPhotoDetailsUseCase(photoId)
-            photoToDownload = photoDetails
-            likesStatus = Pair(photoDetails.likedByUser, photoDetails.likes)
-            _photoDetailsFlow.emit(photoDetails)
+            getPhotoDetailsUseCase(photoId)?.let { photoDetails ->
+                photoToDownload = photoDetails
+                likesStatus = Pair(photoDetails.likedByUser, photoDetails.likes)
+                _photoDetailsFlow.emit(photoDetails)
+            }
         }
     }
 
@@ -68,7 +69,7 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
                 return@launch
             }
             val likeActionResult = likePhotoUseCase(photoToDownload?.id!!, !likesStatus.first)
-            Log.e(TAG, "likePhoto: liked?: ${likeActionResult.likedByUser}, likes: ${likeActionResult.likes}")
+            Log.e(TAG, "likePhoto: liked?: ${likeActionResult!!.likedByUser}, likes: ${likeActionResult.likes}")
             likesStatus = Pair(likeActionResult.likedByUser, likeActionResult.likes)
             _photoLikes.emit(likesStatus)
         }

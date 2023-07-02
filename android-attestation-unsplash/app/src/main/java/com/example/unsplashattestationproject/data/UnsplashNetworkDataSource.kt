@@ -71,12 +71,18 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
-    suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails {
+    suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails? {
         return try {
             unsplashService.unsplashApi.getPhotoDetails(photoId)
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            null
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            null
         } catch (e: Exception) {
             Log.e(TAG, "${::getPhotoDetails.name} error: ${e.message}")
-            throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
+            null
         }
     }
 
@@ -91,12 +97,22 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
-    suspend fun likePhoto(photoId: String) : UnsplashLikeResponse {
+    suspend fun likePhoto(photoId: String) : UnsplashLikeResponse? {
         return try {
             unsplashService.unsplashApi.likePhoto(photoId)
+//        } catch (e: Exception) {
+//            Log.e(TAG, "${::likePhoto.name} error: ${e.message}")
+//            throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
+//        }
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            null
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            null
         } catch (e: Exception) {
-            Log.e(TAG, "${::likePhoto.name} error: ${e.message}")
-            throw Exception(e) // todo: misc errors (socket timeout, 403, etc. will crash app, need to handle it)
+            Log.e(TAG, "${::getPhotoDetails.name} error: ${e.message}")
+            null
         }
     }
 

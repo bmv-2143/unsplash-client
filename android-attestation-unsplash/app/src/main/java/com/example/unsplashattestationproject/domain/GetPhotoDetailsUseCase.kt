@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class GetPhotoDetailsUseCase @Inject constructor(private val unsplashRepository: UnsplashRepository) {
 
-    suspend operator fun invoke(photoId : String): UnsplashPhotoDetails =
+    suspend operator fun invoke(photoId : String): UnsplashPhotoDetails? =
         unsplashRepository.getPhotoDetails(photoId)
 
 }

@@ -95,7 +95,7 @@ class UnsplashRepository @Inject constructor(
         return unsplashNetworkDataSource.getPhotos(page, PAGE_SIZE)
     }
 
-    suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails =
+    suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails? =
         unsplashNetworkDataSource.getPhotoDetails(photoId)
 
     fun getTrackedDownloadPhotoUrl(photo: UnsplashPhotoDetails) {
@@ -122,7 +122,7 @@ class UnsplashRepository @Inject constructor(
     }
 
 
-    suspend fun updateLikeStatus(photoId: String, isLiked: Boolean) : UnsplashPhoto {
+    suspend fun updateLikeStatus(photoId: String, isLiked: Boolean) : UnsplashPhoto? {
         return if (isLiked) {
             likePhoto(photoId)
         } else {
@@ -130,8 +130,8 @@ class UnsplashRepository @Inject constructor(
         }
     }
 
-    private suspend fun likePhoto(photoId: String): UnsplashPhoto {
-        return unsplashNetworkDataSource.likePhoto(photoId).photo
+    private suspend fun likePhoto(photoId: String): UnsplashPhoto? {
+        return unsplashNetworkDataSource.likePhoto(photoId)?.photo
     }
 
     private suspend fun unlikePhoto(photoId: String): UnsplashPhoto {
