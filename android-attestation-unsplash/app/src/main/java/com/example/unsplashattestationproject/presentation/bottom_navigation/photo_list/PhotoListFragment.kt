@@ -109,6 +109,13 @@ class PhotoListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         showNoConnectionSnackbar()
+        updateSelectedItemLikes()
+    }
+
+    private fun updateSelectedItemLikes() {
+        if (activityViewModel.selectedFromPhotoList != null) {
+            photoListAdapter.updateItemLikes(activityViewModel.selectedFromPhotoList!!)
+        }
     }
 
     private fun showNoConnectionSnackbar() {

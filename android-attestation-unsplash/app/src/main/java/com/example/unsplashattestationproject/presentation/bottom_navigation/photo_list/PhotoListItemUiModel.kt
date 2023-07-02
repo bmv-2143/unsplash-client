@@ -6,7 +6,7 @@ data class PhotoListItemUiModel(
     val authorName: String,
     val authorUsername: String,
     val authorAvatar: String,
-    val likes: Int,
-    val likedByUser: Boolean,
+    var likes: Int,
+    var likedByUser: Boolean,
     val imageUrl: String,
 )

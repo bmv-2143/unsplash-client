@@ -141,6 +141,7 @@ class PhotoDetailsFragment : Fragment() {
                     updateAboutAuthor(photoDetails)
                     updateDownloadCount(photoDetails)
                     displaySelectedPhotoLoadedData(photoDetails.toPhotoListItemUiModel())
+                    activityViewModel.selectedFromPhotoList = photoDetails.toPhotoListItemUiModel()
                 }
             }
         }
@@ -151,6 +152,8 @@ class PhotoDetailsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoDetailsFragmentViewModel.photoLikesFlow.collect { photoLikesData ->
                     PhotoLikesLoader.updateLikes(binding.photoItem, photoLikesData)
+                    activityViewModel.selectedFromPhotoList?.likedByUser = photoLikesData.first
+                    activityViewModel.selectedFromPhotoList?.likes = photoLikesData.second
                 }
             }
         }
