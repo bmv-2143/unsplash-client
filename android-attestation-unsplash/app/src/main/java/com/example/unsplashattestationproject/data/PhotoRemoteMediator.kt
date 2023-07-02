@@ -27,7 +27,7 @@ class PhotoRemoteMediator @Inject constructor(
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Photo>): MediatorResult {
 
-        Log.e(TAG, "load: loadType = $loadType, state = $state")
+//        Log.e(TAG, "load: loadType = $loadType, state = $state")
 
         if (!networkStateChecker.isNetworkAvailable()) {
             return MediatorResult.Success(endOfPaginationReached = true)
