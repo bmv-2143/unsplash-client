@@ -157,7 +157,8 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
 
         snackbarFactory.showSnackbar(
             binding.root,
-            "Download with ID ${downloadResult.first} completed!"
+            "Download with ID ${downloadResult.first} completed!",
+            actionButtonText = "View"
         ) {
             viewDownloadedPhoto(downloadResult.second)
         }
