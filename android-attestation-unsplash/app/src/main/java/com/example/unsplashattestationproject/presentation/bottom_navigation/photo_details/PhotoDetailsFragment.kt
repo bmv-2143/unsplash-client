@@ -110,8 +110,7 @@ class PhotoDetailsFragment : Fragment() {
     }
 
     private fun showLocationOnMap(location: String) {
-        val geoLocation = Uri.encode(location)
-        val geoUri = Uri.parse("geo:0,0?q=$geoLocation")
+        val geoUri = Uri.parse(location)
         val mapIntent = Intent(Intent.ACTION_VIEW, geoUri)
         if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(mapIntent)
