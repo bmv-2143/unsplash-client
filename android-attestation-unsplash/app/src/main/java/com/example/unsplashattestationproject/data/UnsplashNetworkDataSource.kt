@@ -46,13 +46,13 @@ class UnsplashNetworkDataSource @Inject constructor(
             handleHttpException(e)
             listOf()
         } catch (e: Exception) {
-            Log.e(TAG, "${::getPhotos.name} error: ${e.message}")
+            logError(::getPhotos.name, e)
             listOf()
         }
     }
 
     private suspend fun handleUnknownHostError(e: UnknownHostException) {
-        Log.e(TAG, "${::handleUnknownHostError.name} error: ${e.message}")
+        logError(::handleUnknownHostError.name, e)
         _networkErrorFlow.emit(
             NetworkError.NoInternetConnection(
                 e.message ?: "No internet connection"
@@ -81,7 +81,7 @@ class UnsplashNetworkDataSource @Inject constructor(
             handleHttpException(e)
             null
         } catch (e: Exception) {
-            Log.e(TAG, "${::getPhotoDetails.name} error: ${e.message}")
+            logError(::getPhotoDetails.name, e)
             null
         }
     }
@@ -98,7 +98,7 @@ class UnsplashNetworkDataSource @Inject constructor(
             handleHttpException(e)
             null
         } catch (e: Exception) {
-            Log.e(TAG, "${::getTrackedDownloadPhotoUrl.name} error: ${e.message}")
+            logError(::getTrackedDownloadPhotoUrl.name, e)
             null
         }
     }
@@ -113,9 +113,13 @@ class UnsplashNetworkDataSource @Inject constructor(
             handleHttpException(e)
             null
         } catch (e: Exception) {
-            Log.e(TAG, "${::likePhoto.name} error: ${e.message}")
+            logError(::likePhoto.name, e)
             null
         }
+    }
+
+    private fun logError(methodName: String, e: Exception) {
+        Log.e(TAG, "$methodName error: ${e.message}")
     }
 
     suspend fun unlikePhoto(photoId: String) : UnsplashLikeResponse? {
@@ -128,7 +132,7 @@ class UnsplashNetworkDataSource @Inject constructor(
             handleHttpException(e)
             null
         } catch (e: Exception) {
-            Log.e(TAG, "${::unlikePhoto.name} error: ${e.message}")
+            logError(::unlikePhoto.name, e)
             null
         }
     }
