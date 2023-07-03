@@ -3,15 +3,9 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.ph
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -41,7 +35,7 @@ class PhotoListFragment : Fragment() {
 
     private val photoListViewModel: PhotoListViewModel by viewModels()
     private val photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
-    private val activityViewModel : BottomNavigationActivityViewModel by activityViewModels()
+    private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
 
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
@@ -94,7 +88,6 @@ class PhotoListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoListViewModel.getPhotosPagedFlow().collectLatest { photosPage ->
                     photoListAdapter.submitData(photosPage)
-//                    convertToList(photosPage) // TODO: remove me
                 }
             }
         }
@@ -135,7 +128,8 @@ class PhotoListFragment : Fragment() {
             snackbarFactory.showSnackbar(
                 binding.root,
                 getString(R.string.fragment_photo_list_no_internet_msg),
-                getString(R.string.fragment_photo_list_not_internet_msg_close))
+                getString(R.string.fragment_photo_list_not_internet_msg_close)
+            )
         }
     }
 
@@ -160,67 +154,15 @@ class PhotoListFragment : Fragment() {
 
     private fun addActionBarMenu() {
         val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.photo_list_fragment_menu, menu)
-
-                val searchItem = menu.findItem(R.id.action_search)
-                val searchView = searchItem.actionView as SearchView
-
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        // Handle search query submission
-
-//                        photoListViewModel.performSearch(query ?: "")
-                        Toast.makeText(
-                            requireContext(),
-                            "Search SUBMITTED",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        if (!query.isNullOrEmpty()) {
-                            photoListViewModel.startSearch(query)
-                        }
-
-                        return true
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        // Handle search query text change
-                        return true
-                    }
-                })
-
-                searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-                    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                        // Handle search view expand event
-                        return true
-                    }
-
-                    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                        // Handle search view collapse event
-                        photoListViewModel.clearSearchResults()
-                        return true
-                    }
-                })
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_search -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Search clicked",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        menuHost.addMenuProvider(
+            SearchMenuProvider(
+                requireContext(),
+                { query -> photoListViewModel.startSearch(query) },
+                photoListViewModel::clearSearchResults
+            ),
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
     }
 
     private fun observerSearchPagedFlow() {
@@ -234,7 +176,6 @@ class PhotoListFragment : Fragment() {
             }
         }
     }
-
 
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
         val navController = findNavController()
