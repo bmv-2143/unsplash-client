@@ -137,4 +137,19 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
+    suspend fun search(query : String, page: Int, perPage: Int) : List<UnsplashPhoto> { // TODO: DO I NEED OTHER RECEIVED DATA?
+        return try {
+            unsplashService.unsplashApi.searchPhotos(query, page, perPage).results
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            emptyList()
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            emptyList()
+        } catch (e: Exception) {
+            logError(::search.name, e)
+            emptyList()
+        }
+    }
+
 }

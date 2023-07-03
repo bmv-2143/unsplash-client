@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -85,6 +86,7 @@ class PhotoListFragment : Fragment() {
         observerPhotosPagedFlow()
         observerPagingAdapterUpdates()
         observerFragmentStateChange()
+        observerSearchPagedFlow()
     }
 
     private fun observerPhotosPagedFlow() {
@@ -162,6 +164,46 @@ class PhotoListFragment : Fragment() {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.photo_list_fragment_menu, menu)
+
+                val searchItem = menu.findItem(R.id.action_search)
+                val searchView = searchItem.actionView as SearchView
+
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        // Handle search query submission
+
+//                        photoListViewModel.performSearch(query ?: "")
+                        Toast.makeText(
+                            requireContext(),
+                            "Search SUBMITTED",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        if (!query.isNullOrEmpty()) {
+                            photoListViewModel.startSearch(query)
+                        }
+
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        // Handle search query text change
+                        return true
+                    }
+                })
+
+                searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                        // Handle search view expand event
+                        return true
+                    }
+
+                    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                        // Handle search view collapse event
+                        photoListViewModel.clearSearchResults()
+                        return true
+                    }
+                })
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -180,6 +222,19 @@ class PhotoListFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+
+    private fun observerSearchPagedFlow() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                photoListViewModel.searchResults.collectLatest { searchResults ->
+                    searchResults.collectLatest { photosPage ->
+                        photoListAdapter.submitData(photosPage)
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
         val navController = findNavController()

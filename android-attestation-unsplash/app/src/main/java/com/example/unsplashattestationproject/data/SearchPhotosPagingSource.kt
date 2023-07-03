@@ -7,11 +7,11 @@ import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
 import javax.inject.Inject
 
-class PhotosPagingSource @Inject constructor(
+// todo: dry, @see PhotosPagingSource
+class SearchPhotosPagingSource @Inject constructor(
+    private val query: String,
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
-//    private val photoDataProvider: PhotoDataProvider
-    ) :
-    PagingSource<Int, Photo>() {
+) : PagingSource<Int, Photo>() {
 
     override fun getRefreshKey(state: PagingState<Int, Photo>) = FIRST_PAGE
 
@@ -21,7 +21,7 @@ class PhotosPagingSource @Inject constructor(
         Log.e(TAG, "${::load.name}: page = $page")
 
         kotlin.runCatching {
-            val result = unsplashNetworkDataSource.getPhotos(page, PAGE_SIZE)
+            val result = unsplashNetworkDataSource.search(query, page, PAGE_SIZE)
 //            val result = photoDataProvider.provide(page, PAGE_SIZE)
             result.map { it.toPhoto() }
         }.fold(

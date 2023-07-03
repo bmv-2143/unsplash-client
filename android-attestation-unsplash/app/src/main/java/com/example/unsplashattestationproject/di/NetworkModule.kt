@@ -123,10 +123,10 @@ class NetworkModule {
         )
     }
 
-    @Named("simplePager")
+    @Named("getPhotosSimplePager")
     @Provides
-    fun provideSimplePhotosPager(
-        unsplashNetworkDataSource: UnsplashNetworkDataSource
+    fun provideGetPhotosSimplePager(
+        unsplashNetworkDataSource: UnsplashNetworkDataSource,
     ): Pager<Int, Photo> {
         return Pager(
             config = PagingConfig(
@@ -136,6 +136,25 @@ class NetworkModule {
             ),
             pagingSourceFactory = {
                 PhotosPagingSource(unsplashNetworkDataSource = unsplashNetworkDataSource)
+            }
+        )
+    }
+
+    @Named("searchSimplePager")
+    @Provides
+    fun provideSearchPhotosSimplePager(
+        unsplashNetworkDataSource: UnsplashNetworkDataSource,
+    ): Pager<Int, Photo> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PAGE_SIZE / 2,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = {
+                PhotosPagingSource(
+                    unsplashNetworkDataSource = unsplashNetworkDataSource,
+                )
             }
         )
     }

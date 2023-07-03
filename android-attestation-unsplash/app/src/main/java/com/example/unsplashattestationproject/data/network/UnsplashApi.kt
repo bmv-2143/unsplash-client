@@ -4,6 +4,7 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeRespon
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashSearchResult
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -30,4 +31,11 @@ interface UnsplashApi {
 
     @DELETE("photos/{id}/like")
     suspend fun unlikePhoto(@Path("id") id: String) : UnsplashLikeResponse
+
+    @GET("search/photos")
+    suspend fun searchPhotos(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+    ): UnsplashSearchResult
 }

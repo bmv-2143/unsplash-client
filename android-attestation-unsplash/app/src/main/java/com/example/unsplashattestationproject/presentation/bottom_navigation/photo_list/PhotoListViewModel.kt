@@ -12,18 +12,25 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.domain.GetPhotosUseCase
+import com.example.unsplashattestationproject.domain.SearchPhotosUseCase
 import com.example.unsplashattestationproject.log.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase) :
+class PhotoListViewModel @Inject constructor(
+    getPhotosUseCase: GetPhotosUseCase,
+    val searchPhotosUseCase: SearchPhotosUseCase
+) :
     ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
@@ -31,13 +38,15 @@ class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase)
     }
     val dummyText: LiveData<String> = _text
 
-    // region Paged Photos FLow
-    private val pagedPhotosFlow =
-        getPhotosUseCase().map { pagingData: PagingData<Photo> ->
+    private val pagedPhotosFlow = cacheInPhotoPagingFlow(getPhotosUseCase())
+
+    private fun cacheInPhotoPagingFlow(input : Flow<PagingData<Photo>>) : Flow<PagingData<PhotoListItemUiModel>> {
+        return input.map { pagingData: PagingData<Photo> ->
             pagingData.map { photo: Photo ->
                 photo.toPhotoListItemUiModel()
             }
         }.cachedIn(viewModelScope)
+    }
 
     private fun Photo.toPhotoListItemUiModel(): PhotoListItemUiModel {
         return PhotoListItemUiModel(
@@ -52,13 +61,10 @@ class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase)
         )
     }
 
-
     fun getPhotosPagedFlow(): Flow<PagingData<PhotoListItemUiModel>> {
         Log.e(TAG, "getPhotosPagedFlow...")
         return pagedPhotosFlow
     }
-    // endregion
-
 
     private val _uiStateFlow = MutableSharedFlow<PhotoListFragmentState>(
         replay = 100,
@@ -109,4 +115,16 @@ class PhotoListViewModel @Inject constructor(getPhotosUseCase: GetPhotosUseCase)
         dataIsLoading =
             (loadStates.refresh is LoadState.Loading) || (loadStates.append is LoadState.Loading)
     }
+
+    private val _searchResults = MutableStateFlow<Flow<PagingData<PhotoListItemUiModel>>>(emptyFlow())
+    val searchResults: StateFlow<Flow<PagingData<PhotoListItemUiModel>>> = _searchResults
+
+    fun startSearch(query: String) {
+        _searchResults.value = cacheInPhotoPagingFlow(searchPhotosUseCase(query))
+    }
+
+    fun clearSearchResults() {
+        _searchResults.value = emptyFlow()
+    }
+
 }

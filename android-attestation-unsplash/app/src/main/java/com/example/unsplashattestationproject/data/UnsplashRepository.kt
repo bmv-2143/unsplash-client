@@ -3,6 +3,7 @@ package com.example.unsplashattestationproject.data
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.unsplashattestationproject.FEATURE_FLAG_REMOTE_MEDIATOR
 import com.example.unsplashattestationproject.data.downloads.UnsplashDownloader
@@ -24,7 +25,7 @@ class UnsplashRepository @Inject constructor(
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
     private val unsplashDownloader: UnsplashDownloader,
     @Named("mediatorPager") private val mediatorPager: Pager<Int, Photo>,
-    @Named("simplePager") private val simplePager: Pager<Int, Photo>,
+    @Named("getPhotosSimplePager") private val simplePager: Pager<Int, Photo>,
 ) {
 
     init {
@@ -112,6 +113,17 @@ class UnsplashRepository @Inject constructor(
 
     private suspend fun unlikePhoto(photoId: String): UnsplashPhoto? {
         return unsplashNetworkDataSource.unlikePhoto(photoId)?.photo
+    }
+
+    internal fun searchPhotos(query: String): Flow<PagingData<Photo>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PAGE_SIZE / 2,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = { SearchPhotosPagingSource(query, unsplashNetworkDataSource) }
+        ).flow
     }
 
     companion object {
