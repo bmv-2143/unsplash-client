@@ -1,17 +1,14 @@
-package com.example.unsplashattestationproject.data
+package com.example.unsplashattestationproject.data.pagingsource
 
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.room.entities.Photo
+import com.example.unsplashattestationproject.data.toPhoto
 import com.example.unsplashattestationproject.log.TAG
-import javax.inject.Inject
 
-// todo: dry, @see PhotosPagingSource
-class SearchPhotosPagingSource @Inject constructor(
-    private val query: String,
-    private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
-) : PagingSource<Int, Photo>() {
+abstract class BasePagingSource : PagingSource<Int, Photo>() {
 
     override fun getRefreshKey(state: PagingState<Int, Photo>) = FIRST_PAGE
 
@@ -21,9 +18,7 @@ class SearchPhotosPagingSource @Inject constructor(
         Log.e(TAG, "${::load.name}: page = $page")
 
         kotlin.runCatching {
-            val result = unsplashNetworkDataSource.search(query, page, PAGE_SIZE)
-//            val result = photoDataProvider.provide(page, PAGE_SIZE)
-            result.map { it.toPhoto() }
+            loadData(page).map { it.toPhoto() }
         }.fold(
             onSuccess = { photos: List<Photo> ->
                 Log.e(TAG, "${::load.name}: page = $page - SUCCESS")
@@ -39,6 +34,8 @@ class SearchPhotosPagingSource @Inject constructor(
                 return LoadResult.Error(exception)
             })
     }
+
+    protected abstract suspend fun loadData(page: Int): List<UnsplashPhoto>
 
     private companion object {
         private const val FIRST_PAGE = 0

@@ -8,7 +8,7 @@ import androidx.paging.PagingConfig
 import com.example.unsplashattestationproject.BuildConfig
 import com.example.unsplashattestationproject.data.PAGE_SIZE
 import com.example.unsplashattestationproject.data.PhotoRemoteMediator
-import com.example.unsplashattestationproject.data.PhotosPagingSource
+import com.example.unsplashattestationproject.data.pagingsource.GetPhotosPagingSource
 import com.example.unsplashattestationproject.data.UnsplashNetworkDataSource
 import com.example.unsplashattestationproject.data.UnsplashRepository
 import com.example.unsplashattestationproject.data.room.PhotoDatabase
@@ -135,27 +135,9 @@ class NetworkModule {
                 initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
-                PhotosPagingSource(unsplashNetworkDataSource = unsplashNetworkDataSource)
+                GetPhotosPagingSource(unsplashNetworkDataSource = unsplashNetworkDataSource)
             }
         )
     }
 
-    @Named("searchSimplePager")
-    @Provides
-    fun provideSearchPhotosSimplePager(
-        unsplashNetworkDataSource: UnsplashNetworkDataSource,
-    ): Pager<Int, Photo> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE,
-                prefetchDistance = PAGE_SIZE / 2,
-                initialLoadSize = PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                PhotosPagingSource(
-                    unsplashNetworkDataSource = unsplashNetworkDataSource,
-                )
-            }
-        )
-    }
 }
