@@ -38,6 +38,10 @@ class PhotoListViewModel @Inject constructor(
     }
     val dummyText: LiveData<String> = _text
 
+    var isSearchMode = false
+    var currentQuery = ""
+        private set
+
     private val pagedPhotosFlow = cacheInPhotoPagingFlow(getPhotosUseCase())
 
     private fun cacheInPhotoPagingFlow(input : Flow<PagingData<Photo>>) : Flow<PagingData<PhotoListItemUiModel>> {
@@ -120,10 +124,12 @@ class PhotoListViewModel @Inject constructor(
     val searchResults: StateFlow<Flow<PagingData<PhotoListItemUiModel>>> = _searchResults
 
     fun startSearch(query: String) {
+        currentQuery = query
         _searchResults.value = cacheInPhotoPagingFlow(searchPhotosUseCase(query))
     }
 
     fun clearSearchResults() {
+        currentQuery = ""
         _searchResults.value = emptyFlow()
     }
 

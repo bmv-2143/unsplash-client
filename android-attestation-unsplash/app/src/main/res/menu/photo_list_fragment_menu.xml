@@ -6,5 +6,5 @@
         android:icon="@drawable/fragment_photo_list_menu_search"
         android:title="@string/fragment_photo_list_menu_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="always|collapseActionView" />
 </menu>

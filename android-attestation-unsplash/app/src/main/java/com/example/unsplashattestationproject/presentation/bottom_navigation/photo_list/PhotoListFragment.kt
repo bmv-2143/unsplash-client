@@ -47,6 +47,8 @@ class PhotoListFragment : Fragment() {
     @Inject
     lateinit var snackbarFactory: SnackbarFactory
 
+    private lateinit var searchMenuProvider: SearchMenuProvider
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,10 +57,34 @@ class PhotoListFragment : Fragment() {
         _binding = FragmentPhotoListBinding.inflate(inflater, container, false)
 
         setupRecyclerViewLayoutManager()
-        activatePhotoListAdapter()
+        initAdapter()
         setRecyclerViewScrollListener()
+        initSearchMenuProvider()
         addActionBarMenu()
         return binding.root
+    }
+
+    private fun initAdapter() {
+        if (photoListViewModel.isSearchMode) {
+            activateSearchAdapter()
+        } else {
+            activatePhotoListAdapter()
+        }
+    }
+
+    private fun initSearchMenuProvider() {
+        searchMenuProvider = SearchMenuProvider(
+            requireContext(),
+            photoListViewModel.currentQuery,
+            startSearchAction = { query ->
+                activateSearchAdapter()
+                photoListViewModel.startSearch(query)
+            },
+            clearSearchAction = {
+                photoListViewModel::clearSearchResults
+                activatePhotoListAdapter()
+            }
+        )
     }
 
     private fun setupRecyclerViewLayoutManager() {
@@ -75,11 +101,13 @@ class PhotoListFragment : Fragment() {
     private fun activatePhotoListAdapter() {
         binding.fragmentPhotoRecyclerView.adapter =
             photoListAdapter
+        photoListViewModel.isSearchMode = false
     }
 
     private fun activateSearchAdapter() {
         binding.fragmentPhotoRecyclerView.adapter =
             searchAdapter
+        photoListViewModel.isSearchMode = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -161,21 +189,7 @@ class PhotoListFragment : Fragment() {
 
     private fun addActionBarMenu() {
         val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(
-            SearchMenuProvider(
-                requireContext(),
-                startSearchAction = { query ->
-                    activateSearchAdapter()
-                    photoListViewModel.startSearch(query)
-                },
-                clearSearchAction = {
-                    photoListViewModel::clearSearchResults
-                    activatePhotoListAdapter()
-                }
-            ),
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED
-        )
+        menuHost.addMenuProvider(searchMenuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun observerSearchPagedFlow() {
