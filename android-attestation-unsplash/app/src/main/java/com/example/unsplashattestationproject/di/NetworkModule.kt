@@ -2,8 +2,17 @@ package com.example.unsplashattestationproject.di
 
 import android.content.Context
 import android.util.Log
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.example.unsplashattestationproject.BuildConfig
+import com.example.unsplashattestationproject.data.PAGE_SIZE
+import com.example.unsplashattestationproject.data.PhotoRemoteMediator
+import com.example.unsplashattestationproject.data.PhotosPagingSource
+import com.example.unsplashattestationproject.data.UnsplashNetworkDataSource
 import com.example.unsplashattestationproject.data.UnsplashRepository
+import com.example.unsplashattestationproject.data.room.PhotoDatabase
+import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.utils.NetworkStateChecker
 import com.squareup.moshi.Moshi
@@ -93,6 +102,41 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNetworkStateChecker(@ApplicationContext context: Context) : NetworkStateChecker =
+    fun provideNetworkStateChecker(@ApplicationContext context: Context): NetworkStateChecker =
         NetworkStateChecker(context)
+
+    @OptIn(ExperimentalPagingApi::class)
+    @Named("mediatorPager")
+    @Provides
+    fun providePhotosPagerWithMediator(
+        photoRemoteMediator: PhotoRemoteMediator,
+        photoDatabase: PhotoDatabase
+    ): Pager<Int, Photo> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PAGE_SIZE / 2,
+                initialLoadSize = PAGE_SIZE
+            ),
+            remoteMediator = photoRemoteMediator,
+            pagingSourceFactory = { photoDatabase.photoDao().getPhotos() }
+        )
+    }
+
+    @Named("simplePager")
+    @Provides
+    fun provideSimplePhotosPager(
+        unsplashNetworkDataSource: UnsplashNetworkDataSource
+    ): Pager<Int, Photo> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PAGE_SIZE / 2,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = {
+                PhotosPagingSource(unsplashNetworkDataSource = unsplashNetworkDataSource)
+            }
+        )
+    }
 }

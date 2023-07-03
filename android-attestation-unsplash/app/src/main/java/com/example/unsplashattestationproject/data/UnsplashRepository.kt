@@ -2,19 +2,17 @@ package com.example.unsplashattestationproject.data
 
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.unsplashattestationproject.FEATURE_FLAG_REMOTE_MEDIATOR
 import com.example.unsplashattestationproject.data.downloads.UnsplashDownloader
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
-import com.example.unsplashattestationproject.data.room.PhotoDatabase
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -24,9 +22,9 @@ const val PAGE_SIZE = 10
 class UnsplashRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val unsplashNetworkDataSource: UnsplashNetworkDataSource,
-    private val photoDatabase: PhotoDatabase,
-    private val photoRemoteMediator: PhotoRemoteMediator,
-    private val unsplashDownloader: UnsplashDownloader
+    private val unsplashDownloader: UnsplashDownloader,
+    @Named("mediatorPager") private val mediatorPager: Pager<Int, Photo>,
+    @Named("simplePager") private val simplePager: Pager<Int, Photo>,
 ) {
 
     init {
@@ -65,34 +63,12 @@ class UnsplashRepository @Inject constructor(
         unsplashAccessToken = accessToken
     }
 
-
-    @OptIn(ExperimentalPagingApi::class)
     fun getPhotosFlow(): Flow<PagingData<Photo>> {
         return if (FEATURE_FLAG_REMOTE_MEDIATOR) {
-            // todo: inject pager with DI
-            Pager(
-                config = PagingConfig(
-                    pageSize = PAGE_SIZE,
-                    prefetchDistance = PAGE_SIZE / 2,
-                    initialLoadSize = PAGE_SIZE
-                ),
-                remoteMediator = photoRemoteMediator,
-                pagingSourceFactory = { photoDatabase.photoDao().getPhotos() }
-            ).flow
+            mediatorPager.flow
         } else {
-            Pager(
-                config = PagingConfig(
-                    pageSize = PAGE_SIZE,
-                    prefetchDistance = PAGE_SIZE / 2,
-                    initialLoadSize = PAGE_SIZE
-                ),
-                pagingSourceFactory = { PhotosPagingSource(unsplashRepository = this) }
-            ).flow
+            simplePager.flow
         }
-    }
-
-    suspend fun getPhotos(page: Int): List<UnsplashPhoto> {
-        return unsplashNetworkDataSource.getPhotos(page, PAGE_SIZE)
     }
 
     suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails? =
@@ -122,7 +98,7 @@ class UnsplashRepository @Inject constructor(
     }
 
 
-    suspend fun updateLikeStatus(photoId: String, isLiked: Boolean) : UnsplashPhoto? {
+    suspend fun updateLikeStatus(photoId: String, isLiked: Boolean): UnsplashPhoto? {
         return if (isLiked) {
             likePhoto(photoId)
         } else {
