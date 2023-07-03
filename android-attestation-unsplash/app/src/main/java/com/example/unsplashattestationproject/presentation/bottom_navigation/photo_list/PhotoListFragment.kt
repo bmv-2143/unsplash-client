@@ -35,6 +35,8 @@ class PhotoListFragment : Fragment() {
 
     private val photoListViewModel: PhotoListViewModel by viewModels()
     private val photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
+    private val searchAdapter = PhotosPagedAdapter(::onPhotoItemClick)
+
     private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
 
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
@@ -53,7 +55,7 @@ class PhotoListFragment : Fragment() {
         _binding = FragmentPhotoListBinding.inflate(inflater, container, false)
 
         setupRecyclerViewLayoutManager()
-        initRecyclerViewAdapter()
+        activatePhotoListAdapter()
         setRecyclerViewScrollListener()
         addActionBarMenu()
         return binding.root
@@ -70,9 +72,14 @@ class PhotoListFragment : Fragment() {
 
     }
 
-    private fun initRecyclerViewAdapter() {
+    private fun activatePhotoListAdapter() {
         binding.fragmentPhotoRecyclerView.adapter =
             photoListAdapter
+    }
+
+    private fun activateSearchAdapter() {
+        binding.fragmentPhotoRecyclerView.adapter =
+            searchAdapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -157,8 +164,14 @@ class PhotoListFragment : Fragment() {
         menuHost.addMenuProvider(
             SearchMenuProvider(
                 requireContext(),
-                { query -> photoListViewModel.startSearch(query) },
-                photoListViewModel::clearSearchResults
+                startSearchAction = { query ->
+                    activateSearchAdapter()
+                    photoListViewModel.startSearch(query)
+                },
+                clearSearchAction = {
+                    photoListViewModel::clearSearchResults
+                    activatePhotoListAdapter()
+                }
             ),
             viewLifecycleOwner,
             Lifecycle.State.RESUMED
@@ -170,7 +183,7 @@ class PhotoListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoListViewModel.searchResults.collectLatest { searchResults ->
                     searchResults.collectLatest { photosPage ->
-                        photoListAdapter.submitData(photosPage)
+                        searchAdapter.submitData(photosPage)
                     }
                 }
             }
