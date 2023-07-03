@@ -80,6 +80,7 @@ class PhotoListFragment : Fragment() {
                 activateSearchAdapter()
                 photoListViewModel.startSearch(query)
             },
+            photoListViewModel::onQueryTextChanged,
             clearSearchAction = {
                 photoListViewModel::clearSearchResults
                 activatePhotoListAdapter()

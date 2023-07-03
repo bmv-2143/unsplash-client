@@ -13,6 +13,7 @@ class SearchMenuProvider(
     private val context: Context,
     private val previousSearchQuery: String?,
     private val startSearchAction: (query : String) -> Unit,
+    private val onQueryTextChangedAction: (query : String) -> Unit,
     private val clearSearchAction: () -> Unit
 ) : MenuProvider {
 
@@ -48,6 +49,7 @@ class SearchMenuProvider(
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                onQueryTextChangedAction(newText ?: "")
                 return true
             }
         })

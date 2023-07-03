@@ -133,4 +133,8 @@ class PhotoListViewModel @Inject constructor(
         _searchResults.value = emptyFlow()
     }
 
+    fun onQueryTextChanged(newText: String) {
+        currentQuery = newText
+    }
+
 }
