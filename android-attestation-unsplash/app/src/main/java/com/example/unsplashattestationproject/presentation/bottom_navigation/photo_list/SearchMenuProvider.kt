@@ -12,9 +12,11 @@ import com.example.unsplashattestationproject.R
 class SearchMenuProvider(
     private val context: Context,
     private val previousSearchQuery: String?,
-    private val startSearchAction: (query : String) -> Unit,
-    private val onQueryTextChangedAction: (query : String) -> Unit,
-    private val clearSearchAction: () -> Unit
+    private val onSearchMenuSelected: () -> Unit,
+    private val onSearchQuerySubmit: (query : String) -> Unit,
+    private val onQueryTextChanged: (query : String) -> Unit,
+    private val onMenuSearchExpanded: () -> Unit,
+    private val onMenuSearchCollapsed: () -> Unit,
 ) : MenuProvider {
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -40,16 +42,18 @@ class SearchMenuProvider(
 
     private fun setOnQueryTextListener(searchView: SearchView) {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(context, "Search SUBMITTED", Toast.LENGTH_SHORT).show()
                 if (!query.isNullOrEmpty()) {
-                    startSearchAction(query)
+                    onSearchQuerySubmit(query)
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                onQueryTextChangedAction(newText ?: "")
+                if (!newText.isNullOrEmpty()) {
+                    onQueryTextChanged(newText)
+                }
                 return true
             }
         })
@@ -58,11 +62,12 @@ class SearchMenuProvider(
     private fun setOnActionExpandListener(searchItem: MenuItem) {
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                onMenuSearchExpanded()
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                clearSearchAction()
+                onMenuSearchCollapsed()
                 return true
             }
         })
@@ -72,6 +77,7 @@ class SearchMenuProvider(
         return when (menuItem.itemId) {
             R.id.action_search -> {
                 Toast.makeText(context, "Search clicked", Toast.LENGTH_SHORT).show()
+                onSearchMenuSelected()
                 true
             }
 

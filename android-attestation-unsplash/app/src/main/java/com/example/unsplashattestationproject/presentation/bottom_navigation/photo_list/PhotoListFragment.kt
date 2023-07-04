@@ -76,15 +76,31 @@ class PhotoListFragment : Fragment() {
         searchMenuProvider = SearchMenuProvider(
             requireContext(),
             photoListViewModel.currentQuery,
-            startSearchAction = { query ->
+
+            onSearchMenuSelected = {
+                Log.e(TAG, "SEARCH_SELECTED")
+            },
+
+            onMenuSearchExpanded = {
+                Log.e(TAG, "SEARCH_EXPANDED")
+                photoListViewModel.isSearchMode = true
+            },
+
+            onQueryTextChanged = {
+                Log.e(TAG, "SEARCH_CHANGED")
+                photoListViewModel.onQueryTextChanged(it)
+            },
+
+            onSearchQuerySubmit = { query ->
+                Log.e(TAG, "SEARCH_SUBMIT")
                 activateSearchAdapter()
                 photoListViewModel.startSearch(query)
             },
-            photoListViewModel::onQueryTextChanged,
-            clearSearchAction = {
-                photoListViewModel::clearSearchResults
+
+            onMenuSearchCollapsed = {
+                Log.e(TAG, "SEARCH_COLLAPSED")
                 activatePhotoListAdapter()
-            }
+            },
         )
     }
 
