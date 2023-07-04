@@ -34,7 +34,7 @@ class SearchMenuProvider(
         searchItem: MenuItem,
         searchView: SearchView
     ) {
-        if (!previousSearchQuery.isNullOrEmpty()) {
+        previousSearchQuery?.let {
             searchItem.expandActionView()
             searchView.setQuery(previousSearchQuery, false)
         }

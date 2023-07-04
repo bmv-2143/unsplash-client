@@ -65,7 +65,7 @@ class PhotoListFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        if (photoListViewModel.isSearchMode) {
+        if (photoListViewModel.isSearchOpened) {
             activateSearchAdapter()
         } else {
             activatePhotoListAdapter()
@@ -83,7 +83,7 @@ class PhotoListFragment : Fragment() {
 
             onMenuSearchExpanded = {
                 Log.e(TAG, "SEARCH_EXPANDED")
-                photoListViewModel.isSearchMode = true
+                photoListViewModel.onSearchOpened()
             },
 
             onQueryTextChanged = {
@@ -94,12 +94,13 @@ class PhotoListFragment : Fragment() {
             onSearchQuerySubmit = { query ->
                 Log.e(TAG, "SEARCH_SUBMIT")
                 activateSearchAdapter()
-                photoListViewModel.startSearch(query)
+                photoListViewModel.onSearchSubmitted(query)
             },
 
             onMenuSearchCollapsed = {
                 Log.e(TAG, "SEARCH_COLLAPSED")
                 activatePhotoListAdapter()
+                photoListViewModel.onSearchClosed()
             },
         )
     }
@@ -118,13 +119,11 @@ class PhotoListFragment : Fragment() {
     private fun activatePhotoListAdapter() {
         binding.fragmentPhotoRecyclerView.adapter =
             photoListAdapter
-        photoListViewModel.isSearchMode = false
     }
 
     private fun activateSearchAdapter() {
         binding.fragmentPhotoRecyclerView.adapter =
             searchAdapter
-        photoListViewModel.isSearchMode = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

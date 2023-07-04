@@ -15,27 +15,27 @@ sealed class PhotoListFragmentState {
 
     object FirstPageLoading : PhotoListFragmentState() {
         override fun activate(binding: FragmentPhotoListBinding) {
-            Log.e(TAG, "STATE First Page Loading")
+//            Log.e(TAG, "STATE First Page Loading")
             setProgressVisibility(binding, true)
         }
     }
 
     object FirstPageNotLoading : PhotoListFragmentState() {
         override fun activate(binding: FragmentPhotoListBinding) {
-            Log.e(TAG, "STATE First Page Not Loading")
+//            Log.e(TAG, "STATE First Page Not Loading")
             setProgressVisibility(binding, false)
         }
     }
 
     object FirstPageLoadError : PhotoListFragmentState() {
         override fun activate(binding: FragmentPhotoListBinding) {
-            Log.e(TAG, "STATE First Page Load Error")
+//            Log.e(TAG, "STATE First Page Load Error")
         }
     }
 
     object NextPageLoading : PhotoListFragmentState() {
         override fun activate(binding: FragmentPhotoListBinding) {
-            Log.e(TAG, "STATE Next Page Loading")
+//            Log.e(TAG, "STATE Next Page Loading")
             setProgressVisibility(binding, true)
         }
     }
@@ -43,20 +43,38 @@ sealed class PhotoListFragmentState {
 
     object NextPageNotLoading : PhotoListFragmentState() {
         override fun activate(binding: FragmentPhotoListBinding) {
-            Log.e(TAG, "STATE Next Page Not Loading")
+//            Log.e(TAG, "STATE Next Page Not Loading")
             setProgressVisibility(binding, false)
         }
     }
 
     object NextPageLoadError : PhotoListFragmentState() {
         override fun activate(binding: FragmentPhotoListBinding) {
-            Log.e(TAG, "STATE Next Page Load Error")
+//            Log.e(TAG, "STATE Next Page Load Error")
         }
     }
 
     object LoadingFromDb : PhotoListFragmentState() {
         override fun activate(binding: FragmentPhotoListBinding) {
-            Log.e(TAG, "STATE LoadingFromDb")
+//            Log.e(TAG, "STATE LoadingFromDb")
+        }
+    }
+
+    object SearchOpened : PhotoListFragmentState() {
+        override fun activate(binding: FragmentPhotoListBinding) {
+
+        }
+    }
+
+    object SearchSubmitted : PhotoListFragmentState() {
+        override fun activate(binding: FragmentPhotoListBinding) {
+
+        }
+    }
+
+    object SearchClosed : PhotoListFragmentState() {
+        override fun activate(binding: FragmentPhotoListBinding) {
+
         }
     }
 

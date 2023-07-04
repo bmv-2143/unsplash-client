@@ -38,8 +38,9 @@ class PhotoListViewModel @Inject constructor(
     }
     val dummyText: LiveData<String> = _text
 
-    var isSearchMode = false
-    var currentQuery = ""
+    var isSearchOpened = false
+        private set
+    var currentQuery : String? = null
         private set
 
     private val pagedPhotosFlow = cacheInPhotoPagingFlow(getPhotosUseCase())
@@ -123,18 +124,37 @@ class PhotoListViewModel @Inject constructor(
     private val _searchResults = MutableStateFlow<Flow<PagingData<PhotoListItemUiModel>>>(emptyFlow())
     val searchResults: StateFlow<Flow<PagingData<PhotoListItemUiModel>>> = _searchResults
 
-    fun startSearch(query: String) {
-        currentQuery = query
-        _searchResults.value = cacheInPhotoPagingFlow(searchPhotosUseCase(query))
-    }
-
-    fun clearSearchResults() {
-        currentQuery = ""
-        _searchResults.value = emptyFlow()
+    fun onSearchOpened() {
+        viewModelScope.launch {
+            isSearchOpened = true
+            currentQuery = ""
+            _uiStateFlow.emit(PhotoListFragmentState.SearchOpened)
+        }
     }
 
     fun onQueryTextChanged(newText: String) {
         currentQuery = newText
+    }
+
+    fun onSearchSubmitted(query: String) {
+        startSearch(query)
+        viewModelScope.launch {
+            isSearchOpened = true
+            _uiStateFlow.emit(PhotoListFragmentState.SearchSubmitted)
+        }
+    }
+
+    private fun startSearch(query: String) {
+        currentQuery = query
+        _searchResults.value = cacheInPhotoPagingFlow(searchPhotosUseCase(query))
+    }
+
+    fun onSearchClosed() {
+        viewModelScope.launch {
+            isSearchOpened = false
+            currentQuery = null
+            _uiStateFlow.emit(PhotoListFragmentState.SearchClosed)
+        }
     }
 
 }
