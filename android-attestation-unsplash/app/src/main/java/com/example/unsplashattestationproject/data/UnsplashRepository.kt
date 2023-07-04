@@ -21,6 +21,7 @@ import javax.inject.Singleton
 
 
 const val PAGE_SIZE = 30
+const val PREFETCH_DISTANCE =  PAGE_SIZE / 3
 
 @Singleton
 class UnsplashRepository @Inject constructor(
@@ -122,7 +123,7 @@ class UnsplashRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = PAGE_SIZE / 2,
+                prefetchDistance = PREFETCH_DISTANCE,
                 initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = { SearchPhotosPagingSource(query, unsplashNetworkDataSource) }
@@ -133,7 +134,7 @@ class UnsplashRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = PAGE_SIZE / 2,
+                prefetchDistance = PREFETCH_DISTANCE,
                 initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = { GetCollectionsPagingSource(unsplashNetworkDataSource) }

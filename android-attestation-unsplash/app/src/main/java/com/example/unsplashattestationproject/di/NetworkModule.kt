@@ -7,6 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.example.unsplashattestationproject.BuildConfig
 import com.example.unsplashattestationproject.data.PAGE_SIZE
+import com.example.unsplashattestationproject.data.PREFETCH_DISTANCE
 import com.example.unsplashattestationproject.data.PhotoRemoteMediator
 import com.example.unsplashattestationproject.data.pagingsource.GetPhotosPagingSource
 import com.example.unsplashattestationproject.data.UnsplashNetworkDataSource
@@ -115,7 +116,7 @@ class NetworkModule {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = PAGE_SIZE / 2,
+                prefetchDistance = PREFETCH_DISTANCE,
                 initialLoadSize = PAGE_SIZE
             ),
             remoteMediator = photoRemoteMediator,
@@ -131,7 +132,7 @@ class NetworkModule {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = PAGE_SIZE / 2,
+                prefetchDistance = PREFETCH_DISTANCE,
                 initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
