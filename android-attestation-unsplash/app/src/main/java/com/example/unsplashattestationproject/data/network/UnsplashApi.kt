@@ -1,5 +1,6 @@
 package com.example.unsplashattestationproject.data.network
 
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashCollection
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
@@ -38,4 +39,10 @@ interface UnsplashApi {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
     ): UnsplashSearchResult
+
+    @GET("collections")
+    suspend fun getCollections(
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+    ): List<UnsplashCollection>
 }

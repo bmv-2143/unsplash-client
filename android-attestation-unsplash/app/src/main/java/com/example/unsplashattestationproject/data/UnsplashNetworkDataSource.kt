@@ -3,6 +3,7 @@ package com.example.unsplashattestationproject.data
 import android.util.Log
 import com.example.unsplashattestationproject.data.dto.auth.AuthInfo
 import com.example.unsplashattestationproject.data.dto.auth.TokenBody
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashCollection
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
@@ -149,6 +150,24 @@ class UnsplashNetworkDataSource @Inject constructor(
         } catch (e: Exception) {
             logError(::search.name, e)
             emptyList()
+        }
+    }
+
+    suspend fun getCollections(page : Int, perPage : Int) : List<UnsplashCollection> {
+        return try {
+            unsplashService.unsplashApi.getCollections(
+                page,
+                perPage = perPage,
+            )
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            listOf()
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            listOf()
+        } catch (e: Exception) {
+            logError(::getPhotos.name, e)
+            listOf()
         }
     }
 

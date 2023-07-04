@@ -7,8 +7,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.unsplashattestationproject.FEATURE_FLAG_REMOTE_MEDIATOR
 import com.example.unsplashattestationproject.data.downloads.UnsplashDownloader
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashCollection
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
+import com.example.unsplashattestationproject.data.pagingsource.GetCollectionsPagingSource
 import com.example.unsplashattestationproject.data.pagingsource.SearchPhotosPagingSource
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
@@ -124,6 +126,17 @@ class UnsplashRepository @Inject constructor(
                 initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = { SearchPhotosPagingSource(query, unsplashNetworkDataSource) }
+        ).flow
+    }
+
+    internal fun getCollections(): Flow<PagingData<UnsplashCollection>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PAGE_SIZE / 2,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = { GetCollectionsPagingSource(unsplashNetworkDataSource) }
         ).flow
     }
 
