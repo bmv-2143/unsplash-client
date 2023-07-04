@@ -18,7 +18,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 
-const val PAGE_SIZE = 10
+const val PAGE_SIZE = 30
 
 @Singleton
 class UnsplashRepository @Inject constructor(
