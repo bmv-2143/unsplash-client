@@ -3,29 +3,26 @@ package com.example.unsplashattestationproject.data.pagingsource
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
-import com.example.unsplashattestationproject.data.room.entities.Photo
-import com.example.unsplashattestationproject.data.toPhoto
 import com.example.unsplashattestationproject.log.TAG
 
-abstract class BasePagingSource : PagingSource<Int, Photo>() {
+abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
 
-    override fun getRefreshKey(state: PagingState<Int, Photo>) = FIRST_PAGE
+    override fun getRefreshKey(state: PagingState<Int, T>) = FIRST_PAGE
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: FIRST_PAGE
 
         Log.e(TAG, "${::load.name}: page = $page")
 
         kotlin.runCatching {
-            loadData(page).map { it.toPhoto() }
+            loadData(page)
         }.fold(
-            onSuccess = { photos: List<Photo> ->
+            onSuccess = { data: List<T> ->
                 Log.e(TAG, "${::load.name}: page = $page - SUCCESS")
                 return LoadResult.Page(
-                    data = photos,
+                    data = data,
                     prevKey = if (page == FIRST_PAGE) null else page - 1,
-                    nextKey = if (photos.isEmpty()) null else page + 1
+                    nextKey = if (data.isEmpty()) null else page + 1
                 )
             },
             onFailure = { exception ->
@@ -35,7 +32,7 @@ abstract class BasePagingSource : PagingSource<Int, Photo>() {
             })
     }
 
-    protected abstract suspend fun loadData(page: Int): List<UnsplashPhoto>
+    protected abstract suspend fun loadData(page: Int): List<T>
 
     private companion object {
         private const val FIRST_PAGE = 0
