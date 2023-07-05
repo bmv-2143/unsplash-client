@@ -3,24 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".presentation.bottom_navigation.photo_list.PhotoListFragment">
+    tools:context=".presentation.bottom_navigation.collection_list.CollectionsFragment">
 
     <ProgressBar
-        android:id="@+id/fragment_photo_progress_bar"
+        android:id="@+id/fragment_collections_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_photo_recycler_view"
+        android:id="@+id/fragment_collections_recycler_view"
+        android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.collection_list.CollectionsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListFragment"
 
-        tools:context=".presentation.bottom_navigation.photo_list.PhotoListFragment"
         android:background="@android:color/darker_gray"
-        tools:listitem="@layout/photo_list_item" />
+        tools:context=".presentation.bottom_navigation.collection_list.CollectionsFragment"
+        tools:listitem="@layout/collection_list_item" />
 
 </FrameLayout>

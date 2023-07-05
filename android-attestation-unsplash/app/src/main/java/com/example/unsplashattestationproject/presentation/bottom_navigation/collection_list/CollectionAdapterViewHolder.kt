@@ -1,16 +1,15 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.collection_list
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.unsplashattestationproject.data.dto.collections.PhotoCollection
+import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.databinding.PhotoCollectionListItemBinding
-import com.example.unsplashattestationproject.databinding.PhotoListItemBinding
 
 class CollectionAdapterViewHolder(
     private val binding: PhotoCollectionListItemBinding,
-    val onClick: (PhotoCollection) -> Unit
+    val onClick: (UnsplashCollection) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private var currentItem: PhotoCollection? = null
+    private var currentItem: UnsplashCollection? = null
 
     init {
         binding.root.setOnClickListener {
@@ -20,9 +19,9 @@ class CollectionAdapterViewHolder(
         }
     }
 
-    fun bind(collectionItem: PhotoCollection) {
+    fun bind(collectionItem: UnsplashCollection) {
         currentItem = collectionItem
-        binding.photoCollectionListItemText.text = collectionItem.dummyData // TODO: change to real data
+        binding.photoCollectionListItemText.text = collectionItem.id // TODO: add other fields
     }
 
 }

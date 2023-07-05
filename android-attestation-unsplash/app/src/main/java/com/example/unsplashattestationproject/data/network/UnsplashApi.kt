@@ -1,11 +1,11 @@
 package com.example.unsplashattestationproject.data.network
 
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashCollection
+import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeResponse
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashSearchResult
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST

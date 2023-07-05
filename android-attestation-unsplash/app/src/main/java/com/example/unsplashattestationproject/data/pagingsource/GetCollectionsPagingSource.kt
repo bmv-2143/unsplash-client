@@ -2,7 +2,7 @@ package com.example.unsplashattestationproject.data.pagingsource
 
 import com.example.unsplashattestationproject.data.PAGE_SIZE
 import com.example.unsplashattestationproject.data.UnsplashNetworkDataSource
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashCollection
+import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import javax.inject.Inject
 
 class GetCollectionsPagingSource @Inject constructor(

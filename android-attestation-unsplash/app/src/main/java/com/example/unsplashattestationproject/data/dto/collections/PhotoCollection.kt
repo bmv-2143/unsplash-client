@@ -3,11 +3,8 @@ package com.example.unsplashattestationproject.data.dto.collections
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-data class PhotoCollection(val dummyData: String = "") {
-}
-
 @JsonClass(generateAdapter = true)
-data class Collection(
+data class UnsplashCollection(
     val id: String,
     val title: String,
     val description: String?,

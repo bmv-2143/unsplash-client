@@ -3,7 +3,7 @@ package com.example.unsplashattestationproject.data
 import android.util.Log
 import com.example.unsplashattestationproject.data.dto.auth.AuthInfo
 import com.example.unsplashattestationproject.data.dto.auth.TokenBody
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashCollection
+import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails

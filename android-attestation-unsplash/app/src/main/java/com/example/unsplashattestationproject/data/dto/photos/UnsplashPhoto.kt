@@ -1,5 +1,6 @@
 package com.example.unsplashattestationproject.data.dto.photos
 
+import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
