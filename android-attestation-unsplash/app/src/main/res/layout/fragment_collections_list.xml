@@ -17,7 +17,6 @@
         android:name="com.example.unsplashattestationproject.presentation.bottom_navigation.collection_list.CollectionsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:background="@android:color/darker_gray"
         tools:context=".presentation.bottom_navigation.collection_list.CollectionsFragment"
         tools:listitem="@layout/collection_list_item" />

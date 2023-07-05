@@ -34,4 +34,6 @@
     <string name="activity_bottom_navigation_snackbar_view_close">Close</string>
     <string name="fragment_photo_list_menu_search">Search</string>
 
+    <string name="collection_item_number_of_photos_template">%1s photos</string>
+
 </resources>
