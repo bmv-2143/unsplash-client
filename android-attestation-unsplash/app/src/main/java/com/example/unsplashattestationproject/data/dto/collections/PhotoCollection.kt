@@ -1,5 +1,6 @@
 package com.example.unsplashattestationproject.data.dto.collections
 
+import com.example.unsplashattestationproject.data.dto.photos.Tag
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -20,11 +21,6 @@ data class UnsplashCollection(
     val links: CollectionLinks,
     val user: User,
     val cover_photo: CoverPhoto?
-)
-
-@JsonClass(generateAdapter = true)
-data class Tag(
-    val title: String
 )
 
 @JsonClass(generateAdapter = true)

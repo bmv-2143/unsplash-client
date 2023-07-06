@@ -1,20 +1,22 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.collection_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.databinding.FragmentCollectionsListBinding
-import com.example.unsplashattestationproject.log.TAG
+import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,10 +27,12 @@ class CollectionsFragment : Fragment() {
     private var _binding: FragmentCollectionsListBinding? = null
     private val binding get() = _binding!!
     private val collectionsViewModel: CollectionsViewModel by viewModels()
+    private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
     private val collectionsAdapter = CollectionPagedAdapter(::onCollectionItemClick)
 
     private fun onCollectionItemClick(unsplashCollection: UnsplashCollection) {
-        Log.e(TAG, "onCollectionItemClick: $unsplashCollection")
+        activityViewModel.selectedCollection = unsplashCollection
+        findNavController().navigate(R.id.photosInCollectionFragment)
     }
 
     override fun onCreateView(

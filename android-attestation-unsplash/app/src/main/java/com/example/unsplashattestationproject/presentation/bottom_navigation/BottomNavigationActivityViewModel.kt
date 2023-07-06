@@ -3,6 +3,7 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.unsplashattestationproject.data.UnsplashRepository
+import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -22,6 +23,9 @@ class BottomNavigationActivityViewModel @Inject constructor(
         }
 
     var photoToShareId: String = ""
+
+
+    var selectedCollection: UnsplashCollection? = null
 
     fun getShareLink(): String =
         "https://unsplash.com/photos/${photoToShareId}"

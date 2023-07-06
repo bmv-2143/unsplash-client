@@ -36,4 +36,7 @@
 
     <string name="collection_item_number_of_photos_template">%1s photos</string>
 
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_photos_in_collection_total_images_and_author">%1d images by @%1s</string>
+
 </resources>
