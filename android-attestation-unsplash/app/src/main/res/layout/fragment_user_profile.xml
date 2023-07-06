@@ -6,17 +6,88 @@
     android:layout_height="match_parent"
     tools:context=".presentation.bottom_navigation.user_profile.UserProfileFragment">
 
-    <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fragment_user_profile_image_avatar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/onboarding_circle_green"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fragment_user_profile_real_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/fragment_user_profile_image_avatar"
+        app:layout_constraintTop_toTopOf="@+id/fragment_user_profile_image_avatar"
+        tools:text="Alex Victor" />
+
+    <TextView
+        android:id="@+id/fragment_user_profile_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="#9C9C9C"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_user_profile_real_name"
+        tools:text="\@username" />
+
+    <TextView
+        android:id="@+id/fragment_user_profile_followed_by"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_username"
+        tools:text="Followed by 4 instagram fans" />
+
+    <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:icon="@drawable/fragment_photo_details_location_icon"
+        tools:text="Moscow, Russia"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_user_profile_followed_by"
+
+    />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--    <androidx.appcompat.widget.LinearLayoutCompat-->
+    <!--        android:id="@+id/fragment_photo_details_location"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="?attr/selectableItemBackground"-->
+    <!--        android:clickable="true"-->
+    <!--        android:focusable="true"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/fragment_user_profile_real_name"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/fragment_user_profile_followed_by">-->
+
+    <!--        <androidx.appcompat.widget.AppCompatImageView-->
+    <!--            android:layout_width="32dp"-->
+    <!--            android:layout_height="32dp"-->
+    <!--            android:layout_marginEnd="8dp"-->
+    <!--            android:tint="?android:attr/textColorPrimary"-->
+    <!--            app:srcCompat="@drawable/fragment_photo_details_location_icon" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/fragment_photo_details_location_text"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            tools:text="San Francisco, CA" />-->
+
+    <!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
