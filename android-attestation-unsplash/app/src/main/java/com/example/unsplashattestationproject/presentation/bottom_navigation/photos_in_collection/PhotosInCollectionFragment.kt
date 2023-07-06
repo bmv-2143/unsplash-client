@@ -4,20 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.unsplashattestationproject.R
-import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.unsplashattestationproject.databinding.FragmentPhotosInCollectionBinding
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
-import com.example.unsplashattestationproject.presentation.textutils.getFormattedTags
+import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class PhotosInCollectionFragment : Fragment() {
 
     private var _binding: FragmentPhotosInCollectionBinding? = null
     private val binding get() = _binding!!
     private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
+    private lateinit var photosInCollectionAdapter: PhotoInCollectionPagedAdapter
+
+    private val photosInCollectionViewModel: PhotosInCollectionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,40 +41,29 @@ class PhotosInCollectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFragmentTitle()
-
-        activityViewModel.selectedCollection?.let {
-            updateCollectionTexts(it)
-        }
+        initAdapter()
+        observerPhotosPagedFlow()
     }
 
-    private fun updateCollectionTexts(collection : UnsplashCollection) {
-        binding.fragmentPhotosInCollectionTitle.text = collection.title
-        updateCollectionTags(collection)
-        updateCollectionDescription(collection)
-        updateCollectionTotalPhotosAndAuthor(collection)
-    }
-
-    private fun updateCollectionTotalPhotosAndAuthor(collection: UnsplashCollection) {
-        binding.fragmentPhotosInCollectionTotalImagesAndAuthor.text = getString(
-            R.string.fragment_photos_in_collection_total_images_and_author,
-            collection.totalPhotos,
-            collection.user.username
+    private fun initAdapter() {
+        photosInCollectionAdapter = PhotoInCollectionPagedAdapter(
+            activityViewModel.selectedCollection,
+            ::onPhotoItemClick
         )
+        binding.fragmentPhotosInCollectionRecyclerView.adapter = photosInCollectionAdapter
     }
 
-    private fun updateCollectionDescription(collection: UnsplashCollection) {
-        if (collection.description.isNullOrEmpty()) {
-            binding.fragmentPhotosInCollectionDescription.visibility = View.GONE
-        } else {
-            binding.fragmentPhotosInCollectionDescription.text = collection.description
-        }
+    private fun onPhotoItemClick(photo : PhotoListItemUiModel) {
+        Toast.makeText(requireContext(), "Photo clicked $photo", Toast.LENGTH_SHORT).show()
     }
 
-    private fun updateCollectionTags(collection: UnsplashCollection) {
-        if (collection.tags.isNullOrEmpty()) {
-            binding.fragmentPhotosInCollectionTags.visibility = View.GONE
-        } else {
-            binding.fragmentPhotosInCollectionTags.text = getFormattedTags(collection.tags)
+    private fun observerPhotosPagedFlow() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                photosInCollectionViewModel.getPhotosPagedFlow().collectLatest { photosPage ->
+                    photosInCollectionAdapter.submitData(photosPage)
+                }
+            }
         }
     }
 
@@ -77,6 +76,5 @@ class PhotosInCollectionFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 
 }
