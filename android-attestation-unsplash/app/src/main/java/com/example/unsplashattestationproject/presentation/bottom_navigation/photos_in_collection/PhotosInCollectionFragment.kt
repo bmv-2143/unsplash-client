@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import com.example.unsplashattestationproject.databinding.FragmentPhotosInCollectionBinding
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
@@ -42,6 +43,7 @@ class PhotosInCollectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setFragmentTitle()
         initAdapter()
+        collectAdapterLoadState()
         observerPhotosPagedFlow()
     }
 
@@ -53,15 +55,37 @@ class PhotosInCollectionFragment : Fragment() {
         binding.fragmentPhotosInCollectionRecyclerView.adapter = photosInCollectionAdapter
     }
 
-    private fun onPhotoItemClick(photo : PhotoListItemUiModel) {
+    private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
         Toast.makeText(requireContext(), "Photo clicked $photo", Toast.LENGTH_SHORT).show()
     }
 
     private fun observerPhotosPagedFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                photosInCollectionViewModel.getPhotosPagedFlow().collectLatest { photosPage ->
-                    photosInCollectionAdapter.submitData(photosPage)
+                activityViewModel.selectedCollection?.let {
+                    photosInCollectionViewModel.getPhotosInCollection(it.id)
+                        .collectLatest { photosPage ->
+                            photosInCollectionAdapter.submitData(photosPage)
+                        }
+                }
+            }
+        }
+    }
+
+    private fun collectAdapterLoadState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                photosInCollectionAdapter.loadStateFlow.collectLatest { loadStates ->
+
+                    if (loadStates.refresh is LoadState.NotLoading &&
+                        photosInCollectionAdapter.itemCount == 0
+                    ) {
+                        binding.fragmentPhotosInCollectionEmpty.visibility = View.VISIBLE
+                        binding.fragmentPhotosInCollectionRecyclerView.visibility = View.GONE
+                    } else {
+                        binding.fragmentPhotosInCollectionEmpty.visibility = View.GONE
+                        binding.fragmentPhotosInCollectionRecyclerView.visibility = View.VISIBLE
+                    }
                 }
             }
         }

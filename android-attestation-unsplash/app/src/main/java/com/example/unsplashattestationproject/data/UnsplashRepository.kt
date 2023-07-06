@@ -11,6 +11,7 @@ import com.example.unsplashattestationproject.data.dto.collections.UnsplashColle
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.pagingsource.GetCollectionsPagingSource
+import com.example.unsplashattestationproject.data.pagingsource.GetPhotosInCollectionPagingSource
 import com.example.unsplashattestationproject.data.pagingsource.SearchPhotosPagingSource
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.log.TAG
@@ -138,6 +139,20 @@ class UnsplashRepository @Inject constructor(
                 initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = { GetCollectionsPagingSource(unsplashNetworkDataSource) }
+        ).flow
+    }
+
+    internal fun getPhotosInCollection(collectionId: String): Flow<PagingData<Photo>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PREFETCH_DISTANCE,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = { GetPhotosInCollectionPagingSource(
+                unsplashNetworkDataSource,
+                collectionId,
+            ) }
         ).flow
     }
 

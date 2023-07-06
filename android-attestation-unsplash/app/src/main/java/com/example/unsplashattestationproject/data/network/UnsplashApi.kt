@@ -45,4 +45,11 @@ interface UnsplashApi {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
     ): List<UnsplashCollection>
+
+    @GET("collections/{id}/photos")
+    suspend fun getPhotosInCollection(
+        @Path("id") id: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+    ): List<UnsplashPhoto>
 }

@@ -171,4 +171,23 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
+    suspend fun getPhotosInCollection(collectionId : String, page : Int, perPage : Int) : List<UnsplashPhoto> {
+        return try {
+            unsplashService.unsplashApi.getPhotosInCollection(
+                collectionId,
+                page,
+                perPage = perPage,
+            )
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            listOf()
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            listOf()
+        } catch (e: Exception) {
+            logError(::getPhotos.name, e)
+            listOf()
+        }
+    }
+
 }

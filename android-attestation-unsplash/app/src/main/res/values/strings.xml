@@ -38,5 +38,6 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_photos_in_collection_total_images_and_author">%1d images by @%1s</string>
+    <string name="fragment_photos_in_collection_empty">Unsplash service returned an empty list for this collection. This is due to limitation of the free Unsplash API subscription. Please try to select another collection or upgrade your developer account.</string>
 
 </resources>
