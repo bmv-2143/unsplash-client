@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.databinding.FragmentCollectionsListBinding
@@ -45,6 +46,7 @@ class CollectionsFragment : Fragment() {
         setupRecyclerViewLayoutManager()
         binding.fragmentCollectionsRecyclerView.adapter = collectionsAdapter
         observerCollections()
+        observeLoadState()
     }
 
     private fun setupRecyclerViewLayoutManager() {
@@ -58,6 +60,18 @@ class CollectionsFragment : Fragment() {
                 collectionsViewModel.collectionsPagedFlow.collectLatest { pagingData ->
                     collectionsAdapter.submitData(pagingData)
                 }
+            }
+        }
+    }
+
+    private fun observeLoadState() {
+        collectionsAdapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading) {
+                binding.fragmentCollectionsProgressBar.visibility = View.VISIBLE
+                binding.fragmentCollectionsRecyclerView.visibility = View.GONE
+            } else {
+                binding.fragmentCollectionsProgressBar.visibility = View.GONE
+                binding.fragmentCollectionsRecyclerView.visibility = View.VISIBLE
             }
         }
     }
