@@ -12,7 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.databinding.FragmentPhotosInCollectionBinding
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
@@ -56,7 +58,9 @@ class PhotosInCollectionFragment : Fragment() {
     }
 
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
-        Toast.makeText(requireContext(), "Photo clicked $photo", Toast.LENGTH_SHORT).show()
+        val navController = findNavController()
+        activityViewModel.selectedFromPhotoList = photo
+        navController.navigate(R.id.photoDetailsFragment)
     }
 
     private fun observerPhotosPagedFlow() {
