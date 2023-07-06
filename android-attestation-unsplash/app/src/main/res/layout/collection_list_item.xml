@@ -38,7 +38,7 @@
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
+        android:textSize="16sp"
         android:shadowColor="#000000"
         android:shadowDx="3"
         android:shadowDy="3"
@@ -88,6 +88,11 @@
         android:textSize="11sp"
         android:textStyle="bold"
 
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="6"
+
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/collection_author_avatar"
         app:layout_constraintTop_toTopOf="@+id/collection_author_avatar"
@@ -103,6 +108,12 @@
         android:maxLines="1"
         android:textColor="@android:color/white"
         android:textSize="11sp"
+
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="6"
+
         app:layout_constraintBottom_toBottomOf="@+id/collection_author_avatar"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/collection_author_avatar"
