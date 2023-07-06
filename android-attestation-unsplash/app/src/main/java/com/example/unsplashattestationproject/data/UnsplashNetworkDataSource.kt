@@ -7,6 +7,7 @@ import com.example.unsplashattestationproject.data.dto.collections.UnsplashColle
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeResponse
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
+import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.data.network.UnsplashAuthorizationService
 import com.example.unsplashattestationproject.data.network.UnsplashService
 import com.example.unsplashattestationproject.log.TAG
@@ -187,6 +188,21 @@ class UnsplashNetworkDataSource @Inject constructor(
         } catch (e: Exception) {
             logError(::getPhotos.name, e)
             listOf()
+        }
+    }
+
+    suspend fun getUserProfile() : UnsplashUserProfile? {
+        return try {
+            unsplashService.unsplashApi.getUserProfile()
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            null
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            null
+        } catch (e: Exception) {
+            logError(::getUserProfile.name, e)
+            null
         }
     }
 

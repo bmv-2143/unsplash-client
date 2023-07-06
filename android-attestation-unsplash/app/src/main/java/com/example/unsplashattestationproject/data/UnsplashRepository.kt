@@ -10,6 +10,7 @@ import com.example.unsplashattestationproject.data.downloads.UnsplashDownloader
 import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
+import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.data.pagingsource.GetCollectionsPagingSource
 import com.example.unsplashattestationproject.data.pagingsource.GetPhotosInCollectionPagingSource
 import com.example.unsplashattestationproject.data.pagingsource.SearchPhotosPagingSource
@@ -163,4 +164,7 @@ class UnsplashRepository @Inject constructor(
         var unsplashAccessToken: String = ""
             private set
     }
+
+    suspend fun getUserProfile(): UnsplashUserProfile? =
+        unsplashNetworkDataSource.getUserProfile()
 }

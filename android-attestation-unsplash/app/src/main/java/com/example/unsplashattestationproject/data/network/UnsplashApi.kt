@@ -6,6 +6,7 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashSearchResult
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
+import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -52,4 +53,7 @@ interface UnsplashApi {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
     ): List<UnsplashPhoto>
+
+    @GET("me")
+    suspend fun getUserProfile() : UnsplashUserProfile
 }
