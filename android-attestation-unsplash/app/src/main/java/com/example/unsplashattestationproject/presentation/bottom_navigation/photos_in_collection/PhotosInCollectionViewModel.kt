@@ -9,6 +9,7 @@ import androidx.paging.map
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.domain.GetPhotosUseCase
 import com.example.unsplashattestationproject.log.TAG
+import com.example.unsplashattestationproject.presentation.bottom_navigation.model.toPhotoListItemUiModel
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -33,20 +34,5 @@ class PhotosInCollectionViewModel @Inject constructor(
         Log.e(TAG, "getPhotosPagedFlow...")
         return pagedPhotosFlow
     }
-
-    // todo: dry, see, photo_list/PhotoListViewModel.kt
-    private fun Photo.toPhotoListItemUiModel(): PhotoListItemUiModel {
-        return PhotoListItemUiModel(
-            id = id,
-            remoteId = remoteId,
-            authorName = userName,
-            authorUsername = userNickname,
-            authorAvatar = userAvatar,
-            likes = likes,
-            likedByUser = likedByUser,
-            imageUrl = urlsRegular
-        )
-    }
-
 
 }

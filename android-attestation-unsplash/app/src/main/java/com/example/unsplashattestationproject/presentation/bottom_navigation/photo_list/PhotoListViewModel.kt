@@ -14,6 +14,7 @@ import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.domain.GetPhotosUseCase
 import com.example.unsplashattestationproject.domain.SearchPhotosUseCase
 import com.example.unsplashattestationproject.log.TAG
+import com.example.unsplashattestationproject.presentation.bottom_navigation.model.toPhotoListItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -51,19 +52,6 @@ class PhotoListViewModel @Inject constructor(
                 photo.toPhotoListItemUiModel()
             }
         }.cachedIn(viewModelScope)
-    }
-
-    private fun Photo.toPhotoListItemUiModel(): PhotoListItemUiModel {
-        return PhotoListItemUiModel(
-            id = id,
-            remoteId = remoteId,
-            authorName = userName,
-            authorUsername = userNickname,
-            authorAvatar = userAvatar,
-            likes = likes,
-            likedByUser = likedByUser,
-            imageUrl = urlsRegular
-        )
     }
 
     fun getPhotosPagedFlow(): Flow<PagingData<PhotoListItemUiModel>> {

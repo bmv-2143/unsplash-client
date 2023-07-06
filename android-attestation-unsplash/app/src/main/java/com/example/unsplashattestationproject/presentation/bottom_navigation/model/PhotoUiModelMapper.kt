@@ -1,6 +1,7 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.model
 
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
+import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
 
 fun UnsplashPhotoDetails.toPhotoListItemUiModel() : PhotoListItemUiModel =
@@ -14,3 +15,16 @@ fun UnsplashPhotoDetails.toPhotoListItemUiModel() : PhotoListItemUiModel =
         likedByUser = this.likedByUser,
         imageUrl = this.urls.regular,
     )
+
+fun Photo.toPhotoListItemUiModel(): PhotoListItemUiModel {
+    return PhotoListItemUiModel(
+        id = id,
+        remoteId = remoteId,
+        authorName = userName,
+        authorUsername = userNickname,
+        authorAvatar = userAvatar,
+        likes = likes,
+        likedByUser = likedByUser,
+        imageUrl = urlsRegular
+    )
+}
