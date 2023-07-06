@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.unsplashattestationproject.R
@@ -132,6 +133,7 @@ class PhotoListFragment : Fragment() {
         observerPagingAdapterUpdates()
         observerFragmentStateChange()
         observerSearchPagedFlow()
+        observeLoadState()
     }
 
     private fun observerPhotosPagedFlow() {
@@ -216,6 +218,18 @@ class PhotoListFragment : Fragment() {
                         searchAdapter.submitData(photosPage)
                     }
                 }
+            }
+        }
+    }
+
+    private fun observeLoadState() {
+        photoListAdapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading) {
+                binding.fragmentPhotoProgressBar.visibility = View.VISIBLE
+                binding.fragmentPhotoRecyclerView.visibility = View.GONE
+            } else {
+                binding.fragmentPhotoProgressBar.visibility = View.GONE
+                binding.fragmentPhotoRecyclerView.visibility = View.VISIBLE
             }
         }
     }
