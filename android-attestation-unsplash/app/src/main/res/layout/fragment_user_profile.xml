@@ -13,9 +13,9 @@
         android:layout_margin="16dp"
         android:background="@drawable/shape_circle_white"
         android:backgroundTint="#DCDCDC"
-        app:srcCompat="@drawable/photo_list_item_avatar_placeholder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/photo_list_item_avatar_placeholder" />
 
     <TextView
         android:id="@+id/fragment_user_profile_real_name"
@@ -45,14 +45,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:text="@string/fragment_user_profile_followed_by"
         android:textAlignment="center"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_username"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:text="@string/fragment_user_profile_followed_by"
-        tools:text="Followed by: 99" />
+        tools:text="Followed by: 99"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/fragment_user_profile_twitter_username"
@@ -61,11 +61,11 @@
         android:layout_marginTop="4dp"
         android:textAlignment="center"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_instargam_followed_by"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="Twitter: " />
+        tools:text="Twitter: "
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/fragment_user_profile_instargam_username"
@@ -74,48 +74,61 @@
         android:layout_marginTop="4dp"
         android:textAlignment="center"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_twitter_username"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="Instagram: " />
+        tools:text="Instagram: "
+        tools:visibility="visible" />
 
     <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
         android:id="@+id/fragment_user_profile_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:icon="@drawable/ic_location"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_instargam_username"
-        app:icon="@drawable/ic_location"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="Moscow, Russia" />
+        tools:text="Moscow, Russia"
+        tools:visibility="visible" />
 
-<!--    <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView-->
-<!--        android:id="@+id/fragment_user_profile_email"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_location"-->
-<!--        app:icon="@drawable/ic_email_48"-->
-<!--        android:visibility="gone"-->
-<!--        tools:visibility="visible"-->
-<!--        tools:text="hello@world.com" />-->
 
     <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
         android:id="@+id/fragment_user_profile_downloads"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:icon="@drawable/ic_download_48"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_location"
-        app:icon="@drawable/ic_download_48"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="69" />
+        tools:text="69"
+        tools:visibility="visible" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/fragment_user_profile_tab_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_downloads"
+        app:tabBackground="@color/white"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/light_blue_600"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="?android:textColorPrimary"
+        app:tabTextColor="#ADADAD"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#C9B970"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_tab_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

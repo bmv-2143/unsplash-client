@@ -11,12 +11,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bumptech.glide.Glide
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.databinding.FragmentUserProfileBinding
 import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
+import com.example.unsplashattestationproject.presentation.onboarding.OnboardingCreateFragment
+import com.example.unsplashattestationproject.presentation.onboarding.OnboardingShareFragment
+import com.example.unsplashattestationproject.presentation.onboarding.OnboardingUploadFragment
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -43,6 +48,18 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeUserProfile()
         userProfileViewModel.loadUserProfile()
+
+        val adapter = UserDataAdapter(this)
+        binding.viewPager.adapter = adapter
+
+        TabLayoutMediator(binding.fragmentUserProfileTabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                UserDataAdapter.FRAGMENT_POSITION_PHOTOS -> tab.text = "123\nPhotos"
+                UserDataAdapter.FRAGMENT_POSITION_LIKED -> tab.text = "44\nLiked"
+                else -> tab.text = "1\nCollections"
+            }
+        }.attach()
+
     }
 
     private fun observeUserProfile() {
@@ -113,6 +130,26 @@ class UserProfileFragment : Fragment() {
             .circleCrop()
             .placeholder(R.drawable.photo_list_item_avatar_placeholder)
             .into(binding.fragmentUserProfileImageAvatar)
+    }
+
+    class UserDataAdapter(parentFragment: Fragment) :
+        FragmentStateAdapter(parentFragment) {
+
+        override fun getItemCount(): Int = NUMBER_OF_FRAGMENTS
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                FRAGMENT_POSITION_PHOTOS -> OnboardingCreateFragment.newInstance()
+                FRAGMENT_POSITION_LIKED -> OnboardingShareFragment.newInstance()
+                else -> OnboardingUploadFragment.newInstance()
+            }
+        }
+
+        companion object {
+            const val NUMBER_OF_FRAGMENTS = 3
+            const val FRAGMENT_POSITION_PHOTOS = 0
+            const val FRAGMENT_POSITION_LIKED = 1
+        }
     }
 
     override fun onDestroyView() {
