@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.unsplashattestationproject.R
@@ -22,6 +23,9 @@ import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
 import com.example.unsplashattestationproject.presentation.utils.SnackbarFactory
 import com.example.unsplashattestationproject.utils.NetworkStateChecker
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -29,7 +33,12 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class PhotoListFragment : Fragment() {
+class PhotoListFragment @AssistedInject constructor(@Assisted private val layoutManagerFactory: () -> RecyclerView.LayoutManager) : Fragment() {
+
+    @AssistedFactory
+    fun interface Factory {
+        fun create(layoutManagerFactory: () -> RecyclerView.LayoutManager): PhotoListFragment
+    }
 
     private var _binding: FragmentPhotoListBinding? = null
     private val binding get() = _binding!!
@@ -39,8 +48,6 @@ class PhotoListFragment : Fragment() {
     private val searchAdapter = PhotosPagedAdapter(::onPhotoItemClick)
 
     private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
-
-    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
     @Inject
     lateinit var networkStateChecker: NetworkStateChecker
@@ -106,15 +113,11 @@ class PhotoListFragment : Fragment() {
         )
     }
 
-    private fun setupRecyclerViewLayoutManager() {
-        staggeredGridLayoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
-        )
-        staggeredGridLayoutManager.gapStrategy =
-            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-        binding.fragmentPhotoRecyclerView.layoutManager = staggeredGridLayoutManager
 
+
+    private fun setupRecyclerViewLayoutManager() {
+//        layoutManager = layoutManagerFactory()
+        binding.fragmentPhotoRecyclerView.layoutManager = layoutManagerFactory()
     }
 
     private fun activatePhotoListAdapter() {
@@ -191,13 +194,16 @@ class PhotoListFragment : Fragment() {
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = binding.fragmentPhotoRecyclerView.layoutManager!!
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
 
-                val visibleItemCount = staggeredGridLayoutManager.childCount
-                val totalItemCount = staggeredGridLayoutManager.itemCount
-
-                val firstVisibleItemPositions =
-                    staggeredGridLayoutManager.findFirstVisibleItemPositions(null)
-                if (visibleItemCount + firstVisibleItemPositions[0] >= totalItemCount) {
+                val firstVisibleItemPosition = when (layoutManager) {
+                    is StaggeredGridLayoutManager -> layoutManager.findFirstVisibleItemPositions(null)[0]
+                    is LinearLayoutManager -> layoutManager.findFirstVisibleItemPosition()
+                    else -> return
+                }
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
                     Log.e(TAG, "onScrolled: RETRY")
                     photoListAdapter.retry()
                 }

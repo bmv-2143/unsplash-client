@@ -26,6 +26,7 @@ import com.example.unsplashattestationproject.data.NetworkError.ForbiddenApiRate
 import com.example.unsplashattestationproject.data.NetworkError.Unauthorized
 import com.example.unsplashattestationproject.data.SharedRepository
 import com.example.unsplashattestationproject.databinding.ActivityUnsplashBottomNavigationsBinding
+import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.StaggeredLayoutPhotoListFragmentFactory
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester
 import com.example.unsplashattestationproject.presentation.utils.SnackbarFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -52,8 +53,12 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
 
     override fun getPermissionRequester() = permissionRequester
 
+    @Inject lateinit var staggeredLayoutPhotoListFragmentFactory: StaggeredLayoutPhotoListFragmentFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportFragmentManager.fragmentFactory = staggeredLayoutPhotoListFragmentFactory
+
         binding = ActivityUnsplashBottomNavigationsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         navigationController = getNavController()
