@@ -25,9 +25,7 @@ class CompoundIconTextView @JvmOverloads constructor(
         }
         binding.root.setOnClickListener( ::onClick )
 
-        if (isInEditMode) {
-            addView(binding.root)
-        }
+        addView(binding.root)
     }
 
     var text: CharSequence

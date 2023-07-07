@@ -40,4 +40,7 @@
     <string name="fragment_photos_in_collection_total_images_and_author">%1d images by @%1s</string>
     <string name="fragment_photos_in_collection_empty">Unsplash service returned an empty list for this collection. This is due to limitation of the free Unsplash API subscription. Please try to select another collection or upgrade your developer account.</string>
 
+    <string name="fragment_user_profile_full_name">%1s %1s</string>
+    <string name="fragment_user_profile_instagram_username">Instagram: \@%1s</string>
+
 </resources>

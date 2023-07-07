@@ -39,7 +39,7 @@
         tools:text="\@username" />
 
     <TextView
-        android:id="@+id/fragment_user_profile_followed_by"
+        android:id="@+id/fragment_user_profile_instargam_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -47,47 +47,46 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_username"
-        tools:text="Followed by 4 instagram fans" />
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Instagram name: " />
 
     <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
+        android:id="@+id/fragment_user_profile_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:icon="@drawable/fragment_photo_details_location_icon"
-        tools:text="Moscow, Russia"
+        android:layout_marginTop="8dp"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/fragment_user_profile_real_name"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_user_profile_followed_by"
+        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_instargam_username"
+        app:icon="@drawable/ic_location"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Moscow, Russia" />
 
-    />
+    <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
+        android:id="@+id/fragment_user_profile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_location"
+        app:icon="@drawable/ic_email_48"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="hello@world.com" />
 
+    <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
+        android:id="@+id/fragment_user_profile_downloads"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_email"
+        app:icon="@drawable/ic_download_48"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="69" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <!--    <androidx.appcompat.widget.LinearLayoutCompat-->
-    <!--        android:id="@+id/fragment_photo_details_location"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="?attr/selectableItemBackground"-->
-    <!--        android:clickable="true"-->
-    <!--        android:focusable="true"-->
-    <!--        android:gravity="center_vertical"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/fragment_user_profile_real_name"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/fragment_user_profile_followed_by">-->
-
-    <!--        <androidx.appcompat.widget.AppCompatImageView-->
-    <!--            android:layout_width="32dp"-->
-    <!--            android:layout_height="32dp"-->
-    <!--            android:layout_marginEnd="8dp"-->
-    <!--            android:tint="?android:attr/textColorPrimary"-->
-    <!--            app:srcCompat="@drawable/fragment_photo_details_location_icon" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/fragment_photo_details_location_text"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            tools:text="San Francisco, CA" />-->
-
-    <!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
