@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.databinding.FragmentUserProfileBinding
@@ -49,6 +50,7 @@ class UserProfileFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userProfileViewModel.userProfileFlow.collect { userProfile ->
                     Log.e(TAG, "observeUserProfile: $userProfile")
+                    loadAuthorAvatar(userProfile.profileImage.medium)
                     loadUserProfile(userProfile)
                 }
             }
@@ -60,11 +62,22 @@ class UserProfileFragment : Fragment() {
         setOrHide(userProfile.username, binding.fragmentUserProfileUsername)
         setOrHide(userProfile.location, binding.fragmentUserProfileLocation)
 
-        setOrHide(userProfile.email, binding.fragmentUserProfileEmail)
-        setOrHide(getString(
-            R.string.fragment_user_profile_instagram_username,
-            userProfile.instagramUsername
-        ), binding.fragmentUserProfileInstargamUsername)
+        setOrHide(
+            getString(
+                R.string.fragment_user_profile_twitter_username,
+                userProfile.twitterUsername
+            ), binding.fragmentUserProfileTwitterUsername
+        )
+        setOrHide(
+            getString(R.string.fragment_user_profile_followed_by, userProfile.followersCount),
+            binding.fragmentUserProfileInstargamFollowedBy
+        )
+        setOrHide(
+            getString(
+                R.string.fragment_user_profile_instagram_username,
+                userProfile.instagramUsername
+            ), binding.fragmentUserProfileInstargamUsername
+        )
         setOrHide(userProfile.downloads.toString(), binding.fragmentUserProfileDownloads)
     }
 
@@ -92,6 +105,14 @@ class UserProfileFragment : Fragment() {
             textView.visibility = View.VISIBLE
             textView.text = text
         }
+    }
+
+    private fun loadAuthorAvatar(avatarUrl: String) {
+        Glide.with(binding.root.context)
+            .load(avatarUrl)
+            .circleCrop()
+            .placeholder(R.drawable.photo_list_item_avatar_placeholder)
+            .into(binding.fragmentUserProfileImageAvatar)
     }
 
     override fun onDestroyView() {

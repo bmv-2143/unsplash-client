@@ -11,7 +11,9 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_margin="16dp"
-        android:background="@drawable/onboarding_circle_green"
+        android:background="@drawable/shape_circle_white"
+        android:backgroundTint="#DCDCDC"
+        app:srcCompat="@drawable/photo_list_item_avatar_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +41,7 @@
         tools:text="\@username" />
 
     <TextView
-        android:id="@+id/fragment_user_profile_instargam_username"
+        android:id="@+id/fragment_user_profile_instargam_followed_by"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -49,7 +51,34 @@
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_username"
         android:visibility="gone"
         tools:visibility="visible"
-        tools:text="Instagram name: " />
+        android:text="@string/fragment_user_profile_followed_by"
+        tools:text="Followed by: 99" />
+
+    <TextView
+        android:id="@+id/fragment_user_profile_twitter_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_instargam_followed_by"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Twitter: " />
+
+    <TextView
+        android:id="@+id/fragment_user_profile_instargam_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_twitter_username"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Instagram: " />
 
     <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
         android:id="@+id/fragment_user_profile_location"
@@ -64,17 +93,17 @@
         tools:visibility="visible"
         tools:text="Moscow, Russia" />
 
-    <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
-        android:id="@+id/fragment_user_profile_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
-        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_location"
-        app:icon="@drawable/ic_email_48"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="hello@world.com" />
+<!--    <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView-->
+<!--        android:id="@+id/fragment_user_profile_email"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_location"-->
+<!--        app:icon="@drawable/ic_email_48"-->
+<!--        android:visibility="gone"-->
+<!--        tools:visibility="visible"-->
+<!--        tools:text="hello@world.com" />-->
 
     <com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
         android:id="@+id/fragment_user_profile_downloads"
@@ -82,7 +111,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/fragment_user_profile_real_name"
-        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_email"
+        app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_location"
         app:icon="@drawable/ic_download_48"
         android:visibility="gone"
         tools:visibility="visible"

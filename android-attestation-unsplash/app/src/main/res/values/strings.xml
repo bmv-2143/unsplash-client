@@ -42,5 +42,7 @@
 
     <string name="fragment_user_profile_full_name">%1s %1s</string>
     <string name="fragment_user_profile_instagram_username">Instagram: \@%1s</string>
+    <string name="fragment_user_profile_twitter_username">Twitter: \@%1s</string>
+    <string name="fragment_user_profile_followed_by">Followed by: %1d</string>
 
 </resources>
