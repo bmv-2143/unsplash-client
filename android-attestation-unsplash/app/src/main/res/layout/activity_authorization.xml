@@ -1,34 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".presentation.authorization.AuthorizationActivity">
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatButton
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/black">
 
-        android:id="@+id/activity_authorization_button_log_in_via_unsplash"
-        android:background="@color/black"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
-        android:text="@string/activity_authorization_button_log_in_via_unsplash"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/icon_image_view"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_unsplash_rounded" />
 
-    <androidx.appcompat.widget.AppCompatButton
+            <TextView
+                android:id="@+id/unsplash_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/fragment_auth_title"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:textStyle="bold" />
 
-        android:id="@+id/activity_authorization_test_button"
-        android:background="@color/black"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
-        android:layout_marginTop="32dp"
-        android:text="TEST_BUTTON"/>
+        </LinearLayout>
 
+    </FrameLayout>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/activity_authorization_button_log_in_via_unsplash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:background="@color/black"
+            android:paddingHorizontal="16dp"
+            android:text="@string/activity_authorization_button_log_in_via_unsplash"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/activity_authorization_test_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:background="@color/black"
+            android:paddingHorizontal="16dp"
+            android:text="TEST_BUTTON"
+            android:textColor="@color/white" />
+
+    </FrameLayout>
+
+</LinearLayout>
