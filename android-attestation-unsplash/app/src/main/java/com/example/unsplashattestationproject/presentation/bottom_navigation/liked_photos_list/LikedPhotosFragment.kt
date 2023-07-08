@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-
 @AndroidEntryPoint
 class LikedPhotosFragment : Fragment() {
 
@@ -74,10 +73,7 @@ class LikedPhotosFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.likedPhotos.collectLatest { photosPage ->
-
-                    photosPage.collectLatest {
-                        photoListAdapter.submitData(it)
-                    }
+                    photoListAdapter.submitData(photosPage)
                 }
             }
         }

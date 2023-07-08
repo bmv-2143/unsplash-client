@@ -12,21 +12,26 @@ import com.example.unsplashattestationproject.presentation.bottom_navigation.pho
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LikedPhotosViewModel @Inject constructor(private val getLikedPhotosUseCase: GetLikedPhotosUseCase) :
     ViewModel() {
 
-    // ???? nested flows...
-    private val _likedPhotos = MutableStateFlow<Flow<PagingData<PhotoListItemUiModel>>>(emptyFlow())
-    val likedPhotos: StateFlow<Flow<PagingData<PhotoListItemUiModel>>> = _likedPhotos
+    private val _likedPhotos =
+        MutableStateFlow<PagingData<PhotoListItemUiModel>>(PagingData.empty())
+    val likedPhotos = _likedPhotos.asStateFlow()
 
     internal fun loadLikedPhotos(username: String) {
-        _likedPhotos.value = cacheInPhotoPagingFlow(getLikedPhotosUseCase(username))
+        viewModelScope.launch {
+            cacheInPhotoPagingFlow(getLikedPhotosUseCase(username)).collectLatest { pagingData ->
+                _likedPhotos.value = pagingData
+            }
+        }
     }
 
     private fun cacheInPhotoPagingFlow(input: Flow<PagingData<Photo>>): Flow<PagingData<PhotoListItemUiModel>> {
@@ -36,5 +41,5 @@ class LikedPhotosViewModel @Inject constructor(private val getLikedPhotosUseCase
             }
         }.cachedIn(viewModelScope)
     }
-
 }
+
