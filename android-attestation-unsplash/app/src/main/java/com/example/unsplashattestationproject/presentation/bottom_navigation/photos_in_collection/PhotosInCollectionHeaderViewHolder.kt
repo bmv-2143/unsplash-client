@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.databinding.PhotosInCollectionItemHeaderBinding
-import com.example.unsplashattestationproject.presentation.textutils.getFormattedTags
+import com.example.unsplashattestationproject.presentation.utils.getFormattedTags
 
 class PhotosInCollectionHeaderViewHolder(
     private val binding: PhotosInCollectionItemHeaderBinding,

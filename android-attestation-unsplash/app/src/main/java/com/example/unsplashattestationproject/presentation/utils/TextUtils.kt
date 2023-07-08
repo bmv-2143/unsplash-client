@@ -1,4 +1,4 @@
-package com.example.unsplashattestationproject.presentation.textutils
+package com.example.unsplashattestationproject.presentation.utils
 
 import com.example.unsplashattestationproject.data.dto.photos.Tag
 

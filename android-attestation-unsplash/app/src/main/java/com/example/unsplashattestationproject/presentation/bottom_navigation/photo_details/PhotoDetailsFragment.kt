@@ -37,7 +37,7 @@ import com.example.unsplashattestationproject.presentation.permissions.Permissio
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.Initial
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.NotAllGranted
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.Requesting
-import com.example.unsplashattestationproject.presentation.textutils.getFormattedTags
+import com.example.unsplashattestationproject.presentation.utils.getFormattedTags
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
