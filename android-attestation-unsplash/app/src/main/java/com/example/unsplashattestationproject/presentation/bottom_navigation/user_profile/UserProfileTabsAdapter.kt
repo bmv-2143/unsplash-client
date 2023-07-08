@@ -3,14 +3,15 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.us
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.unsplashattestationproject.presentation.bottom_navigation.liked_photos_list.LikedPhotosFragment
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListFragment
-import com.example.unsplashattestationproject.presentation.onboarding.OnboardingShareFragment
 import com.example.unsplashattestationproject.presentation.onboarding.OnboardingUploadFragment
 import javax.inject.Inject
 
 class UserProfileTabsAdapter @Inject constructor(
     private val photoListFragmentFactory: PhotoListFragment.Factory,
-    private val parentFragment: Fragment
+    private val parentFragment: Fragment,
+    private val username: String
 ) : FragmentStateAdapter(parentFragment) {
 
     override fun getItemCount(): Int = NUMBER_OF_FRAGMENTS
@@ -20,7 +21,7 @@ class UserProfileTabsAdapter @Inject constructor(
             FRAGMENT_POSITION_PHOTOS -> photoListFragmentFactory.create {
                 LinearLayoutManager(parentFragment.requireContext())
             }
-            FRAGMENT_POSITION_LIKED -> OnboardingShareFragment.newInstance()
+            FRAGMENT_POSITION_LIKED -> LikedPhotosFragment.newInstance(username)
             else -> OnboardingUploadFragment.newInstance()
         }
     }

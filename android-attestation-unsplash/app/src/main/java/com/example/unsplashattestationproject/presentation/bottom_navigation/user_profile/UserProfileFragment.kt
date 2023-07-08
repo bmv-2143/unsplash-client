@@ -47,18 +47,22 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeUserProfile()
         userProfileViewModel.loadUserProfile()
+    }
 
-        val adapter = UserProfileTabsAdapter(photoListFragmentFactory, this)
+    private fun initTabbedLayout(username: String) {
+        val adapter = UserProfileTabsAdapter(photoListFragmentFactory, this, username)
         binding.viewPager.adapter = adapter
 
-        TabLayoutMediator(binding.fragmentUserProfileTabLayout, binding.viewPager) { tab, position ->
+        TabLayoutMediator(
+            binding.fragmentUserProfileTabLayout,
+            binding.viewPager
+        ) { tab, position ->
             when (position) {
                 UserProfileTabsAdapter.FRAGMENT_POSITION_PHOTOS -> tab.text = "123\nPhotos"
                 UserProfileTabsAdapter.FRAGMENT_POSITION_LIKED -> tab.text = "44\nLiked"
                 else -> tab.text = "1\nCollections"
             }
         }.attach()
-
     }
 
     private fun observeUserProfile() {
@@ -68,6 +72,7 @@ class UserProfileFragment : Fragment() {
                     Log.e(TAG, "observeUserProfile: $userProfile")
                     loadAuthorAvatar(userProfile.profileImage.medium)
                     loadUserProfile(userProfile)
+                    initTabbedLayout(userProfile.username)
                 }
             }
         }
