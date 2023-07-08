@@ -58,9 +58,11 @@ class UserProfileFragment : Fragment() {
             binding.viewPager
         ) { tab, position ->
             when (position) {
-                UserProfileTabsAdapter.FRAGMENT_POSITION_PHOTOS -> tab.text = "123\nPhotos"
                 UserProfileTabsAdapter.FRAGMENT_POSITION_LIKED -> tab.text = "44\nLiked"
-                else -> tab.text = "1\nCollections"
+
+                // just a demo of reuse of the photo list unsplash fragment,
+                // not required by the task
+                UserProfileTabsAdapter.FRAGMENT_POSITION_PHOTOS -> tab.text = "DEMO (ALL PHOTOS)"
             }
         }.attach()
     }
