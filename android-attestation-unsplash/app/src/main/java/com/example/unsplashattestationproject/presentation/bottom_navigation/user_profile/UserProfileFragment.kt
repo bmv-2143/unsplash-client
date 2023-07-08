@@ -1,7 +1,6 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.user_profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.databinding.FragmentUserProfileBinding
-import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListFragment
 import com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
 import com.google.android.material.tabs.TabLayoutMediator
@@ -73,13 +71,17 @@ class UserProfileFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userProfileViewModel.userProfileFlow.collect { userProfile ->
-                    Log.e(TAG, "observeUserProfile: $userProfile")
-                    loadAuthorAvatar(userProfile.profileImage.medium)
-                    loadUserProfile(userProfile)
-                    initTabbedLayout(userProfile.username, userProfile.totalLikes)
+                    updateUi(userProfile)
                 }
             }
         }
+    }
+
+    private fun updateUi(userProfile: UnsplashUserProfile) {
+        loadAuthorAvatar(userProfile.profileImage.medium)
+        loadUserProfile(userProfile)
+        binding.fragmentUserProfileProgressBar.visibility = View.GONE
+        initTabbedLayout(userProfile.username, userProfile.totalLikes)
     }
 
     private fun loadUserProfile(userProfile: UnsplashUserProfile) {

@@ -119,16 +119,25 @@
         app:tabIndicatorColor="@color/light_blue_600"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="?android:textColorPrimary"
-        app:tabTextColor="#ADADAD"/>
+        app:tabTextColor="#ADADAD" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#C9B970"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_tab_layout" />
+
+    <ProgressBar
+        android:id="@+id/fragment_user_profile_progress_bar"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
