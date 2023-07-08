@@ -49,7 +49,7 @@ class UserProfileFragment : Fragment() {
         userProfileViewModel.loadUserProfile()
     }
 
-    private fun initTabbedLayout(username: String) {
+    private fun initTabbedLayout(username: String, likedPhotosCount: Int) {
         val adapter = UserProfileTabsAdapter(photoListFragmentFactory, this, username)
         binding.viewPager.adapter = adapter
 
@@ -58,11 +58,13 @@ class UserProfileFragment : Fragment() {
             binding.viewPager
         ) { tab, position ->
             when (position) {
-                UserProfileTabsAdapter.FRAGMENT_POSITION_LIKED -> tab.text = "44\nLiked"
+                UserProfileTabsAdapter.FRAGMENT_POSITION_LIKED -> tab.text =
+                    getString(R.string.fragment_user_profile_tab_title_liked_photos, likedPhotosCount)
 
                 // just a demo of reuse of the photo list unsplash fragment,
                 // not required by the task
-                UserProfileTabsAdapter.FRAGMENT_POSITION_PHOTOS -> tab.text = "DEMO (ALL PHOTOS)"
+                UserProfileTabsAdapter.FRAGMENT_POSITION_PHOTOS -> tab.text =
+                    getString(R.string.fragment_user_profile_tab_title_demo_tab_all_unsplash_photos)
             }
         }.attach()
     }
@@ -74,7 +76,7 @@ class UserProfileFragment : Fragment() {
                     Log.e(TAG, "observeUserProfile: $userProfile")
                     loadAuthorAvatar(userProfile.profileImage.medium)
                     loadUserProfile(userProfile)
-                    initTabbedLayout(userProfile.username)
+                    initTabbedLayout(userProfile.username, userProfile.totalLikes)
                 }
             }
         }

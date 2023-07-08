@@ -44,5 +44,7 @@
     <string name="fragment_user_profile_instagram_username">Instagram: \@%1s</string>
     <string name="fragment_user_profile_twitter_username">Twitter: \@%1s</string>
     <string name="fragment_user_profile_followed_by">Followed by: %1d</string>
+    <string name="fragment_user_profile_tab_title_liked_photos">%1d\nLiked</string>
+    <string name="fragment_user_profile_tab_title_demo_tab_all_unsplash_photos">DEMO (ALL PHOTOS)</string>
 
 </resources>
