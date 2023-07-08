@@ -72,6 +72,12 @@ class UnsplashRepository @Inject constructor(
         unsplashAccessToken = accessToken
     }
 
+    internal fun removeAccessToken() {
+        val editor = sharedPreferences.edit()
+        editor.remove(PREFS_KEY_ACCESS_TOKEN)
+        editor.apply()
+    }
+
     fun getPhotosFlow(): Flow<PagingData<Photo>> {
         return if (FEATURE_FLAG_REMOTE_MEDIATOR) {
             mediatorPager.flow

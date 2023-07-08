@@ -40,7 +40,8 @@ class UserProfileFragment : Fragment() {
 
     private val userProfileViewModel: UserProfileViewModel by viewModels()
 
-    @Inject lateinit var photoListFragmentFactory: PhotoListFragment.Factory
+    @Inject
+    lateinit var photoListFragmentFactory: PhotoListFragment.Factory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,7 +80,10 @@ class UserProfileFragment : Fragment() {
         ) { tab, position ->
             when (position) {
                 UserProfileTabsAdapter.FRAGMENT_POSITION_LIKED -> tab.text =
-                    getString(R.string.fragment_user_profile_tab_title_liked_photos, likedPhotosCount)
+                    getString(
+                        R.string.fragment_user_profile_tab_title_liked_photos,
+                        likedPhotosCount
+                    )
 
                 // just a demo of reuse of the photo list unsplash fragment,
                 // not required by the task
@@ -183,14 +187,21 @@ class UserProfileFragment : Fragment() {
                     onLogoutMenuItemSelected()
                     true
                 }
+
                 else -> false
             }
         }
     }
 
     private fun onLogoutMenuItemSelected() {
-        val bottomSheetDialog = LogoutBottomSheetDialogFragment()
-        bottomSheetDialog.show(parentFragmentManager, LogoutBottomSheetDialogFragment::class.java.simpleName)
+        val bottomSheetDialog = LogoutBottomSheetDialogFragment {
+            userProfileViewModel.logout()
+            requireActivity().finish()
+        }
+        bottomSheetDialog.show(
+            parentFragmentManager,
+            LogoutBottomSheetDialogFragment::class.java.simpleName
+        )
     }
 
     override fun onDestroyView() {

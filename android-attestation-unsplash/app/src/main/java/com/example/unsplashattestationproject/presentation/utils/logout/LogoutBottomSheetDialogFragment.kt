@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.unsplashattestationproject.databinding.FragmentBottomSheetDialogLogoutBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class LogoutBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class LogoutBottomSheetDialogFragment(private val onLogoutClicked: () -> Unit) :
+    BottomSheetDialogFragment() {
 
     private var _binding: FragmentBottomSheetDialogLogoutBinding? = null
     private val binding get() = _binding!!
@@ -28,7 +28,7 @@ class LogoutBottomSheetDialogFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         binding.fragmentBottomSheetDialogButtonYes.setOnClickListener {
-            Toast.makeText(context, "Logging out", Toast.LENGTH_SHORT).show()
+            onLogoutClicked()
             dismiss()
         }
     }
