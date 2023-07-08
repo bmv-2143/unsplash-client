@@ -29,10 +29,10 @@ interface UnsplashApi {
     suspend fun getTrackedDownloadPhoto(@Path("id") id: String): UnsplashTrackedDownloadResponse
 
     @POST("photos/{id}/like")
-    suspend fun likePhoto(@Path("id") id: String) : UnsplashLikeResponse
+    suspend fun likePhoto(@Path("id") id: String): UnsplashLikeResponse
 
     @DELETE("photos/{id}/like")
-    suspend fun unlikePhoto(@Path("id") id: String) : UnsplashLikeResponse
+    suspend fun unlikePhoto(@Path("id") id: String): UnsplashLikeResponse
 
     @GET("search/photos")
     suspend fun searchPhotos(
@@ -55,5 +55,12 @@ interface UnsplashApi {
     ): List<UnsplashPhoto>
 
     @GET("me")
-    suspend fun getUserProfile() : UnsplashUserProfile
+    suspend fun getUserProfile(): UnsplashUserProfile
+
+    @GET("users/{username}/likes")
+    suspend fun getLikedPhotos(
+        @Path("username") username: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+    ): List<UnsplashPhoto>
 }

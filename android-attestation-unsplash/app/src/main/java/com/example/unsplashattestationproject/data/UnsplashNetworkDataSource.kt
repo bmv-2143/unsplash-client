@@ -206,4 +206,23 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
+    suspend fun getLikedPhotos(username: String, page : Int, perPage : Int) : List<UnsplashPhoto> {
+        return try {
+            unsplashService.unsplashApi.getLikedPhotos(
+                username,
+                page,
+                perPage = perPage,
+            )
+        } catch (e: UnknownHostException) {
+            handleUnknownHostError(e)
+            listOf()
+        } catch (e: HttpException) {
+            handleHttpException(e)
+            listOf()
+        } catch (e: Exception) {
+            logError(::getPhotos.name, e)
+            listOf()
+        }
+    }
+
 }

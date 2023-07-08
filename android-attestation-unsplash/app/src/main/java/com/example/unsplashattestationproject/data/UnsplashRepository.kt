@@ -12,6 +12,7 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.data.pagingsource.GetCollectionsPagingSource
+import com.example.unsplashattestationproject.data.pagingsource.GetLikedPhotosPagingSource
 import com.example.unsplashattestationproject.data.pagingsource.GetPhotosInCollectionPagingSource
 import com.example.unsplashattestationproject.data.pagingsource.SearchPhotosPagingSource
 import com.example.unsplashattestationproject.data.room.entities.Photo
@@ -155,6 +156,17 @@ class UnsplashRepository @Inject constructor(
                 unsplashNetworkDataSource,
                 collectionId,
             ) }
+        ).flow
+    }
+
+    internal fun getLikedPhotos(username: String): Flow<PagingData<Photo>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PREFETCH_DISTANCE,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = { GetLikedPhotosPagingSource(username, unsplashNetworkDataSource) }
         ).flow
     }
 
