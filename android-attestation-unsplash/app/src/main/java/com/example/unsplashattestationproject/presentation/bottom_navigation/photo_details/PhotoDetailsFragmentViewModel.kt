@@ -9,6 +9,7 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetai
 import com.example.unsplashattestationproject.domain.DownloadPhotoUseCase
 import com.example.unsplashattestationproject.domain.GetPhotoDetailsUseCase
 import com.example.unsplashattestationproject.domain.LikePhotoUseCase
+import com.example.unsplashattestationproject.presentation.utils.LocationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -39,23 +40,12 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
                 likesStatus = Pair(photoDetails.likedByUser, photoDetails.likes)
 
                 photoDetails.location?.let {
-                    photoLocationRequest = getLocationRequest(it)
+                    photoLocationRequest = LocationUtils.getLocationRequest(it)
                     Log.e(TAG, "loadPhotoDetails: location request $photoLocationRequest")
                 }
 
                 _photoDetailsFlow.emit(photoDetails)
             }
-        }
-    }
-
-    private fun getLocationRequest(location: Location): String {
-        val position = location.position
-        return if (position?.latitude != null && position.longitude != null) {
-            "geo:${position.latitude},${position.longitude}"
-        } else {
-            val cityCountry =
-                listOfNotNull(location.city, location.country).joinToString(separator = ",")
-            "geo:0,0?q=$cityCountry"
         }
     }
 

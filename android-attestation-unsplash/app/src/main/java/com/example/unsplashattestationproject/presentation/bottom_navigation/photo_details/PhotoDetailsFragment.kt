@@ -37,6 +37,7 @@ import com.example.unsplashattestationproject.presentation.permissions.Permissio
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.Initial
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.NotAllGranted
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester.PermissionState.Requesting
+import com.example.unsplashattestationproject.presentation.utils.LocationUtils.showLocationOnMap
 import com.example.unsplashattestationproject.presentation.utils.getFormattedTags
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -106,17 +107,7 @@ class PhotoDetailsFragment : Fragment() {
 
     private fun setLocationButtonListener() {
         binding.fragmentPhotoDetailsLocation.setOnClickListener {
-            showLocationOnMap(photoDetailsFragmentViewModel.photoLocationRequest)
-        }
-    }
-
-    private fun showLocationOnMap(location: String) {
-        val geoUri = Uri.parse(location)
-        val mapIntent = Intent(Intent.ACTION_VIEW, geoUri)
-        if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
-            startActivity(mapIntent)
-        } else {
-            Toast.makeText(requireContext(), "Map app is not found", Toast.LENGTH_LONG).show()
+            showLocationOnMap(requireContext(), photoDetailsFragmentViewModel.photoLocationRequest)
         }
     }
 

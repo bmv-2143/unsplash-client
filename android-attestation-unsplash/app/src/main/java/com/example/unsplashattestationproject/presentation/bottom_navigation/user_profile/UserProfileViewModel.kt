@@ -1,7 +1,5 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.user_profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
@@ -18,10 +16,8 @@ class UserProfileViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "USER PROFILE"
-    }
-    val text: LiveData<String> = _text
+    internal var userLocation : String? = null
+        private set
 
     private val _userProfileFlow: MutableSharedFlow<UnsplashUserProfile> =
         MutableSharedFlow()
@@ -30,6 +26,7 @@ class UserProfileViewModel @Inject constructor(
     internal fun loadUserProfile() {
         viewModelScope.launch {
             getUserProfileUseCase()?.let { userProfile ->
+                userLocation = userProfile.location
                 _userProfileFlow.emit(userProfile)
             }
         }

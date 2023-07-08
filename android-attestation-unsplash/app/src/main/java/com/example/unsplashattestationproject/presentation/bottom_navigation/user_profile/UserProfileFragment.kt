@@ -1,6 +1,7 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.user_profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,11 @@ import com.bumptech.glide.Glide
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.databinding.FragmentUserProfileBinding
+import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListFragment
 import com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
+import com.example.unsplashattestationproject.presentation.utils.LocationUtils.getNoLatLongLocationRequest
+import com.example.unsplashattestationproject.presentation.utils.LocationUtils.showLocationOnMap
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,14 +41,24 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setLocationClickListener()
         observeUserProfile()
         userProfileViewModel.loadUserProfile()
+    }
+
+    private fun setLocationClickListener() {
+        binding.fragmentUserProfileLocation.clickListener = View.OnClickListener {
+            val userLocation = userProfileViewModel.userLocation
+            if (userLocation != null) {
+                showLocationOnMap(requireContext(), getNoLatLongLocationRequest(userLocation))
+            } else
+                Log.e(TAG, "User location is null")
+        }
     }
 
     private fun initTabbedLayout(username: String, likedPhotosCount: Int) {
