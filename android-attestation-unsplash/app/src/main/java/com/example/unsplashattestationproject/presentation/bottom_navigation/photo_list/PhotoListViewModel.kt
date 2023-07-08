@@ -20,9 +20,9 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -109,8 +109,17 @@ class PhotoListViewModel @Inject constructor(
             (loadStates.refresh is LoadState.Loading) || (loadStates.append is LoadState.Loading)
     }
 
-    private val _searchResults = MutableStateFlow<Flow<PagingData<PhotoListItemUiModel>>>(emptyFlow())
-    val searchResults: StateFlow<Flow<PagingData<PhotoListItemUiModel>>> = _searchResults
+    private val _searchResults = MutableStateFlow<PagingData<PhotoListItemUiModel>>(PagingData.empty())
+    val searchResults = _searchResults.asStateFlow()
+
+    private fun startSearch(query: String) {
+        currentQuery = query
+        viewModelScope.launch {
+            cacheInPhotoPagingFlow(searchPhotosUseCase(query)).collectLatest {
+                _searchResults.value = it
+            }
+        }
+    }
 
     fun onSearchOpened() {
         viewModelScope.launch {
@@ -130,11 +139,6 @@ class PhotoListViewModel @Inject constructor(
             isSearchOpened = true
             _uiStateFlow.emit(PhotoListFragmentState.SearchSubmitted)
         }
-    }
-
-    private fun startSearch(query: String) {
-        currentQuery = query
-        _searchResults.value = cacheInPhotoPagingFlow(searchPhotosUseCase(query))
     }
 
     fun onSearchClosed() {

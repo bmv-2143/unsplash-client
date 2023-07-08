@@ -219,10 +219,8 @@ class PhotoListFragment @AssistedInject constructor(@Assisted private val layout
     private fun observerSearchPagedFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                photoListViewModel.searchResults.collectLatest { searchResults ->
-                    searchResults.collectLatest { photosPage ->
+                photoListViewModel.searchResults.collectLatest { photosPage ->
                         searchAdapter.submitData(photosPage)
-                    }
                 }
             }
         }
