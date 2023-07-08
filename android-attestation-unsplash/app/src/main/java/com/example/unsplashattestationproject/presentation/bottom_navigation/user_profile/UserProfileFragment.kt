@@ -100,6 +100,7 @@ class UserProfileFragment : Fragment() {
 
     private fun updateUi(userProfile: UnsplashUserProfile) {
         loadAuthorAvatar(userProfile.profileImage.medium)
+        binding.fragmentUserProfileImageAvatar.visibility = View.VISIBLE
         loadUserProfile(userProfile)
         binding.fragmentUserProfileProgressBar.visibility = View.GONE
         initTabbedLayout(userProfile.username, userProfile.totalLikes)
