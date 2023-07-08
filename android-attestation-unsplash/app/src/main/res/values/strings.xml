@@ -47,5 +47,8 @@
     <string name="fragment_user_profile_tab_title_liked_photos">%1d\nLiked</string>
     <string name="fragment_user_profile_tab_title_demo_tab_all_unsplash_photos">DEMO (ALL PHOTOS)</string>
     <string name="fragment_user_profile_menu_logout">Logout</string>
+    <string name="fragment_bottom_sheet_dialog_logout_msg">Are you sure that you want to log out? All the data will be deleted.</string>
+    <string name="fragment_bottom_sheet_dialog_button_no">No</string>
+    <string name="fragment_bottom_sheet_dialog_button_yes">Yes</string>
 
 </resources>

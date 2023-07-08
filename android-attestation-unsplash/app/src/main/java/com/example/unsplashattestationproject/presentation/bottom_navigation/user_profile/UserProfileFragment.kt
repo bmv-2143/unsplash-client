@@ -26,6 +26,7 @@ import com.example.unsplashattestationproject.presentation.bottom_navigation.pho
 import com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
 import com.example.unsplashattestationproject.presentation.utils.LocationUtils.getNoLatLongLocationRequest
 import com.example.unsplashattestationproject.presentation.utils.LocationUtils.showLocationOnMap
+import com.example.unsplashattestationproject.presentation.utils.logout.LogoutBottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -188,7 +189,8 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun onLogoutMenuItemSelected() {
-        Toast.makeText(context, "Logout clicked", Toast.LENGTH_SHORT).show()
+        val bottomSheetDialog = LogoutBottomSheetDialogFragment()
+        bottomSheetDialog.show(parentFragmentManager, LogoutBottomSheetDialogFragment::class.java.simpleName)
     }
 
     override fun onDestroyView() {

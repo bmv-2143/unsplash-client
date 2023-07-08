@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/message_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:text= "@string/fragment_bottom_sheet_dialog_logout_msg"
+        tools:text="Are you sure that you want to log out? All the data will be deleted." />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/fragment_bottom_sheet_dialog_button_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:textColor="@android:color/black"
+            android:text="@string/fragment_bottom_sheet_dialog_button_no" />
+
+        <Button
+            android:id="@+id/fragment_bottom_sheet_dialog_button_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:text="@string/fragment_bottom_sheet_dialog_button_yes"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</LinearLayout>
