@@ -3,9 +3,15 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.us
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -41,6 +47,7 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        addActionBarMenu()
         return binding.root
     }
 
@@ -156,8 +163,41 @@ class UserProfileFragment : Fragment() {
             .into(binding.fragmentUserProfileImageAvatar)
     }
 
+
+    private fun addActionBarMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(menuProvider)
+    }
+
+    private val menuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.fragment_user_profile_menu, menu)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return when (menuItem.itemId) {
+                R.id.action_logout -> {
+                    Toast.makeText(context, "Logout clicked", Toast.LENGTH_SHORT).show()
+                    onLogoutMenuItemSelected()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun onLogoutMenuItemSelected() {
+        Toast.makeText(context, "Logout clicked", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        removeActionBarMenu()
         _binding = null
+    }
+
+    private fun removeActionBarMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.removeMenuProvider(menuProvider)
     }
 }

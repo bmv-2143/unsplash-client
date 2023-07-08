@@ -2,15 +2,21 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.li
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.databinding.FragmentLikedPhotosBinding
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotosPagedAdapter
@@ -62,7 +68,6 @@ class LikedPhotosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         usernameArgument?.let {
             viewModel.loadLikedPhotos(it)
             observerPhotosPagedFlow()
