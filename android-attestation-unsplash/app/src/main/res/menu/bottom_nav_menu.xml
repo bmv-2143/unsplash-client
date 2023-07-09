@@ -4,19 +4,16 @@
     <item
         android:id="@+id/bottom_nav_navigation_photos"
         android:icon="@drawable/bottom_nav_home_48px"
-        android:title="@string/activity_bottom_nav_title_photos"
-        />
+        android:title="@string/activity_bottom_nav_title_photos" />
 
     <item
         android:id="@+id/bottom_nav_navigation_collections"
         android:icon="@drawable/bottom_nav_star_48px"
-        android:title="@string/activity_bottom_nav_title_collections"
-        />
+        android:title="@string/activity_bottom_nav_title_collections" />
 
     <item
         android:id="@+id/bottom_nav_navigation_user_profile"
         android:icon="@drawable/bottom_nav_person_48px"
-        android:title="@string/activity_bottom_nav_title_user_profile"
-        />
+        android:title="@string/activity_bottom_nav_title_user_profile" />
 
 </menu>
