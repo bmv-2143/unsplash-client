@@ -19,6 +19,6 @@ data class UnsplashCollection(
     val share_key: String?,
     val tags: List<Tag>?,
     val links: CollectionLinks,
-    val user: User,
+    val user: UnsplashCollectionUser,
     val cover_photo: CoverPhoto?
 )

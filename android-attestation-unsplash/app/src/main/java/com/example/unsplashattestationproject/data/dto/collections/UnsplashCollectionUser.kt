@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class User(
+data class UnsplashCollectionUser(
     val id: String,
     val username: String,
     val name: String,
