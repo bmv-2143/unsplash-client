@@ -52,5 +52,7 @@
     <string name="fragment_auth_title" translatable="false">Unsplash</string>
     <string name="activity_botton_nav_download_complete_snackbar_text">Download completed!</string>
     <string name="activity_bottom_nav_snakbar_action_view">View</string>
+    <string name="notification_title_download_complete">Download complete</string>
+    <string name="notification_content_file_downloaded">File downloaded</string>
 
 </resources>

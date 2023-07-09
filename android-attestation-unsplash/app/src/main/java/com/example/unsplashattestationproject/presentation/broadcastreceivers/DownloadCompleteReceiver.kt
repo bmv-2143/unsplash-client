@@ -8,6 +8,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.util.Log
+import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.data.SharedRepository
 import com.example.unsplashattestationproject.presentation.notifications.NotificationMaker
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,14 +35,10 @@ class DownloadCompletedReceiver : BroadcastReceiver() {
 
     private fun handleDownloadResult(id: Long, context: Context?) {
         Log.d(TAG, "Download with ID $id finished!")
-        val downloadFileUri = getDownloadedFileUri(context, id)
+        val downloadFileUri = getDownloadedFileUri(context, id) ?: return
 
-        if (downloadFileUri == null) {
-            Log.e(TAG, "Downloaded file URI is null!")
-            return
-        }
         sendDownloadCompleteEvent(id, downloadFileUri)
-        sendNotification(downloadFileUri)
+        sendNotification(context, downloadFileUri)
     }
 
     private fun sendDownloadCompleteEvent(id: Long, fileUri: Uri) {
@@ -50,11 +47,11 @@ class DownloadCompletedReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun sendNotification(downloadFileUri: Uri) {
-        if (::notificationMaker.isInitialized) {
+    private fun sendNotification(context: Context?, downloadFileUri: Uri) {
+        if (::notificationMaker.isInitialized && context != null) {
             notificationMaker.makeNotification(
-                "Download completed",
-                "File downloaded", downloadFileUri)
+                context.getString(R.string.notification_title_download_complete),
+                context.getString(R.string.notification_content_file_downloaded), downloadFileUri)
         }
     }
 
