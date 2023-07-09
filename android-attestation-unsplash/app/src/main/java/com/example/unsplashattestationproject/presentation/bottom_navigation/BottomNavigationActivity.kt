@@ -40,7 +40,7 @@ import javax.inject.Inject
 class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider {
 
     private lateinit var binding: ActivityUnsplashBottomNavigationsBinding
-    lateinit var navigationController: NavController
+    private lateinit var navigationController: NavController
 
     @Inject
     lateinit var sharedRepository: SharedRepository
@@ -150,7 +150,6 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
                 snackbarFactory.showErrorSnackbar(
                     binding.root, "Unauthorized!"
                 )
-                // todo: open login screen, close this screen
             }
 
             else -> {
@@ -160,9 +159,7 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
     }
 
     private fun showDownloadCompleteSnackbar(downloadResult: Pair<Long, Uri>) {
-        Log.e(TAG, "observeSharedRepository: COMPLETE_ID ${downloadResult.first}")
-        Log.e(TAG, "observeSharedRepository: COMPLETE_URI ${downloadResult.second}")
-
+        Log.d(TAG, "observeSharedRepository: COMPLETE_URI ${downloadResult.second}")
         snackbarFactory.showSnackbar(
             binding.root,
             getString(R.string.activity_botton_nav_download_complete_snackbar_text),
