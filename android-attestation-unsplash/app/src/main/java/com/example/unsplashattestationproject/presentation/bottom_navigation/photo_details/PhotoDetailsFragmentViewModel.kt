@@ -41,7 +41,6 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
 
                 photoDetails.location?.let {
                     photoLocationRequest = LocationUtils.getLocationRequest(it)
-                    Log.e(TAG, "loadPhotoDetails: location request $photoLocationRequest")
                 }
 
                 _photoDetailsFlow.emit(photoDetails)
@@ -66,8 +65,6 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
     }
 
     fun downloadPhotoRaw() {
-        Log.e(TAG, "downloadPhoto: id ${photoToDownload?.id} url: ${photoToDownload?.urls?.raw}")
-
         if (photoToDownload != null) {
             downloadPhotoUseCase(photoToDownload!!)
         } else {
@@ -87,11 +84,6 @@ class PhotoDetailsFragmentViewModel @Inject constructor(
             }
 
             likePhotoUseCase(photo.id, !likesStatus.first)?.let { likeActionResult ->
-                Log.e(
-                    TAG,
-                    "likePhoto: liked?: ${likeActionResult.likedByUser}, " +
-                            "likes: ${likeActionResult.likes}"
-                )
                 likesStatus = Pair(likeActionResult.likedByUser, likeActionResult.likes)
                 _photoLikes.emit(likesStatus)
             }
