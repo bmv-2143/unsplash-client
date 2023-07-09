@@ -33,4 +33,6 @@
     <string name="fragment_bottom_sheet_dialog_button_yes">Да</string>
     <string name="activity_botton_nav_download_complete_snackbar_text">Загрузка зваершена!</string>
     <string name="activity_bottom_nav_snakbar_action_view">Просмотр</string>
+    <string name="notification_title_download_complete">Загрузка завершена</string>
+    <string name="notification_content_file_downloaded">Файл скачан</string>
 </resources>
