@@ -1,7 +1,5 @@
 package com.example.unsplashattestationproject.data
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -27,8 +25,6 @@ class PhotoRemoteMediator @Inject constructor(
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Photo>): MediatorResult {
 
-//        Log.e(TAG, "load: loadType = $loadType, state = $state")
-
         if (!networkStateChecker.isNetworkAvailable()) {
             return MediatorResult.Success(endOfPaginationReached = true)
         }
@@ -42,11 +38,7 @@ class PhotoRemoteMediator @Inject constructor(
             LoadType.PREPEND -> {
                 val firstItemRemoteKeys = getRemoteKeyForFirstItem(state)
 
-                // If remoteKeys is null, that means the refresh result is not in the database yet.
-                // We can return Success with `endOfPaginationReached = false` because Paging
-                // will call this method again if RemoteKeys becomes non-null.
-                // If remoteKeys is NOT NULL but its prevKey is null, that means we've reached
-                // the end of pagination for prepend.
+
                 val prevKey = firstItemRemoteKeys?.prevKey
                 if (prevKey == null) {
                     return MediatorResult.Success(endOfPaginationReached = firstItemRemoteKeys != null)
@@ -57,11 +49,6 @@ class PhotoRemoteMediator @Inject constructor(
             LoadType.APPEND -> {
                 val lastItemRemoteKeys = getRemoteKeyForLastItem(state)
 
-                // If remoteKeys is null, that means the refresh result is not in the database yet.
-                // We can return Success with `endOfPaginationReached = false` because Paging
-                // will call this method again if RemoteKeys becomes non-null.
-                // If remoteKeys is NOT NULL but its nextKey is null, that means we've reached
-                // the end of pagination for append.
                 val nextKey = lastItemRemoteKeys?.nextKey
                 if (nextKey == null) {
                     return MediatorResult.Success(endOfPaginationReached = lastItemRemoteKeys != null)
@@ -84,24 +71,16 @@ class PhotoRemoteMediator @Inject constructor(
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Photo>): RemoteKeys? {
 
-        // Get the last page that was retrieved, that contained items.
-        // From that last page, get the last item
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { photo ->
-
-                // Get the remote keys of the last item retrieved
                 photoDatabase.remoteKeysDao().remoteKeysPhotoId(photo.id)
             }
     }
 
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Photo>): RemoteKeys? {
 
-        // Get the first page that was retrieved, that contained items.
-        // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { photo ->
-
-                // Get the remote keys of the first items retrieved
                 photoDatabase.remoteKeysDao().remoteKeysPhotoId(photo.id)
             }
     }
@@ -110,8 +89,6 @@ class PhotoRemoteMediator @Inject constructor(
         state: PagingState<Int, Photo>
     ): RemoteKeys? {
 
-        // The paging library is trying to load data after the anchor position
-        // Get the item closest to the anchor position
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { photoId ->
                 photoDatabase.remoteKeysDao().remoteKeysPhotoId(photoId)
@@ -141,7 +118,6 @@ class PhotoRemoteMediator @Inject constructor(
         val prevKey = if (page == UNSPLASH_STARTING_PAGE_INDEX) null else page - 1
         val nextKey = if (endOfPaginationReached) null else page + 1
 
-        // save photos to db, the db will generate ids for them
         val sortedPhotosById = photos.sortedBy { it.id }
         savePhotosToDb(photos)
 
