@@ -44,7 +44,7 @@ class CompoundIconTextView @JvmOverloads constructor(
 
     var clickListener: OnClickListener? = null
 
-    fun onClick(view : View) {
+    private fun onClick(view : View) {
         clickListener?.onClick(view)
     }
 
