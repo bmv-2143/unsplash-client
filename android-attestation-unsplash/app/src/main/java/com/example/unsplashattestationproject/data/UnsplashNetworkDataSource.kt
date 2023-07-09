@@ -11,7 +11,6 @@ import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfi
 import com.example.unsplashattestationproject.data.network.UnsplashAuthorizationService
 import com.example.unsplashattestationproject.data.network.UnsplashService
 import com.example.unsplashattestationproject.log.TAG
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import retrofit2.HttpException
@@ -35,8 +34,6 @@ class UnsplashNetworkDataSource @Inject constructor(
 
     suspend fun getPhotos(page : Int, perPage : Int) : List<UnsplashPhoto> {
         return try {
-            Log.e(TAG, "\n*********** getPhotos: page = $page, perPage = $perPage ***********")
-            delay(2000) // todo: REMOVE ME
             unsplashService.unsplashApi.getPhotos(
                 page,
                 perPage = perPage,
@@ -122,7 +119,7 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
-    suspend fun search(query : String, page: Int, perPage: Int) : List<UnsplashPhoto> { // TODO: DO I NEED OTHER RECEIVED DATA?
+    suspend fun search(query : String, page: Int, perPage: Int) : List<UnsplashPhoto> {
         return try {
             unsplashService.unsplashApi.searchPhotos(query, page, perPage).results
         } catch (e: UnknownHostException) {
