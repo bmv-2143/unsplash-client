@@ -1,8 +1,6 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
@@ -34,11 +32,6 @@ class PhotoListViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "PHOTO LIST"
-    }
-    val dummyText: LiveData<String> = _text
-
     var isSearchOpened = false
         private set
     var currentQuery : String? = null
@@ -54,10 +47,7 @@ class PhotoListViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
     }
 
-    fun getPhotosPagedFlow(): Flow<PagingData<PhotoListItemUiModel>> {
-        Log.e(TAG, "getPhotosPagedFlow...")
-        return pagedPhotosFlow
-    }
+    fun getPhotosPagedFlow(): Flow<PagingData<PhotoListItemUiModel>> = pagedPhotosFlow
 
     private val _uiStateFlow = MutableSharedFlow<PhotoListFragmentState>(
         replay = 100,
@@ -65,8 +55,7 @@ class PhotoListViewModel @Inject constructor(
     )
     val uiStatesFlow = _uiStateFlow.asSharedFlow()
 
-    var dataIsLoading: Boolean = false
-        private set
+    private var dataIsLoading: Boolean = false
 
     fun handleAdapterUpdates(loadStates: CombinedLoadStates) {
         updateDataIsLoading(loadStates)
@@ -81,9 +70,7 @@ class PhotoListViewModel @Inject constructor(
                     handleNextPageLoading(loadStates)
                 }
 
-                is LoadState.Error -> {
-                    _uiStateFlow.emit(PhotoListFragmentState.FirstPageLoadError)
-                }
+                is LoadState.Error -> Log.e(TAG, "handleAdapterUpdates: ${loadStates.refresh}")
             }
         }
     }
@@ -98,9 +85,7 @@ class PhotoListViewModel @Inject constructor(
                 _uiStateFlow.emit(PhotoListFragmentState.NextPageNotLoading)
             }
 
-            is LoadState.Error -> {
-                _uiStateFlow.emit(PhotoListFragmentState.NextPageLoadError)
-            }
+            is LoadState.Error -> Log.e(TAG, "handleAdapterUpdates: ${loadStates.refresh}")
         }
     }
 
@@ -125,7 +110,6 @@ class PhotoListViewModel @Inject constructor(
         viewModelScope.launch {
             isSearchOpened = true
             currentQuery = ""
-            _uiStateFlow.emit(PhotoListFragmentState.SearchOpened)
         }
     }
 
@@ -137,7 +121,6 @@ class PhotoListViewModel @Inject constructor(
         startSearch(query)
         viewModelScope.launch {
             isSearchOpened = true
-            _uiStateFlow.emit(PhotoListFragmentState.SearchSubmitted)
         }
     }
 
@@ -145,7 +128,6 @@ class PhotoListViewModel @Inject constructor(
         viewModelScope.launch {
             isSearchOpened = false
             currentQuery = null
-            _uiStateFlow.emit(PhotoListFragmentState.SearchClosed)
         }
     }
 
