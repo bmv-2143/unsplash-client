@@ -4,38 +4,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:background="@android:color/black">
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/icon_image_view"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_unsplash_rounded" />
+
+        <TextView
+            android:id="@+id/unsplash_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginStart="4dp"
+            android:text="@string/fragment_auth_title"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/icon_image_view"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@drawable/ic_unsplash_rounded" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/unsplash_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@string/fragment_auth_title"
-                android:textColor="@android:color/white"
-                android:textSize="32sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
