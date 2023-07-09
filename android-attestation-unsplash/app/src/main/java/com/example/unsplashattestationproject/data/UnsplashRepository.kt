@@ -102,17 +102,6 @@ class UnsplashRepository @Inject constructor(
         )
     }
 
-    fun startTrackedDownload(url: String, id: String) {
-        unsplashDownloader.downloadFile(
-            url,
-            getFileNameForDownload(id),
-            unsplashAccessToken
-        )
-    }
-
-    suspend fun getTrackedDownloadPhotoUrl(photoId: String): String? =
-        unsplashNetworkDataSource.getTrackedDownloadPhotoUrl(photoId)
-
     private fun getFileNameForDownload(photoId: String): String {
         return "unsplash-photo-$photoId.jpeg"
     }
