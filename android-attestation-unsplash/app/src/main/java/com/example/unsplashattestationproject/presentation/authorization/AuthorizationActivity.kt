@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -88,8 +87,6 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun openPhotoViewScreen(data: Uri?) {
-        Log.e(TAG, "openPhotoViewScreen: $data")
-
         val photoId = data?.lastPathSegment
         if (photoId != null) {
             val intent = Intent(this, BottomNavigationActivity::class.java).apply {
@@ -103,8 +100,6 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun authorize(deepLinkUrl: Uri) {
-        Log.e(TAG, "authorize: $deepLinkUrl")
-
         if (deepLinkUrl.queryParameterNames.contains(PARAM_CODE)) {
             viewModel.authCode = deepLinkUrl.getQueryParameter(PARAM_CODE)
                 ?: return
@@ -139,13 +134,7 @@ class AuthorizationActivity : AppCompatActivity() {
     private fun logAndNotifyUser(isAuthorizationSuccess: Boolean) {
         with(isAuthorizationSuccess) {
             val authResult = if (this) "success" else "failed. Try again later."
-
             Log.d(TAG, "Authorization $authResult")
-            Toast.makeText(
-                this@AuthorizationActivity,
-                "Authorization $authResult",
-                Toast.LENGTH_LONG
-            ).show()
         }
     }
 
