@@ -36,7 +36,6 @@ class LikedPhotosFragment : Fragment() {
 
     private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
 
-    // TODO: must be tested
     private fun onPhotoItemClick(photo: PhotoListItemUiModel) {
         val navController = findNavController()
         activityViewModel.selectedFromPhotoList = photo
