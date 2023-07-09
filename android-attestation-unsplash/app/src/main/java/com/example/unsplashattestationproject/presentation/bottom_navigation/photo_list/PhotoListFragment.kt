@@ -33,7 +33,12 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class PhotoListFragment @AssistedInject constructor(@Assisted private val layoutManagerFactory: () -> RecyclerView.LayoutManager) : Fragment() {
+class PhotoListFragment @AssistedInject constructor(
+    @Assisted private val layoutManagerFactory: () -> RecyclerView.LayoutManager) :
+    Fragment() {
+
+    constructor() : this({ StaggeredGridLayoutManager(
+        2, StaggeredGridLayoutManager.VERTICAL) })
 
     @AssistedFactory
     fun interface Factory {
@@ -112,7 +117,6 @@ class PhotoListFragment @AssistedInject constructor(@Assisted private val layout
             },
         )
     }
-
 
 
     private fun setupRecyclerViewLayoutManager() {
@@ -199,7 +203,10 @@ class PhotoListFragment @AssistedInject constructor(@Assisted private val layout
                 val totalItemCount = layoutManager.itemCount
 
                 val firstVisibleItemPosition = when (layoutManager) {
-                    is StaggeredGridLayoutManager -> layoutManager.findFirstVisibleItemPositions(null)[0]
+                    is StaggeredGridLayoutManager -> layoutManager.findFirstVisibleItemPositions(
+                        null
+                    )[0]
+
                     is LinearLayoutManager -> layoutManager.findFirstVisibleItemPosition()
                     else -> return
                 }
@@ -220,7 +227,7 @@ class PhotoListFragment @AssistedInject constructor(@Assisted private val layout
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoListViewModel.searchResults.collectLatest { photosPage ->
-                        searchAdapter.submitData(photosPage)
+                    searchAdapter.submitData(photosPage)
                 }
             }
         }
