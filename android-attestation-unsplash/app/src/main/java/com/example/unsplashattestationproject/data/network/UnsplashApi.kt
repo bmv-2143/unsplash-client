@@ -25,9 +25,6 @@ interface UnsplashApi {
     @GET("photos/{id}")
     suspend fun getPhotoDetails(@Path("id") id: String): UnsplashPhotoDetails
 
-    @GET("photos/{id}/download")
-    suspend fun getTrackedDownloadPhoto(@Path("id") id: String): UnsplashTrackedDownloadResponse
-
     @POST("photos/{id}/like")
     suspend fun likePhoto(@Path("id") id: String): UnsplashLikeResponse
 
