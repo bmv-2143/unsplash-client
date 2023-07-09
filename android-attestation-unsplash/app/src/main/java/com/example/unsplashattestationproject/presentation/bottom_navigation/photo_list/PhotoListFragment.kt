@@ -159,7 +159,7 @@ class PhotoListFragment @AssistedInject constructor(
 
     override fun onResume() {
         super.onResume()
-        showNoConnectionSnackbar()
+        showNoConnectionSnackbarIfRequired()
         updateSelectedItemLikes()
     }
 
@@ -169,7 +169,7 @@ class PhotoListFragment @AssistedInject constructor(
         }
     }
 
-    private fun showNoConnectionSnackbar() {
+    private fun showNoConnectionSnackbarIfRequired() {
         if (!networkStateChecker.isNetworkAvailable()) {
             snackbarFactory.showSnackbar(
                 binding.root,
@@ -198,6 +198,7 @@ class PhotoListFragment @AssistedInject constructor(
                 }
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
                     photoListAdapter.retry()
+                    showNoConnectionSnackbarIfRequired()
                 }
             }
         })
