@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -24,9 +23,9 @@ import com.example.unsplashattestationproject.databinding.FragmentUserProfileBin
 import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListFragment
 import com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
+import com.example.unsplashattestationproject.presentation.logout.LogoutBottomSheetDialogFragment
 import com.example.unsplashattestationproject.presentation.utils.LocationUtils.getNoLatLongLocationRequest
 import com.example.unsplashattestationproject.presentation.utils.LocationUtils.showLocationOnMap
-import com.example.unsplashattestationproject.presentation.logout.LogoutBottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
