@@ -26,7 +26,7 @@ import com.example.unsplashattestationproject.presentation.bottom_navigation.pho
 import com.example.unsplashattestationproject.presentation.compound.CompoundIconTextView
 import com.example.unsplashattestationproject.presentation.utils.LocationUtils.getNoLatLongLocationRequest
 import com.example.unsplashattestationproject.presentation.utils.LocationUtils.showLocationOnMap
-import com.example.unsplashattestationproject.presentation.utils.logout.LogoutBottomSheetDialogFragment
+import com.example.unsplashattestationproject.presentation.logout.LogoutBottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

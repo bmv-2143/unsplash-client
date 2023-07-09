@@ -1,4 +1,4 @@
-package com.example.unsplashattestationproject.presentation.utils.logout
+package com.example.unsplashattestationproject.presentation.logout
 
 import android.os.Bundle
 import android.view.LayoutInflater
