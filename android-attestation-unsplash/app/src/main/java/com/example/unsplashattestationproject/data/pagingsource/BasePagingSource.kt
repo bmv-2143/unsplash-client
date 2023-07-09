@@ -12,13 +12,10 @@ abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: FIRST_PAGE
 
-        Log.e(TAG, "${::load.name}: page = $page")
-
         kotlin.runCatching {
             loadData(page)
         }.fold(
             onSuccess = { data: List<T> ->
-                Log.e(TAG, "${::load.name}: page = $page - SUCCESS")
                 return LoadResult.Page(
                     data = data,
                     prevKey = if (page == FIRST_PAGE) null else page - 1,
@@ -26,8 +23,8 @@ abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
                 )
             },
             onFailure = { exception ->
-                Log.e(TAG, "${::load.name}: page = $page - FAIL")
-                Log.e(TAG, "${::load.name}: onFailure: ${exception.message}")
+                Log.e(
+                    TAG, "${::load.name}: onFailure: page = $page, error: ${exception.message}")
                 return LoadResult.Error(exception)
             })
     }
