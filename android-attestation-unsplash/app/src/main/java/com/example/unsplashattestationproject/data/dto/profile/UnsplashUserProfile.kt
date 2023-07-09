@@ -39,29 +39,3 @@ data class UnsplashUserProfile(
     val confirmed: Boolean
 
 )
-
-@JsonClass(generateAdapter = true)
-data class ProfileImage(
-    val small: String,
-    val medium: String,
-    val large: String
-)
-
-@JsonClass(generateAdapter = true)
-data class Social(
-    @Json(name = "instagram_username") val instagramUsername: String?,
-    @Json(name = "portfolio_url") val portfolioUrl: String?,
-    @Json(name = "twitter_username") val twitterUsername: String?,
-    @Json(name = "paypal_email") val paypalEmail: String?
-)
-
-@JsonClass(generateAdapter = true)
-data class Tags(
-    @Json(name = "custom") val custom: List<Any>,
-    @Json(name = "aggregated") val aggregated: List<Any>
-)
-
-@JsonClass(generateAdapter = true)
-data class Meta(
-    @Json(name = "index") val index: Boolean
-)
