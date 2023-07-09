@@ -21,7 +21,7 @@ class LogoutBottomSheetDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBottomSheetDialogLogoutBinding.inflate(inflater, container, false)
+        _binding = FragmentBottomSheetDialogLogoutBinding.inflate(inflater, null, false)
         setButtonClickListeners()
         return binding.root
     }
