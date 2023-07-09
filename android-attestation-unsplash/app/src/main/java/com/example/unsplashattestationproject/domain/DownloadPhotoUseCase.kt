@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DownloadPhotoUseCase @Inject constructor(private val unsplashRepository: UnsplashRepository) {
 
     operator fun invoke(photo: UnsplashPhotoDetails) =
-        unsplashRepository.getTrackedDownloadPhotoUrl(photo)
+        unsplashRepository.startTrackedDownload(photo)
 
     // todo: use case should contain only one method
     suspend fun getTrackedDownloadUrl(photoId: String) : String? =

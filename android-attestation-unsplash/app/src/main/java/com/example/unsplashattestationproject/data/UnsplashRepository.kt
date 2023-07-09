@@ -91,7 +91,7 @@ class UnsplashRepository @Inject constructor(
     suspend fun getPhotoDetails(photoId: String): UnsplashPhotoDetails? =
         unsplashNetworkDataSource.getPhotoDetails(photoId)
 
-    fun getTrackedDownloadPhotoUrl(photo: UnsplashPhotoDetails) {
+    fun startTrackedDownload(photo: UnsplashPhotoDetails) {
         unsplashDownloader.downloadFile(
             photo.urls.raw,
             getFileNameForDownload(photo.id + "_RAW"),
