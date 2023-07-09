@@ -38,7 +38,6 @@ class UnsplashRepository @Inject constructor(
 
     init {
         unsplashAccessToken = sharedPreferences.getString(PREFS_KEY_ACCESS_TOKEN, "") ?: ""
-        Log.e(TAG, "ACCESS_TOKEN: $unsplashAccessToken")
     }
 
     val networkErrorsFlow = unsplashNetworkDataSource.networkErrorsFlow
@@ -46,7 +45,6 @@ class UnsplashRepository @Inject constructor(
     fun hasAccessToken(): Boolean = unsplashAccessToken.isNotEmpty()
 
     private fun saveAccessToken(accessToken: String) {
-        Log.e(TAG, "ACCESS_TOKEN: $accessToken")
         cacheToken(accessToken)
 
         val editor = sharedPreferences.edit()
@@ -60,7 +58,6 @@ class UnsplashRepository @Inject constructor(
             authInfo
         }.fold(
             onSuccess = { authInfo ->
-                Log.e(TAG, "Authorization success, access token: ${authInfo.accessToken}")
                 saveAccessToken(authInfo.accessToken)
                 return authInfo.accessToken
             },
