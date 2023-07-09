@@ -1,9 +1,7 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_details
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -84,7 +82,6 @@ class PhotoDetailsFragment : Fragment() {
         if (photoIdFromDeepLink != null) {
             displayDeepLinkPhoto(photoIdFromDeepLink)
         } else {
-//            displaySelectedPhotoLoadedData(activityViewModel.selectedFromPhotoList!!) // todo: this doesn't use loaded data, but has no progress bar blinking
             photoDetailsFragmentViewModel.loadPhotoDetails(
                 activityViewModel.selectedFromPhotoList!!.remoteId
             )
@@ -94,7 +91,6 @@ class PhotoDetailsFragment : Fragment() {
     }
 
     private fun displayDeepLinkPhoto(photoIdFromExternalSource: String) {
-        Log.e(TAG, "onViewCreated: photoId: $photoIdFromExternalSource")
         Toast.makeText(requireContext(), "PhotoId: $photoIdFromExternalSource", Toast.LENGTH_SHORT)
             .show()
         activityViewModel.photoToShareId = photoIdFromExternalSource
@@ -112,11 +108,10 @@ class PhotoDetailsFragment : Fragment() {
             if (permissionRequester.areAllPermissionsGranted(REQUIRED_PERMISSIONS)) {
                 Toast.makeText(requireContext(), "Download Started", Toast.LENGTH_SHORT).show()
                 photoDetailsFragmentViewModel.downloadPhotoRaw()
-//                photoDetailsFragmentViewModel.downloadPhotoTracked()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Not all required permissions were granted",
+                    getString(R.string.fragment_photo_detail_not_all_permissions_granted),
                     Toast.LENGTH_SHORT
                 ).show()
             }

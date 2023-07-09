@@ -54,5 +54,6 @@
     <string name="activity_bottom_nav_snakbar_action_view">View</string>
     <string name="notification_title_download_complete">Download complete</string>
     <string name="notification_content_file_downloaded">File downloaded</string>
+    <string name="fragment_photo_detail_not_all_permissions_granted">Not all required permissions were granted</string>
 
 </resources>

@@ -35,4 +35,5 @@
     <string name="activity_bottom_nav_snakbar_action_view">Просмотр</string>
     <string name="notification_title_download_complete">Загрузка завершена</string>
     <string name="notification_content_file_downloaded">Файл скачан</string>
+    <string name="fragment_photo_detail_not_all_permissions_granted">Не все нужные разрешения были выданы</string>
 </resources>
