@@ -42,6 +42,8 @@ class UnsplashRepository @Inject constructor(
 
     val networkErrorsFlow = unsplashNetworkDataSource.networkErrorsFlow
 
+    fun hasAccessToken(): Boolean = unsplashAccessToken.isNotEmpty()
+
     private fun saveAccessToken(accessToken: String) {
         Log.e(TAG, "ACCESS_TOKEN: $accessToken")
         cacheToken(accessToken)

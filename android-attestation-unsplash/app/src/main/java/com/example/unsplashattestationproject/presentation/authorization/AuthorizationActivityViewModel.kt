@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.unsplashattestationproject.data.LocalRepository
+import com.example.unsplashattestationproject.data.UnsplashRepository
 import com.example.unsplashattestationproject.data.network.AuthQuery
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_CLIENT_ID
 import com.example.unsplashattestationproject.data.network.AuthQuery.Companion.PARAM_REDIRECT_URI
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class AuthorizationActivityViewModel @Inject constructor(
     private val localRepository: LocalRepository,
     private val authorizeUserUseCase: AuthorizeUserUseCase,
+    private val unsplashRepository: UnsplashRepository
 ) : ViewModel() {
 
     private var _authorizationState = MutableSharedFlow<Boolean>()
@@ -34,6 +36,8 @@ class AuthorizationActivityViewModel @Inject constructor(
             field = value
             Log.d(TAG, "authCode: $value")
         }
+
+    fun isUserAuthorized(): Boolean = unsplashRepository.hasAccessToken()
 
     fun authorizeUser() {
         viewModelScope.launch {

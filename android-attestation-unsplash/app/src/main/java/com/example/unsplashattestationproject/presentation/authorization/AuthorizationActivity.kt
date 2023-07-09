@@ -33,14 +33,19 @@ class AuthorizationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        if (!viewModel.isOnboardingShowed()) {
-            openOnboardingActivity()
-        }
-
+        openNextScreenIfRequired()
         observeAuthorizationState()
         setAuthButtonListener()
         handleIntent(intent)
+    }
+
+    private fun openNextScreenIfRequired() {
+        if (!viewModel.isOnboardingShowed()) {
+            openOnboardingActivity()
+        } else if (viewModel.isUserAuthorized()) {
+            startActivity(Intent(this, BottomNavigationActivity::class.java))
+            finish()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
