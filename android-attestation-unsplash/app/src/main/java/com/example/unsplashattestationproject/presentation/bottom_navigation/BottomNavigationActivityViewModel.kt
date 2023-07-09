@@ -2,6 +2,8 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.unsplashattestationproject.data.UnsplashRepository
 import com.example.unsplashattestationproject.data.dto.collections.UnsplashCollection
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.PhotoListItemUiModel
@@ -29,5 +31,14 @@ class BottomNavigationActivityViewModel @Inject constructor(
 
     fun getShareLink(): String =
         "https://unsplash.com/photos/${photoToShareId}"
+
+
+    private val _logoutEvent = MutableLiveData<Unit>()
+    val logoutEvent: LiveData<Unit> = _logoutEvent
+
+    internal fun logout() {
+        unsplashRepository.removeAccessToken()
+        _logoutEvent.value = Unit
+    }
 
 }

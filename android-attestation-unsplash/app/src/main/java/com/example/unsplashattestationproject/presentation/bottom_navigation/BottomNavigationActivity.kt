@@ -26,6 +26,7 @@ import com.example.unsplashattestationproject.data.NetworkError.ForbiddenApiRate
 import com.example.unsplashattestationproject.data.NetworkError.Unauthorized
 import com.example.unsplashattestationproject.data.SharedRepository
 import com.example.unsplashattestationproject.databinding.ActivityUnsplashBottomNavigationsBinding
+import com.example.unsplashattestationproject.presentation.authorization.AuthorizationActivity
 import com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list.StaggeredLayoutPhotoListFragmentFactory
 import com.example.unsplashattestationproject.presentation.permissions.PermissionRequester
 import com.example.unsplashattestationproject.presentation.utils.SnackbarFactory
@@ -66,6 +67,7 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
         handleIntent(intent)
         permissionRequester = PermissionRequester(this)
         observerNetworkErrors()
+        observeLogoutEvent()
     }
 
     override fun onStart() {
@@ -186,6 +188,18 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
         }
 
         startActivity(intent)
+    }
+
+    private fun observeLogoutEvent() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.logoutEvent.observe(this@BottomNavigationActivity) {
+                    startActivity(AuthorizationActivity
+                        .createIntent(this@BottomNavigationActivity))
+                    finish()
+                }
+            }
+        }
     }
 
     companion object {

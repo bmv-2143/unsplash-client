@@ -1,5 +1,6 @@
 package com.example.unsplashattestationproject.data
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.paging.Pager
@@ -74,10 +75,12 @@ class UnsplashRepository @Inject constructor(
         unsplashAccessToken = accessToken
     }
 
+    @SuppressLint("ApplySharedPref")
     internal fun removeAccessToken() {
         val editor = sharedPreferences.edit()
         editor.remove(PREFS_KEY_ACCESS_TOKEN)
-        editor.apply()
+        unsplashAccessToken = ""
+        editor.commit()  // we want this to be done synchronously
     }
 
     fun getPhotosFlow(): Flow<PagingData<Photo>> {

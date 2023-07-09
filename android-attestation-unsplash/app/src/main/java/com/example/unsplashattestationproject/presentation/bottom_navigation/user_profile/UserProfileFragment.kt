@@ -183,7 +183,6 @@ class UserProfileFragment : Fragment() {
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
             return when (menuItem.itemId) {
                 R.id.action_logout -> {
-                    Toast.makeText(context, "Logout clicked", Toast.LENGTH_SHORT).show()
                     onLogoutMenuItemSelected()
                     true
                 }
@@ -194,14 +193,11 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun onLogoutMenuItemSelected() {
-        val bottomSheetDialog = LogoutBottomSheetDialogFragment {
-            userProfileViewModel.logout()
-            requireActivity().finish()
-        }
-        bottomSheetDialog.show(
-            parentFragmentManager,
-            LogoutBottomSheetDialogFragment::class.java.simpleName
-        )
+        LogoutBottomSheetDialogFragment()
+            .show(
+                parentFragmentManager,
+                LogoutBottomSheetDialogFragment::class.java.simpleName
+            )
     }
 
     override fun onDestroyView() {

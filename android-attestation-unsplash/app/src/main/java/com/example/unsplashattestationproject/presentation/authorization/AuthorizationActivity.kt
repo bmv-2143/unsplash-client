@@ -1,6 +1,7 @@
 package com.example.unsplashattestationproject.presentation.authorization
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -150,5 +151,11 @@ class AuthorizationActivity : AppCompatActivity() {
 
     companion object {
         const val IS_ONBOARDING_SHOWED = "isOnboardingShowed"
+
+        fun createIntent(context: Context): Intent {
+            return Intent(context, AuthorizationActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+        }
     }
 }

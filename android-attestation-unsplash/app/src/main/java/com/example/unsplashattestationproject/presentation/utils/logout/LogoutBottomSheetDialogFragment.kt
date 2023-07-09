@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.unsplashattestationproject.databinding.FragmentBottomSheetDialogLogoutBinding
+import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class LogoutBottomSheetDialogFragment(private val onLogoutClicked: () -> Unit) :
-    BottomSheetDialogFragment() {
+class LogoutBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentBottomSheetDialogLogoutBinding? = null
     private val binding get() = _binding!!
+
+    private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +31,7 @@ class LogoutBottomSheetDialogFragment(private val onLogoutClicked: () -> Unit) :
             dismiss()
         }
         binding.fragmentBottomSheetDialogButtonYes.setOnClickListener {
-            onLogoutClicked()
+            activityViewModel.logout()
             dismiss()
         }
     }

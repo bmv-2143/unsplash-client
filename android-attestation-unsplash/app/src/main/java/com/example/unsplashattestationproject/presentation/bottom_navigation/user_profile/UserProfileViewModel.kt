@@ -2,7 +2,6 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation.us
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.unsplashattestationproject.data.UnsplashRepository
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import com.example.unsplashattestationproject.domain.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +12,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
-    private val unsplashRepository: UnsplashRepository,
     private val getUserProfileUseCase: GetUserProfileUseCase
 ) :
     ViewModel() {
@@ -33,6 +31,4 @@ class UserProfileViewModel @Inject constructor(
             }
         }
     }
-
-    internal fun logout() = unsplashRepository.removeAccessToken()
 }
