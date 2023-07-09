@@ -13,11 +13,11 @@
         android:layout_margin="8dp"
         android:background="@drawable/shape_circle_white"
         android:backgroundTint="#DCDCDC"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"
-        tools:visibility="visible"
-        app:srcCompat="@drawable/photo_list_item_avatar_placeholder" />
+        app:srcCompat="@drawable/photo_list_item_avatar_placeholder"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/fragment_user_profile_real_name"
@@ -139,7 +139,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
