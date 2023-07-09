@@ -88,23 +88,6 @@ class UnsplashNetworkDataSource @Inject constructor(
         }
     }
 
-    suspend fun getTrackedDownloadPhotoUrl(photoId: String) : String? {
-        return try {
-            val result = unsplashService.unsplashApi.getTrackedDownloadPhoto(photoId)
-            Log.e(TAG, "downloadPhoto: photoId = $result")
-            result.url
-        } catch (e: UnknownHostException) {
-            handleUnknownHostError(e)
-            null
-        } catch (e: HttpException) {
-            handleHttpException(e)
-            null
-        } catch (e: Exception) {
-            logError(::getTrackedDownloadPhotoUrl.name, e)
-            null
-        }
-    }
-
     suspend fun likePhoto(photoId: String) : UnsplashLikeResponse? {
         return try {
             unsplashService.unsplashApi.likePhoto(photoId)
