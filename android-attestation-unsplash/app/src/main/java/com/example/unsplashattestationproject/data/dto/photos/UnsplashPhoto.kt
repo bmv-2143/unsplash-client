@@ -15,7 +15,7 @@ data class UnsplashPhoto(
     @Json(name = "blur_hash") val blurHash: String?,
     @Json(name = "description") val description: String?,
     @Json(name = "alt_description") val altDescription: String?,
-    @Json(name = "urls") val urls: UnsplashPhotoUrls,
+    @Json(name = "urls") val urls: UnsplashUrls,
     @Json(name = "links") val links: UnsplashPhotoLinks,
     @Json(name = "likes") val likes: Int,
     @Json(name = "liked_by_user") val likedByUser: Boolean,

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class UnsplashPhotoUrls(
+data class UnsplashUrls(
     @Json(name = "raw") val raw: String,
     @Json(name = "full") val full: String,
     @Json(name = "regular") val regular: String,

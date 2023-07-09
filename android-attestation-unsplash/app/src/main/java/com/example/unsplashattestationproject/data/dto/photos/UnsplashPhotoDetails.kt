@@ -21,7 +21,7 @@ data class UnsplashPhotoDetails(
     @Json(name = "location") val location: Location?,
     @Json(name = "tags") val tags: List<Tag>?,
     @Json(name = "current_user_collections") val currentUserCollections: List<CurrentUserCollection>?,
-    @Json(name = "urls") val urls: UnsplashPhotoUrls,
+    @Json(name = "urls") val urls: UnsplashUrls,
     @Json(name = "links") val links: UnsplashPhotoLinks,
     @Json(name = "user") val user: UnsplashUser
 )

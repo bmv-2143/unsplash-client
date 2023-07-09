@@ -1,5 +1,6 @@
 package com.example.unsplashattestationproject.data.dto.collections
 
+import com.example.unsplashattestationproject.data.dto.photos.UnsplashUrls
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -14,5 +15,5 @@ data class CoverPhoto(
     @Json(name="blur_hash")val blurHash:String?,
     @Json(name="description")val description:String?,
     @Json(name="alt_description")val altDescription:String?,
-    @Json(name="urls")val urls : Urls
+    @Json(name="urls")val urls : UnsplashUrls
 )
