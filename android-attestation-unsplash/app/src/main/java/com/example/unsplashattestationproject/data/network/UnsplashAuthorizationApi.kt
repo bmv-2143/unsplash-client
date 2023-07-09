@@ -5,7 +5,7 @@ import com.example.unsplashattestationproject.data.dto.auth.TokenBody
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface UnsplashAuthorizationApi {
+fun interface UnsplashAuthorizationApi {
 
     @POST("oauth/token")
     suspend fun getAccessToken(@Body tokenData: TokenBody): AuthInfo
