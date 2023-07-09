@@ -1,7 +1,6 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.unsplashattestationproject.R
 import com.example.unsplashattestationproject.databinding.FragmentPhotoListBinding
-import com.example.unsplashattestationproject.log.TAG
 import com.example.unsplashattestationproject.presentation.bottom_navigation.BottomNavigationActivityViewModel
 import com.example.unsplashattestationproject.presentation.utils.SnackbarFactory
 import com.example.unsplashattestationproject.utils.NetworkStateChecker
@@ -87,31 +85,20 @@ class PhotoListFragment @AssistedInject constructor(
 
     private fun initSearchMenuProvider() {
         searchMenuProvider = SearchMenuProvider(
-            requireContext(),
             photoListViewModel.currentQuery,
 
-            onSearchMenuSelected = {
-                Log.e(TAG, "SEARCH_SELECTED")
-            },
-
-            onMenuSearchExpanded = {
-                Log.e(TAG, "SEARCH_EXPANDED")
-                photoListViewModel.onSearchOpened()
-            },
+            onMenuSearchExpanded = photoListViewModel::onSearchOpened,
 
             onQueryTextChanged = {
-                Log.e(TAG, "SEARCH_CHANGED")
                 photoListViewModel.onQueryTextChanged(it)
             },
 
             onSearchQuerySubmit = { query ->
-                Log.e(TAG, "SEARCH_SUBMIT")
                 activateSearchAdapter()
                 photoListViewModel.onSearchSubmitted(query)
             },
 
             onMenuSearchCollapsed = {
-                Log.e(TAG, "SEARCH_COLLAPSED")
                 activatePhotoListAdapter()
                 photoListViewModel.onSearchClosed()
             },
@@ -120,7 +107,6 @@ class PhotoListFragment @AssistedInject constructor(
 
 
     private fun setupRecyclerViewLayoutManager() {
-//        layoutManager = layoutManagerFactory()
         binding.fragmentPhotoRecyclerView.layoutManager = layoutManagerFactory()
     }
 
@@ -211,7 +197,6 @@ class PhotoListFragment @AssistedInject constructor(
                     else -> return
                 }
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    Log.e(TAG, "onScrolled: RETRY")
                     photoListAdapter.retry()
                 }
             }

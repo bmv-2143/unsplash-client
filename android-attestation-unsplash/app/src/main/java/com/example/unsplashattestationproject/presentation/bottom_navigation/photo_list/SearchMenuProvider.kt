@@ -1,18 +1,14 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list
 
-import android.content.Context
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
 import com.example.unsplashattestationproject.R
 
 class SearchMenuProvider(
-    private val context: Context,
     private val previousSearchQuery: String?,
-    private val onSearchMenuSelected: () -> Unit,
     private val onSearchQuerySubmit: (query : String) -> Unit,
     private val onQueryTextChanged: (query : String) -> Unit,
     private val onMenuSearchExpanded: () -> Unit,
@@ -76,8 +72,6 @@ class SearchMenuProvider(
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.action_search -> {
-                Toast.makeText(context, "Search clicked", Toast.LENGTH_SHORT).show()
-                onSearchMenuSelected()
                 true
             }
 
