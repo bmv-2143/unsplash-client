@@ -32,7 +32,7 @@ class CollectionAdapterViewHolder(
         currentItem = collectionItem
         loadTexts(collectionItem)
         loadAvatar(collectionItem)
-        loadPhoto(collectionItem.cover_photo?.urls?.regular ?: "")
+        loadPhoto(collectionItem.coverPhoto?.urls?.regular ?: "")
     }
 
     private fun loadTexts(collectionItem: UnsplashCollection) {

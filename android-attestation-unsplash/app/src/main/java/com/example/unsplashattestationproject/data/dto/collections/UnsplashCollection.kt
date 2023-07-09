@@ -16,9 +16,9 @@ data class UnsplashCollection(
     @Json(name = "featured") val isFeatured: Boolean,
     @Json(name = "total_photos") val totalPhotos: Int,
     val private: Boolean,
-    val share_key: String?,
+    @Json(name = "share_key") val shareKey: String?,
     val tags: List<Tag>?,
     val links: CollectionLinks,
     val user: UnsplashCollectionUser,
-    val cover_photo: CoverPhoto?
+    @Json(name = "cover_photo") val coverPhoto: CoverPhoto?
 )
