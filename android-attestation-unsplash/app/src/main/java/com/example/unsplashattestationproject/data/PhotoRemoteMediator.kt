@@ -40,9 +40,9 @@ class PhotoRemoteMediator @Inject constructor(
 
 
                 val prevKey = firstItemRemoteKeys?.prevKey
-                if (prevKey == null) {
-                    return MediatorResult.Success(endOfPaginationReached = firstItemRemoteKeys != null)
-                }
+                    ?: return MediatorResult.Success(
+                        endOfPaginationReached = firstItemRemoteKeys != null)
+
                 prevKey
             }
 
@@ -50,9 +50,9 @@ class PhotoRemoteMediator @Inject constructor(
                 val lastItemRemoteKeys = getRemoteKeyForLastItem(state)
 
                 val nextKey = lastItemRemoteKeys?.nextKey
-                if (nextKey == null) {
-                    return MediatorResult.Success(endOfPaginationReached = lastItemRemoteKeys != null)
-                }
+                    ?: return MediatorResult.Success(
+                        endOfPaginationReached = lastItemRemoteKeys != null)
+
                 nextKey
             }
         }
