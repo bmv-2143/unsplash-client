@@ -2,7 +2,6 @@ package com.example.unsplashattestationproject.data.pagingsource
 
 import com.example.unsplashattestationproject.data.PAGE_SIZE
 import com.example.unsplashattestationproject.data.UnsplashNetworkDataSource
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.room.entities.Photo
 import com.example.unsplashattestationproject.data.toPhoto
 import javax.inject.Inject
