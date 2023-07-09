@@ -5,7 +5,6 @@ import com.example.unsplashattestationproject.data.dto.photos.UnsplashLikeRespon
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhoto
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashPhotoDetails
 import com.example.unsplashattestationproject.data.dto.photos.UnsplashSearchResult
-import com.example.unsplashattestationproject.data.dto.photos.UnsplashTrackedDownloadResponse
 import com.example.unsplashattestationproject.data.dto.profile.UnsplashUserProfile
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -19,7 +18,6 @@ interface UnsplashApi {
     suspend fun getPhotos(
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
-//        @Query("order_by") orderBy: String // todo: do I need this?
     ): List<UnsplashPhoto>
 
     @GET("photos/{id}")
