@@ -1,6 +1,5 @@
 package com.example.unsplashattestationproject.domain
 
-import android.util.Log
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.unsplashattestationproject.data.UnsplashRepository
@@ -17,7 +16,6 @@ class GetCollectionsUseCase @Inject constructor(
         unsplashRepository.getCollections()
             .map { pagingData ->
                 pagingData.map { collection ->
-                    Log.e("GetCollectionsUseCase", "USE_CASE: Processing collection with id: ${collection.id}")
                     collection
                 }
             }
