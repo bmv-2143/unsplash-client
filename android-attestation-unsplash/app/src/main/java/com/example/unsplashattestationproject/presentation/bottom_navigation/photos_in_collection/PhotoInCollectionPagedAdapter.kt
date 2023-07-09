@@ -1,7 +1,5 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photos_in_collection
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -56,21 +54,6 @@ class PhotoInCollectionPagedAdapter(
             VIEW_TYPE_HEADER
         } else {
             VIEW_TYPE_ITEM
-        }
-    }
-
-    fun updateItemLikes(updatedItem: PhotoListItemUiModel) {
-        val currentList = snapshot()
-        val index = currentList.indexOfFirst { it?.remoteId == updatedItem.remoteId }
-
-        if (index == -1)
-            return
-
-        getItem(index)?.let {
-            it.likedByUser = updatedItem.likedByUser
-            it.likes = updatedItem.likes
-            Log.e(TAG, "updateItem: notifyItemChanged: $index")
-            notifyItemChanged(index)
         }
     }
 
