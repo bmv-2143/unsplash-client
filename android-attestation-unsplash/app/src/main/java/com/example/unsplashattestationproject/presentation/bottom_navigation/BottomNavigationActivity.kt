@@ -54,7 +54,8 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
 
     override fun getPermissionRequester() = permissionRequester
 
-    @Inject lateinit var staggeredLayoutPhotoListFragmentFactory: StaggeredLayoutPhotoListFragmentFactory
+    @Inject
+    lateinit var staggeredLayoutPhotoListFragmentFactory: StaggeredLayoutPhotoListFragmentFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,8 +165,8 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
 
         snackbarFactory.showSnackbar(
             binding.root,
-            "Download with ID ${downloadResult.first} completed!",
-            actionButtonText = "View"
+            getString(R.string.activity_botton_nav_download_complete_snackbar_text),
+            actionButtonText = getString(R.string.activity_bottom_nav_snakbar_action_view)
         ) {
             viewDownloadedPhoto(downloadResult.second)
         }
@@ -194,8 +195,10 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.logoutEvent.observe(this@BottomNavigationActivity) {
-                    startActivity(AuthorizationActivity
-                        .createIntent(this@BottomNavigationActivity))
+                    startActivity(
+                        AuthorizationActivity
+                            .createIntent(this@BottomNavigationActivity)
+                    )
                     finish()
                 }
             }

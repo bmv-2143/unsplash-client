@@ -3,18 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".presentation.bottom_navigation.photos_in_collection.PhotosInCollectionFragment">
 
     <TextView
         android:id="@+id/fragment_photos_in_collection_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
-        android:textSize="16sp"
+        android:layout_marginTop="16dp"
         android:textAllCaps="true"
+        android:textSize="16sp"
         tools:text="COLLECTION NAME" />
 
     <TextView
@@ -22,26 +22,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        tools:text="#tag1 #tag2 #tag3 #tag4 #tag5"
-        android:text="@string/hello_blank_fragment" />
+        tools:text="#tag1 #tag2 #tag3 #tag4 #tag5" />
 
     <TextView
         android:id="@+id/fragment_photos_in_collection_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
         android:textSize="16sp"
-        tools:text="The description of the collection"
-        android:text="@string/hello_blank_fragment" />
+        tools:text="The description of the collection" />
 
     <TextView
         android:id="@+id/fragment_photos_in_collection_total_images_and_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp"
         android:layout_gravity="end"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
         tools:text="@string/fragment_photos_in_collection_total_images_and_author" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

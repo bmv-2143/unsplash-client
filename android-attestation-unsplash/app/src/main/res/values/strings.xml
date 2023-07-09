@@ -3,29 +3,29 @@
     <string name="app_name">Unsplash Attestation Project</string>
 
     <!-- Onboarding -->
-    <string name="fragment_onboarding_create">Создавайте снимки, публикуйте, собирайте аудиторию!</string>
-    <string name="fragment_onboarding_share">Делитесь с друзьями, собирайте коллекции</string>
-    <string name="fragment_onboarding_upload">Закгружайте любимые снимки и отслеживайте статистику</string>
+    <string name="fragment_onboarding_create">Create photos, publish, gather users!</string>
+    <string name="fragment_onboarding_share">Share with friends, collect collections</string>
+    <string name="fragment_onboarding_upload">Upload favorite photos, track statistics</string>
 
     <!-- Bottom Navigation -->
     <string name="activity_authorization_button_log_in_via_unsplash">Log in via Unsplash</string>
 
     <!-- Bottom Navigation -->
-    <string name="activity_bottom_nav_title">Unsplash Bottom Navigation</string>
+    <string name="activity_bottom_nav_title" translatable="false">Unsplash Bottom Navigation</string>
     <string name="activity_bottom_nav_title_photos">Photos</string>
     <string name="activity_bottom_nav_title_collections">Collections</string>
     <string name="activity_bottom_nav_title_user_profile">User Profile</string>
     <string name="fragment_photo_list_no_internet_msg">No Internet connection. Images will be shows from the cache.</string>
     <string name="fragment_photo_list_not_internet_msg_close">Close</string>
 
-    <string name="photo_item_author_nickname_template">\@%1s</string>
+    <string name="photo_item_author_nickname_template" translatable="false">\@%1s</string>
 
     <string name="fragment_photo_details_exif_made_with">Made with: %1s</string>
     <string name="fragment_photo_details_exif_model">Model: %1s</string>
     <string name="fragment_photo_details_exif_exposure">Exposure: %1s</string>
     <string name="fragment_photo_details_exif_aperture">Aperture: %1s</string>
     <string name="fragment_photo_details_exif_focal_length">Focal Length: %1s</string>
-    <string name="fragment_photo_details_exif_iso">ISO: %1s</string>
+    <string name="fragment_photo_details_exif_iso" translatable="false">ISO: %1s</string>
     <string name="fragment_photo_details_about_author">About @%1s:\n%1s</string>
     <string name="fragment_photo_details_download_btn_text"><u>Download (%1d)</u></string>
     <string name="fragment_photo_details_share_menu_title">Share</string>
@@ -36,20 +36,21 @@
 
     <string name="collection_item_number_of_photos_template">%1s photos</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_photos_in_collection_total_images_and_author">%1d images by @%1s</string>
     <string name="fragment_photos_in_collection_empty">Unsplash service returned an empty list for this collection. This is due to limitation of the free Unsplash API subscription. Please try to select another collection or upgrade your developer account.</string>
 
-    <string name="fragment_user_profile_full_name">%1s %1s</string>
-    <string name="fragment_user_profile_instagram_username">Instagram: \@%1s</string>
-    <string name="fragment_user_profile_twitter_username">Twitter: \@%1s</string>
+    <string name="fragment_user_profile_full_name" translatable="false">%1s %1s</string>
+    <string name="fragment_user_profile_instagram_username" translatable="false">Instagram: \@%1s</string>
+    <string name="fragment_user_profile_twitter_username" translatable="false">Twitter: \@%1s</string>
     <string name="fragment_user_profile_followed_by">Followed by: %1d</string>
     <string name="fragment_user_profile_tab_title_liked_photos">%1d\nLiked</string>
-    <string name="fragment_user_profile_tab_title_demo_tab_all_unsplash_photos">DEMO (ALL PHOTOS)</string>
+    <string name="fragment_user_profile_tab_title_demo_tab_all_unsplash_photos" translatable="false">DEMO (ALL PHOTOS)</string>
     <string name="fragment_user_profile_menu_logout">Logout</string>
     <string name="fragment_bottom_sheet_dialog_logout_msg">Are you sure that you want to log out? All the data will be deleted.</string>
     <string name="fragment_bottom_sheet_dialog_button_no">No</string>
     <string name="fragment_bottom_sheet_dialog_button_yes">Yes</string>
-    <string name="fragment_auth_title">Unsplash</string>
+    <string name="fragment_auth_title" translatable="false">Unsplash</string>
+    <string name="activity_botton_nav_download_complete_snackbar_text">Download completed!</string>
+    <string name="activity_bottom_nav_snakbar_action_view">View</string>
 
 </resources>

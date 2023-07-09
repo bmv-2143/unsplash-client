@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Unsplash Attestation Project</string>
+    <string name="fragment_onboarding_create">Создавайте снимки, публикуйте, собирайте аудиторию!</string>
+    <string name="fragment_onboarding_share">Делитесь с друзьями, собирайте коллекции</string>
+    <string name="fragment_onboarding_upload">Закгружайте любимые снимки и отслеживайте статистику</string>
+    <string name="activity_authorization_button_log_in_via_unsplash">Войти через Unsplash</string>
+    <string name="activity_bottom_nav_title_photos">Фотографии</string>
+    <string name="activity_bottom_nav_title_collections">Коллекции</string>
+    <string name="activity_bottom_nav_title_user_profile">Профиль</string>
+    <string name="fragment_photo_list_no_internet_msg">Нет соединения, фото загрузятся из кэша</string>
+    <string name="fragment_photo_list_not_internet_msg_close">Закрыть</string>
+    <string name="fragment_photo_details_exif_made_with">Сделано с: %1s</string>
+    <string name="fragment_photo_details_exif_model">Модель: %1s</string>
+    <string name="fragment_photo_details_exif_exposure">Экспозиция: %1s</string>
+    <string name="fragment_photo_details_exif_aperture">Апертура: %1s</string>
+    <string name="fragment_photo_details_exif_focal_length">Фокальное расстояние: %1s</string>
+    <string name="fragment_photo_details_about_author">Об @%1s:\n%1s</string>
+    <string name="fragment_photo_details_download_btn_text">Скачать (%1d)</string>
+    <string name="fragment_photo_details_share_menu_title">Поделиться</string>
+    <string name="menu_action_share_photo">Поделиться фото</string>
+    <string name="activity_bottom_navigation_snackbar_view_downloaded_photo">Просмотр</string>
+    <string name="activity_bottom_navigation_snackbar_view_close">Закрыть</string>
+    <string name="fragment_photo_list_menu_search">Поиск</string>
+    <string name="collection_item_number_of_photos_template">%1s фото</string>
+    <string name="fragment_photos_in_collection_total_images_and_author">%1d фото от @%1s</string>
+    <string name="fragment_photos_in_collection_empty">Unsplash сервис вернул пустую коллекцию. Это вызвано ограничениями бесплатного API. Откройте другую коллекцию или купите подписку.</string>
+    <string name="fragment_user_profile_followed_by">Фолловеры: %1d</string>
+    <string name="fragment_user_profile_tab_title_liked_photos">%1d\nНравится</string>
+    <string name="fragment_user_profile_menu_logout">Выйти</string>
+    <string name="fragment_bottom_sheet_dialog_logout_msg">Вы уверены, что хотите выйти? Все данные будут удалены.</string>
+    <string name="fragment_bottom_sheet_dialog_button_no">Нет</string>
+    <string name="fragment_bottom_sheet_dialog_button_yes">Да</string>
+    <string name="activity_botton_nav_download_complete_snackbar_text">Загрузка зваершена!</string>
+    <string name="activity_bottom_nav_snakbar_action_view">Просмотр</string>
+</resources>
