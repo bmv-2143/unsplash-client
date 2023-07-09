@@ -1,7 +1,5 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_list
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -31,7 +29,6 @@ class PhotosPagedAdapter(
         getItem(index)?.let {
             it.likedByUser = updatedItem.likedByUser
             it.likes = updatedItem.likes
-            Log.e(TAG, "updateItem: notifyItemChanged: $index")
             notifyItemChanged(index)
         }
     }
