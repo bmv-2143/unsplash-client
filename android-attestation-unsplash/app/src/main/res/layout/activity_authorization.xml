@@ -55,17 +55,6 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/activity_authorization_test_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="32dp"
-            android:background="@color/black"
-            android:paddingHorizontal="16dp"
-            android:text="TEST_BUTTON"
-            android:textColor="@color/white" />
-
     </FrameLayout>
 
 </LinearLayout>

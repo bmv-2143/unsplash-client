@@ -64,11 +64,6 @@ class AuthorizationActivity : AppCompatActivity() {
         binding.activityAuthorizationButtonLogInViaUnsplash.setOnClickListener {
             openBrowserForAuthentication()
         }
-
-        // TODO: remove test button
-        binding.activityAuthorizationTestButton.setOnClickListener {
-            startActivity(Intent(this, BottomNavigationActivity::class.java))
-        }
     }
 
     private fun openBrowserForAuthentication() {
