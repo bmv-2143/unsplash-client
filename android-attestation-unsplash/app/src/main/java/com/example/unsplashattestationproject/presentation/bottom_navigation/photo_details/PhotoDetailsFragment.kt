@@ -298,7 +298,7 @@ class PhotoDetailsFragment : Fragment() {
                 arrayOf(
                     android.Manifest.permission.POST_NOTIFICATIONS,
                 )
-            } else if (Build.VERSION.SDK_INT >= 23) {
+            } else if (Build.VERSION.SDK_INT in 23..28) {
                 arrayOf(
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 )
