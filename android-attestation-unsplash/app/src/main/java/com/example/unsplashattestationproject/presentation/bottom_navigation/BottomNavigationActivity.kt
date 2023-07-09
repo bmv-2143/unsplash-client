@@ -3,11 +3,8 @@ package com.example.unsplashattestationproject.presentation.bottom_navigation
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -38,7 +35,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider {
 
@@ -57,8 +53,7 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
 
     override fun getPermissionRequester() = permissionRequester
 
-    @Inject
-    lateinit var staggeredLayoutPhotoListFragmentFactory: StaggeredLayoutPhotoListFragmentFactory
+    @Inject lateinit var staggeredLayoutPhotoListFragmentFactory: StaggeredLayoutPhotoListFragmentFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -175,41 +170,22 @@ class BottomNavigationActivity : AppCompatActivity(), PermissionRequestProvider 
     }
 
     private fun viewDownloadedPhoto(fileUri: Uri) {
+        val filePath = fileUri.path
+        if (filePath == null) {
+            Log.e(TAG, "${::viewDownloadedPhoto}: fileUri.path is null")
+            return
+        }
+
+        val uri = FileProvider.getUriForFile(
+            this,
+            BuildConfig.DOWNLOADED_FILE_PROVIDER_AUTHORITY, File(filePath)
+        )
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            val contentUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val originalUri = MediaStore.setRequireOriginal(fileUri)
-                FileProvider.getUriForFile(
-                    this@BottomNavigationActivity,
-                    BuildConfig.DOWNLOADED_FILE_PROVIDER_AUTHORITY,
-                    File(originalUri.path!!)
-                )
-            } else {
-                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                contentResolver.query(
-                    fileUri, filePathColumn, null, null, null)
-                    ?.use { cursor ->
-                        makeContentUri(cursor, filePathColumn)
-                    }
-            }
-            setDataAndType(contentUri, "image/*")
+            setDataAndType(uri, "image/*")
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
-        startActivity(intent)
-    }
 
-    private fun makeContentUri(
-        cursor: Cursor,
-        filePathColumn: Array<String>
-    ): Uri? {
-        cursor.moveToFirst()
-        val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-        val filePath = cursor.getString(columnIndex)
-        val file = File(filePath)
-        return FileProvider.getUriForFile(
-            this@BottomNavigationActivity,
-            BuildConfig.DOWNLOADED_FILE_PROVIDER_AUTHORITY,
-            file
-        )
+        startActivity(intent)
     }
 
     companion object {
