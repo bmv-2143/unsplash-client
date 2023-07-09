@@ -88,7 +88,6 @@ class NetworkModule {
                 if (UnsplashRepository.unsplashAccessToken.isEmpty()) {
                     Log.e(TAG, "getToken: ${UnsplashRepository.unsplashAccessToken}")
                 }
-                // TODO: tight coupling with Repository, create TokenManager? refactor
                 return UnsplashRepository.unsplashAccessToken
             }
         }
