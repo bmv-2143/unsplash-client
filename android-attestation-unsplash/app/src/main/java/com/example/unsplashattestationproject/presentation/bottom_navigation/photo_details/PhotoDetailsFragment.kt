@@ -1,6 +1,7 @@
 package com.example.unsplashattestationproject.presentation.bottom_navigation.photo_details
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -54,19 +55,14 @@ class PhotoDetailsFragment : Fragment() {
 
     private lateinit var permissionRequester: PermissionRequester
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        permissionRequester =
-            (requireActivity() as PermissionRequestProvider).getPermissionRequester()
-        observerPermissionRequest()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPhotoDetailsBinding.inflate(inflater, container, false)
-
+        permissionRequester =
+            (requireActivity() as PermissionRequestProvider).getPermissionRequester()
+        observerPermissionRequest()
         setLocationButtonListener()
         setDownloadButtonListener()
         setLikePhotoClickListener()
