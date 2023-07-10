@@ -86,6 +86,7 @@ class LikedPhotosFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.fragmentLikedPhotosRecyclerView.adapter = null // fixes 1 memory leak: LikedPhotosFragment.photoListAdapter
         _binding = null
     }
 
