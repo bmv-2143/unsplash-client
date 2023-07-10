@@ -240,7 +240,7 @@ class PhotoListFragment @AssistedInject constructor(
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.fragmentPhotoRecyclerView.adapter = null // fix memory leak
+        binding.fragmentPhotoRecyclerView.adapter = null
         _binding = null
         photoListAdapter = null
     }
