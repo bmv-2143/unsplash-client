@@ -82,6 +82,7 @@ class CollectionsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.fragmentCollectionsRecyclerView.adapter = null // fix memory leak CollectionsFragment.collectionsAdapter
         _binding = null
     }
 }
