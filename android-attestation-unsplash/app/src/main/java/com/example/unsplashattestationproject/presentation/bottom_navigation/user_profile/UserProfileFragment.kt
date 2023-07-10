@@ -202,6 +202,7 @@ class UserProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         removeActionBarMenu()
+        binding.viewPager.adapter = null // Fixes: 2 LifecycleRegistry.observerMap leaks
         _binding = null
     }
 
