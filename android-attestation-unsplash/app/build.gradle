@@ -14,7 +14,9 @@ android {
     defaultConfig {
         applicationId "com.example.unsplashattestationproject"
         minSdk 21
-        targetSdk 30 // this is the requirement of the assignment
+
+        targetSdk 33 // this is the requirement of the assignment
+
         versionCode 1
         versionName "1.0"
 
@@ -51,6 +53,30 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+
+    splits {
+
+        // Configures multiple APKs based on screen density.
+        density {
+            // Enables density-based APK splitting.
+            enable true
+
+            // Specifies a list of screen densities to generate APKs for.
+            include "ldpi", "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+        }
+
+        // Configures multiple APKs based on ABI.
+        abi {
+            // Enables ABI-based APK splitting.
+            enable true
+
+            // Specifies a list of ABIs to generate APKs for.
+            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+
+            // Specifies that all ABIs should be included in the universal APK.
+            universalApk true
+        }
     }
 }
 
@@ -90,8 +116,8 @@ dependencies {
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.14.0'
 
     // Hilt [2]
-    implementation "com.google.dagger:hilt-android:2.44.2"
-    kapt "com.google.dagger:hilt-compiler:2.44.2"
+    implementation "com.google.dagger:hilt-android:2.45"
+    kapt "com.google.dagger:hilt-compiler:2.45"
 
     // Paging Library
     implementation 'androidx.paging:paging-common-ktx:3.1.1'
