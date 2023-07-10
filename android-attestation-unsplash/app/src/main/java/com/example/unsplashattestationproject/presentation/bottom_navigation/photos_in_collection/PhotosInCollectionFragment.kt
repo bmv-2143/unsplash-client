@@ -101,7 +101,7 @@ class PhotosInCollectionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        photosInCollectionAdapter = null // fix memory leak: PhotosInCollectionFragment.photosInCollectionAdapter
+        photosInCollectionAdapter = null
         _binding = null
     }
 
