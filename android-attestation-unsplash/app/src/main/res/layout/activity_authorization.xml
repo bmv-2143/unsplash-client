@@ -17,7 +17,7 @@
             android:id="@+id/icon_image_view"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/ic_unsplash_rounded" />
+            android:src="@drawable/ic_unsplash" />
 
         <TextView
             android:id="@+id/unsplash_text_view"
