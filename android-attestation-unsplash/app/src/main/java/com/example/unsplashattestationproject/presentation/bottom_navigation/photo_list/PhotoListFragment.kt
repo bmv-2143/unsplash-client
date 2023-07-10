@@ -47,7 +47,7 @@ class PhotoListFragment @AssistedInject constructor(
     private val binding get() = _binding!!
 
     private val photoListViewModel: PhotoListViewModel by viewModels()
-    private val photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
+    private var photoListAdapter : PhotosPagedAdapter? = null
     private val searchAdapter = PhotosPagedAdapter(::onPhotoItemClick)
 
     private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
@@ -67,6 +67,7 @@ class PhotoListFragment @AssistedInject constructor(
     ): View {
         _binding = FragmentPhotoListBinding.inflate(inflater, container, false)
 
+        photoListAdapter = PhotosPagedAdapter(::onPhotoItemClick)
         setupRecyclerViewLayoutManager()
         initAdapter()
         setRecyclerViewScrollListener()
@@ -133,7 +134,7 @@ class PhotoListFragment @AssistedInject constructor(
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoListViewModel.getPhotosPagedFlow().collectLatest { photosPage ->
-                    photoListAdapter.submitData(photosPage)
+                    photoListAdapter?.submitData(photosPage)
                 }
             }
         }
@@ -141,7 +142,7 @@ class PhotoListFragment @AssistedInject constructor(
 
     private fun observerPagingAdapterUpdates() {
         viewLifecycleOwner.lifecycleScope.launch {
-            photoListAdapter.loadStateFlow.collect { loadStates ->
+            photoListAdapter?.loadStateFlow?.collect { loadStates ->
                 photoListViewModel.handleAdapterUpdates(loadStates)
             }
         }
@@ -165,7 +166,7 @@ class PhotoListFragment @AssistedInject constructor(
 
     private fun updateSelectedItemLikes() {
         if (activityViewModel.selectedFromPhotoList != null) {
-            photoListAdapter.updateItemLikes(activityViewModel.selectedFromPhotoList!!)
+            photoListAdapter?.updateItemLikes(activityViewModel.selectedFromPhotoList!!)
         }
     }
 
@@ -197,7 +198,7 @@ class PhotoListFragment @AssistedInject constructor(
                     else -> return
                 }
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    photoListAdapter.retry()
+                    photoListAdapter?.retry()
                     showNoConnectionSnackbarIfRequired()
                 }
             }
@@ -220,7 +221,7 @@ class PhotoListFragment @AssistedInject constructor(
     }
 
     private fun observeLoadState() {
-        photoListAdapter.addLoadStateListener { loadState ->
+        photoListAdapter?.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
                 binding.fragmentPhotoProgressBar.visibility = View.VISIBLE
                 binding.fragmentPhotoRecyclerView.visibility = View.GONE
@@ -240,5 +241,6 @@ class PhotoListFragment @AssistedInject constructor(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        photoListAdapter = null
     }
 }
