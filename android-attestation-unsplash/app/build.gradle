@@ -15,7 +15,7 @@ android {
         applicationId "com.example.unsplashattestationproject"
         minSdk 21
 
-        targetSdk 33 // this is the requirement of the assignment
+        targetSdk 30 // this is the requirement of the assignment (homework)
 
         versionCode 1
         versionName "1.0"
