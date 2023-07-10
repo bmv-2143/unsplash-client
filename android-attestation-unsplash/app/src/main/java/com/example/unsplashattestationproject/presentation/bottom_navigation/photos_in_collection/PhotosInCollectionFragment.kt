@@ -27,7 +27,7 @@ class PhotosInCollectionFragment : Fragment() {
     private var _binding: FragmentPhotosInCollectionBinding? = null
     private val binding get() = _binding!!
     private val activityViewModel: BottomNavigationActivityViewModel by activityViewModels()
-    private lateinit var photosInCollectionAdapter: PhotoInCollectionPagedAdapter
+    private var photosInCollectionAdapter: PhotoInCollectionPagedAdapter? = null
 
     private val photosInCollectionViewModel: PhotosInCollectionViewModel by viewModels()
 
@@ -68,7 +68,7 @@ class PhotosInCollectionFragment : Fragment() {
                 activityViewModel.selectedCollection?.let {
                     photosInCollectionViewModel.getPhotosInCollection(it.id)
                         .collectLatest { photosPage ->
-                            photosInCollectionAdapter.submitData(photosPage)
+                            photosInCollectionAdapter?.submitData(photosPage)
                         }
                 }
             }
@@ -78,10 +78,10 @@ class PhotosInCollectionFragment : Fragment() {
     private fun collectAdapterLoadState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                photosInCollectionAdapter.loadStateFlow.collectLatest { loadStates ->
+                photosInCollectionAdapter?.loadStateFlow?.collectLatest { loadStates ->
 
                     if (loadStates.refresh is LoadState.NotLoading &&
-                        photosInCollectionAdapter.itemCount == 0
+                        photosInCollectionAdapter?.itemCount == 0
                     ) {
                         binding.fragmentPhotosInCollectionEmpty.visibility = View.VISIBLE
                         binding.fragmentPhotosInCollectionRecyclerView.visibility = View.GONE
@@ -101,6 +101,7 @@ class PhotosInCollectionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        photosInCollectionAdapter = null // fix memory leak: PhotosInCollectionFragment.photosInCollectionAdapter
         _binding = null
     }
 
