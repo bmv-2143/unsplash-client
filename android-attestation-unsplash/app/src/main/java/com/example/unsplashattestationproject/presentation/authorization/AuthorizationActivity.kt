@@ -139,8 +139,6 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val IS_ONBOARDING_SHOWED = "isOnboardingShowed"
-
         fun createIntent(context: Context): Intent {
             return Intent(context, AuthorizationActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

@@ -9,12 +9,15 @@ class LocalRepository  @Inject constructor(
 )  {
 
     fun isOnboardingShowed(): Boolean = sharedPreferences.getBoolean(
-        AuthorizationActivity.IS_ONBOARDING_SHOWED, false)
+        IS_ONBOARDING_SHOWED, false)
 
     fun saveOnboardingShowedStatus() {
         val editor = sharedPreferences.edit()
-        editor.putBoolean(AuthorizationActivity.IS_ONBOARDING_SHOWED, true)
+        editor.putBoolean(IS_ONBOARDING_SHOWED, true)
         editor.apply()
     }
 
+    companion object {
+        const val IS_ONBOARDING_SHOWED = "isOnboardingShowed"
+    }
 }
