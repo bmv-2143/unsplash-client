@@ -1,7 +1,6 @@
 package com.example.unsplashattestationproject.data
 
 import android.content.SharedPreferences
-import com.example.unsplashattestationproject.presentation.authorization.AuthorizationActivity
 import javax.inject.Inject
 
 class LocalRepository  @Inject constructor(
